@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @source "../../../apps/web/*.{ts,tsx}";
 @source "../../../components/**/*.{ts,tsx}";
@@ -7,54 +7,167 @@
 
 @plugin "@tailwindcss/typography";
 
+@layer components {
+    .container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+:root {
+    --primary: #fed430;
+    --secondary: #fb4800;
+}
+
+@theme inline {
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --font-primary: var(--font-primary);
+    --font-secondary: var(--font-secondary);
+}
+
 @layer base {
-  html:focus-within {
-    scroll-behavior: smooth;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
     html:focus-within {
-      scroll-behavior: auto;
+        scroll-behavior: smooth;
     }
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
+
+    @media (prefers-reduced-motion: reduce) {
+        html:focus-within {
+            scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
     }
-  }
 
-  body {
-    overscroll-behavior-y: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    @apply bg-black text-white;
-  }
+    body {
+        overscroll-behavior-y: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        @apply bg-black text-white font-primary text-base md:text-lg xl:text-xl;
+    }
 
-  ::selection {
-    background: oklch(0.85 0.05 262);
-    color: oklch(0.2 0 0);
-  }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h4,
+    .h6 {
+        @apply font-secondary;
+    }
 
-  /* optional scrollbar polish */
-  *::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  *::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  *::-webkit-scrollbar-thumb {
-    background-color: oklch(0.85 0 0);
-    border-radius: 8px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-  }
+    h1,
+    .h1 {
+        @apply text-[100px] lg:text-[180px] xl:text-[210px] 2xl:text-[310px] leading-[0.95];
+    }
+
+    h2,
+    .h2 {
+        @apply text-[80px] lg:text-[180px] 2xl:text-[210px] leading-[0.95];
+    }
+
+    h3,
+    .h3 {
+        @apply text-[40px] lg:text-[80px] leading-[0.95];
+    }
+
+    h4,
+    .h4 {
+        @apply text-[28px] lg:text-[40px] leading-[0.95];
+    }
+
+    ::selection {
+        background: oklch(0.85 0.05 262);
+        color: oklch(0.2 0 0);
+    }
+
+    /* optional scrollbar polish */
+    *::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    *::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+        background-color: oklch(0.85 0 0);
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+}
+
+@layer components {
+    .glint-card {
+        @apply overflow-hidden relative p-px rounded-4xl;
+
+        &:hover {
+            &::after {
+                opacity: 1;
+                animation: border-spin 6s linear infinite;
+                will-change: transform;
+            }
+        }
+
+        &::before {
+            z-index: 1;
+            background: radial-gradient(circle, #565656 0% 100%);
+            @apply content-[''] -left-1/2 pointer-events-none -top-1/2 absolute w-[200%] h-[200%];
+        }
+
+        &::after {
+            content: '';
+            opacity: 0;
+            will-change: auto;
+            z-index: 2;
+            background: conic-gradient(
+                #0000 50deg,
+                #fff6,
+                #fffc,
+                #fff6 110deg,
+                #0000 130deg 230deg,
+                #fff6 250deg,
+                #fffc,
+                #fff6,
+                #0000 310deg
+            );
+            border-radius: 1rem;
+            width: 200%;
+            height: 200%;
+            transition: all 0.5s;
+            animation: none;
+            position: absolute;
+            top: -50%;
+            left: -50%;
+        }
+    }
+
+    @keyframes border-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .glint-card-content {
+        background: url(/images/bg-image.webp) center center / cover;
+        @apply rounded-4xl relative z-10 p-6;
+    }
 }
 
 @layer utilities {
-  .smooth-scroll {
-    scroll-behavior: smooth;
-  }
+    .smooth-scroll {
+        scroll-behavior: smooth;
+    }
 }

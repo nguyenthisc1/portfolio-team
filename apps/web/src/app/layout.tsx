@@ -3,13 +3,30 @@ import '@workspace/ui/web.css'
 import { Metadata } from 'next'
 import { GsapProvider } from '@/shared/components/GsapProvider'
 import localFont from 'next/font/local'
+import CanvasScene from '@/shared/components/scene/CanvasScene'
 
 const ibmPlexSansCondensedBoldItalic = localFont({
-    src: '../shared/fonts/IBMPlexSansCondensed-BoldItalic.ttf',
+    src: [
+        {
+            path: '../shared/fonts/IBMPlexSansCondensed-Bold.ttf',
+            weight: '700',
+            style: 'normal',
+        },
+        {
+            path: '../shared/fonts/IBMPlexSansCondensed-Regular.ttf',
+            weight: '400',
+            style: 'normal',
+        },
+    ],
+    variable: '--font-primary',
+})
+
+const headingNowTrial = localFont({
+    src: '../shared/fonts/FjallaOne-Regular.ttf',
     display: 'swap',
-    variable: '--font-ibm-plex-sans-condensed-bold-italic',
+    variable: '--font-secondary',
     weight: '700',
-    style: 'italic',
+    style: 'normal',
 })
 
 export const metadata: Metadata = {
@@ -27,13 +44,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>): React.JSX.Element {
     return (
-        <html lang="en" translate="no" suppressHydrationWarning className={ibmPlexSansCondensedBoldItalic.className}>
+        <html
+            lang="en"
+            translate="no"
+            suppressHydrationWarning
+            className={`${ibmPlexSansCondensedBoldItalic.variable} ${headingNowTrial.variable}`}
+        >
             <head>
                 <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </head>
             <body className="antialiased ">
-                <GsapProvider>{children}</GsapProvider>
+                <GsapProvider>
+                    {children}
+
+                    <CanvasScene />
+                </GsapProvider>
             </body>
         </html>
     )
