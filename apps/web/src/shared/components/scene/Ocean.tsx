@@ -1,0 +1,47 @@
+/* eslint-disable react/no-unknown-property */
+import { extend, useFrame, useLoader, useThree } from '@react-three/fiber'
+import React, { useMemo, useRef } from 'react'
+import * as THREE from 'three'
+import { Water } from 'three-stdlib'
+
+extend({ Water })
+
+export default function Ocean() {
+    const ref = useRef<THREE.Mesh | null>(null)
+    const gl = useThree(state => state.gl)
+    const waterNormals = useLoader(THREE.TextureLoader, 'images/waternormals.jpeg')
+    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
+
+    const geom = useMemo(() => new THREE.PlaneGeometry(10000, 10000), [])
+    const config = useMemo(
+        () => ({
+            textureWidth: 512,
+            textureHeight: 512,
+            waterNormals,
+            sunColor: 0xffffff,
+            waterColor: 0x001e0f,
+            distortionScale: 7,
+            fog: false,
+            format: gl.capabilities.isWebGL2 ? THREE.RGBAFormat : THREE.RGBFormat,
+        }),
+        [waterNormals, gl.capabilities.isWebGL2],
+    )
+
+    const water = useMemo(() => new Water(geom, config), [geom, config])
+
+    // Animate the water
+    useFrame((_, delta) => {
+        if (ref.current && (ref.current as any).material?.uniforms?.time) {
+            ;(ref.current as any).material.uniforms.time.value += delta * 0.3
+        }
+
+        if ((ref.current as any)?.material?.uniforms?.normalSampler) {
+            const normalScale = (ref.current as any).material.uniforms.normalScale
+            if (normalScale && normalScale.value && waterNormals) {
+                waterNormals.offset.x += delta * -0.008
+            }
+        }
+    })
+
+    return <primitive object={water} ref={ref} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]} />
+}
