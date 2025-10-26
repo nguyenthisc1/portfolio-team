@@ -21,12 +21,20 @@ const ibmPlexSansCondensedBoldItalic = localFont({
     variable: '--font-primary',
 })
 
-const headingNowTrial = localFont({
-    src: '../shared/fonts/FjallaOne-Regular.ttf',
-    display: 'swap',
+const archivoCondensed = localFont({
+    src: [
+        {
+            path: '../shared/fonts/Archivo_Condensed-Black.ttf',
+            style: 'normal',
+            weight: '800',
+        },
+        {
+            path: '../shared/fonts/Archivo_Condensed-ExtraBold.ttf',
+            style: 'normal',
+            weight: '900',
+        },
+    ],
     variable: '--font-secondary',
-    weight: '700',
-    style: 'normal',
 })
 
 export const metadata: Metadata = {
@@ -48,7 +56,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             lang="en"
             translate="no"
             suppressHydrationWarning
-            className={`${ibmPlexSansCondensedBoldItalic.variable} ${headingNowTrial.variable}`}
+            className={`${ibmPlexSansCondensedBoldItalic.variable} ${archivoCondensed.variable}`}
         >
             <head>
                 <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
@@ -57,7 +65,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <body className="antialiased ">
                 <GsapProvider>
                     {children}
-
                     <CanvasScene />
                 </GsapProvider>
             </body>
