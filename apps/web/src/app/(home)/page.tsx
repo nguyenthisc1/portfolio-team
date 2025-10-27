@@ -31,15 +31,30 @@ export default function Home() {
                 </p>
             </section>
 
-            <section aria-labelledby="projects-heading" className="mb-44 max-w-4xl mx-auto space-y-10">
-                <h2 id="projects-heading" className="h2 uppercase  text-primary text-center">
-                    Projects
-                </h2>
-                <p className="max-w-xs ml-auto mr-20">
-                    Come along and discover a selection of my recent works, from websites to digital products, all
-                    crafted with a focus on clarity, purpose, and meaningful design.
-                </p>
+            <section aria-labelledby="projects-heading" className="mb-44">
+                <div className="max-w-4xl mx-auto space-y-10">
+                    <h2 id="projects-heading" className="h2 uppercase text-primary text-center">
+                        Projects
+                    </h2>
+                    <p className="max-w-xs ml-auto mr-20">
+                        Come along and discover a selection of my recent works, from websites to digital products, all
+                        crafted with a focus on clarity, purpose, and meaningful design.
+                    </p>
+                </div>
+
+                <div id="gsap-projects-trigger">
+                    <div className="container">
+                        <div className="h-screen flex items-end">
+                            <div className="text-center w-full gsap-project-title">
+                                {/* <h3 >IWC Schaffhausen</h3> */}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
+            <div className="h-screen"></div>
+            <div className="h-screen"></div>
+            <div className="h-screen"></div>
 
             <section aria-labelledby="about-team-heading" className="mb-32">
                 <h2 id="about-team-heading" className="h2 mb-44 uppercase text-primary text-center">

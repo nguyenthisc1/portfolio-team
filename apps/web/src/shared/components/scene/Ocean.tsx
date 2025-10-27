@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { extend, useFrame, useLoader, useThree } from '@react-three/fiber'
-import React, { useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Water } from 'three-stdlib'
 
@@ -11,18 +11,21 @@ export default function Ocean() {
     const gl = useThree(state => state.gl)
     const waterNormals = useLoader(THREE.TextureLoader, 'images/waternormals.jpeg')
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
-
     const geom = useMemo(() => new THREE.PlaneGeometry(10000, 10000), [])
     const config = useMemo(
         () => ({
             textureWidth: 512,
             textureHeight: 512,
             waterNormals,
-            sunColor: 0xffffff,
-            waterColor: 0x001e0f,
+            sunColor: 0x000000,
+            waterColor: 0x000000,
             distortionScale: 7,
             fog: false,
             format: gl.capabilities.isWebGL2 ? THREE.RGBAFormat : THREE.RGBFormat,
+            toneMapping: THREE.UVMapping,
+            toneMappingExposure: 10,
+            clipBias: 0.9,
+            alpha: 0.5,
         }),
         [waterNormals, gl.capabilities.isWebGL2],
     )

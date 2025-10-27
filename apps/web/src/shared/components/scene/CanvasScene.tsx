@@ -5,6 +5,9 @@ import { Suspense, useMemo } from 'react'
 import * as THREE from 'three'
 import Logo from './Logo'
 import Ocean from './Ocean'
+import { Bloom, EffectComposer, ToneMapping } from '@react-three/postprocessing'
+import { BlendFunction, ToneMappingMode } from 'postprocessing'
+import Projects from './Projects'
 
 function Sky() {
     const { scene } = useThree()
@@ -33,7 +36,8 @@ export default function CanvasScene() {
                 height: '100vh',
                 pointerEvents: 'none',
             }}
-            camera={{ position: [100, 5, 100], fov: 55, near: 1, far: 20000 }}
+            // default position is 10
+            camera={{ position: [100, 14, 100], fov: 55, near: 1, far: 20000 }}
             gl={{
                 toneMapping: THREE.NeutralToneMapping,
                 toneMappingExposure: 0.2,
@@ -42,15 +46,21 @@ export default function CanvasScene() {
             <Suspense fallback={null}>
                 <Logo />
 
+                {/* <EffectComposer>
+                    <Bloom strength={.167} radius={0.7} intensity={0.1} luminanceThreshold={0} luminanceSmoothing={1} mipmapBlur />
+                    <ToneMapping
+                            mode={ToneMappingMode.NEUTRAL}
+                            exposure={0.01}
+                            blendFunction={BlendFunction.DARKEN}
+                        />
+                </EffectComposer> */}
+
+                <Projects />
+
                 <group>
                     <Ocean />
                     <Sky />
                 </group>
-
-                {/* <EffectsComposer
-                bloomStrength={bloomStrength}
-                bloomRadius={bloomRadius}
-                bloomThreshold={bloomThreshold} /> */}
             </Suspense>
             {/* <OrbitControls /> */}
         </Canvas>

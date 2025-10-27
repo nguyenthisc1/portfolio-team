@@ -7,6 +7,7 @@ import { Leva, useControls } from 'leva'
 import { Suspense, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Water } from 'three-stdlib'
+import Projects from './Projects'
 
 extend({ Water })
 
