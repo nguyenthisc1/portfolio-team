@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { useGSAP } from '@gsap/react' // you need to have @gsap/react installed
+import { useGSAP } from '@gsap/react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -86,7 +86,7 @@ interface ImageCardProps {
 }
 
 function ImageCard({
-    width = 2.8,
+    width = 3.6,
     height = 2.2,
     radius = 0.1,
     textureUrl = 'images/img_project_1.jpg',
@@ -154,7 +154,7 @@ function ImageCard({
     // Animate mesh via useFrame and refs
     const meshRef = useRef<THREE.Mesh>(null)
 
-    // Normally, in GSAP provided below, "gsapDataRefs" will be used to update position/rotation/scale/opacity
+    // Use gsapDataRefs for correct animation/scroll-triggering support
     useFrame(() => {
         if (meshRef.current) {
             // Use GSAP refs if animating, otherwise props
@@ -169,7 +169,7 @@ function ImageCard({
                 meshRef.current.scale.setScalar(s)
             }
             // Update shader opacity from GSAP ref
-            if (animated && gsapDataRefs?.opacityRef && typeof o === 'number' && material.uniforms?.uOpacity) {
+            if (material.uniforms?.uOpacity) {
                 material.uniforms.uOpacity.value = o
             }
         }
@@ -195,8 +195,7 @@ export default function Projects() {
 
     const CARD_COUNT = 8
     const CARD_SCALE = 10
-    const CARD_OPACITY = 1
-    const CARD_IMAGE = 'images/img_project_1.jpg'
+    const CARD_OPACITY = 0.1
 
     const computeCardPosition = (
         idx: number,
@@ -206,10 +205,10 @@ export default function Projects() {
         cardZStart: number,
         cardZSpacing: number,
     ): [number, number, number] => {
-        const cardIdx = idx + 1
-        const x = isEven ? cardIdx * cardXOffset * -2.4 + 16 : cardIdx * cardXOffset * -2.4 - 16
+        const cardIdx = idx
+        const x = isEven ? cardIdx * cardXOffset * -1.1 + 4 : cardIdx * cardXOffset * -1.1 - 8
         const y = cardY
-        const z = cardZStart - (isEven ? cardIdx * cardZSpacing * 2.18 - 6 : cardIdx * (cardZSpacing * 2.18) - 6)
+        const z = cardZStart - (isEven ? cardIdx * (cardZSpacing * 1) + 4 : cardIdx * (cardZSpacing * 1) - 10)
         return [x, y, z]
     }
 
@@ -217,21 +216,17 @@ export default function Projects() {
         const isEven = idx % 2 === 0
         return {
             position: computeCardPosition(idx, isEven, cardXOffset, cardY, cardZStart, cardZSpacing),
-            rotation: [0, isEven ? 0.5 : 1.1, 0],
+            rotation: [0, isEven ? 0.3 : 1.3, 0],
             scale: CARD_SCALE,
             opacity: CARD_OPACITY,
-            imageUrl: CARD_IMAGE,
+            imageUrl: `images/img_project_${idx + 1}.avif`,
         }
     }
 
-    const [cards] = useState<ProjectCard[]>(Array.from({ length: CARD_COUNT }, (_, idx) => createCard(idx)))
+    // Generate cards state
+    const [cards] = useState(Array.from({ length: CARD_COUNT }, (_, idx) => createCard(idx)))
 
-    // Group position state so GSAP can animate it (must be mutable for GSAP)
-    const groupPosRef = useRef<[number, number, number]>([36, 0, 0])
-    // For useFrame group position update
-    const [, setRenderTick] = useState(0)
-
-    // Card refs as before
+    // Prepare animated data refs for GSAP (one ref obj per card, plus group)
     const cardRefs = useRef(
         cards.map(card => ({
             positionRef: { current: [...card.position] as [number, number, number] },
@@ -241,51 +236,49 @@ export default function Projects() {
         })),
     ).current
 
-    // Animate the group position with GSAP
+    // Group position state for GSAP (must be mutable for GSAP)
+    const groupPosRef = useRef<[number, number, number]>([36, 0, 0])
+
+    // Ref for the group
+    const groupRef = useRef<THREE.Group>(null)
+
+    // For useFrame group position update
+    const [, setRenderTick] = useState(0)
+
+    // Animate the group position and card state with GSAP
     useGSAP(() => {
-        // Cleanup old triggers on rerun (hot reload)
         ScrollTrigger.getAll().forEach(trg => trg.kill())
+        const vh = (coef: number) => window.innerHeight * (coef / 100)
 
-        // Timeline with scrollTrigger as before
-        const timeline = gsap.timeline({
-            ease: 'power1.inOut',
-            scrollTrigger: {
-                trigger: `#gsap-projects-trigger`,
-                start: 'top top',
-                end: '+=500% top',
-                scrub: true,
-                markers: true,
-            },
-        })
-
-        // Group's animation state
         const groupState = {
             px: groupPosRef.current[0],
             py: groupPosRef.current[1],
             pz: groupPosRef.current[2],
         }
 
-        // Animate the group position (can customize as needed)
-        timeline.to(
-            groupState,
-            {
-                px: groupState.px + 122 * cardRefs.length,
-                py: groupState.py + 0,
-                pz: groupState.pz + 122 * cardRefs.length,
-                duration: 2,
-                ease: 'power1.inOut',
-                onUpdate: () => {
-                    groupPosRef.current[0] = groupState.px
-                    groupPosRef.current[1] = groupState.py
-                    groupPosRef.current[2] = groupState.pz
-                    setRenderTick(tick => tick + 1)
-                },
+        gsap.to(groupState, {
+            px: groupState.px + 55 * cards.length,
+            pz: groupState.pz + 55 * cards.length,
+            ease: 'linear',
+            scrollTrigger: {
+                trigger: '#gsap-projects-trigger',
+                start: 'top top',
+                end: () => `${vh(100 * cardRefs.length - 1)} bottom`,
+                pin: false,
+                scrub: true,
+                markers: true,
             },
-            0, // start of timeline
-        )
+            onUpdate: () => {
+                groupPosRef.current[0] = groupState.px
+                groupPosRef.current[1] = groupState.py
+                groupPosRef.current[2] = groupState.pz
+                setRenderTick(t => t + 1)
+            },
+        })
 
-        // Cards animation, unchanged except for group anim above
+        // Animate each card's opacity and rotation using their refs
         cards.forEach((card, idx) => {
+            const isEven = idx % 2 === 0
             const state = {
                 px: card.position[0],
                 py: card.position[1],
@@ -293,41 +286,66 @@ export default function Projects() {
                 rx: card.rotation[0],
                 ry: card.rotation[1],
                 rz: card.rotation[2],
-                sc: card.scale * 0.7,
-                // op: 0.1,
+                sc: card.scale,
+                op: card.opacity,
             }
 
-            // delay theo index (card thứ 2 sẽ trễ hơn card 1 một đoạn)
-            const delay = 0.8 * idx
+            const itemCount = cards.length
+            const totalScrollHeight = (itemCount - 1) * 100
+            const perMeshHeight = totalScrollHeight / itemCount
+            const overlap = 10
+            const startMesh = Math.max(idx * perMeshHeight - overlap, 0)
+            const endMesh = Math.max((idx + 1) * perMeshHeight - overlap, 0)
 
-            timeline.to(
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: `#gsap-projects-trigger`,
+                    start: `${vh(startMesh)} top`,
+                    end: `${vh(endMesh)} top`,
+                    pin: false,
+                    scrub: true,
+                    markers: true,
+                },
+            })
+            tl.to(
                 state,
                 {
-                    // op: 1,
-                    sc: card.scale,
-                    ry: card.rotation[1] + (idx % 2 === 0 ? -0.2 : 0.2),
-                    duration: 1.5,
-                    ease: 'power3.out',
+                    op: 1,
+                    duration: 1,
                     onUpdate: () => {
-                        // cardRefs[idx]!.positionRef.current = [state.px, state.py, state.pz]
-                        // cardRefs[idx]!.rotationRef.current = [state.rx, state.ry, state.rz]
-                        // cardRefs[idx]!.scaleRef.current = state.sc
-                        // cardRefs[idx]!.opacityRef.current = state.op
+                        cardRefs[idx]!.opacityRef.current = state.op
                     },
                 },
-                delay,
+                0,
             )
+                .to(
+                    state,
+                    {
+                        ry: 0.8,
+                        duration: 3,
+                        onUpdate: () => {
+                            cardRefs[idx]!.rotationRef.current = [state.rx, state.ry, state.rz]
+                        },
+                    },
+                    0,
+                )
+                .to(
+                    state,
+                    {
+                        op: 0,
+                        duration: 0.5,
+                        onUpdate: () => {
+                            cardRefs[idx]!.opacityRef.current = state.op
+                        },
+                    },
+                    3,
+                )
         })
 
         return () => {
-            // Cleanup scroll triggers and timelines on unmount
             ScrollTrigger.getAll().forEach(trg => trg.kill())
-            timeline.kill()
         }
     }, [cards, cardRefs])
-
-    // Ref for the group
-    const groupRef = useRef<THREE.Group>(null)
 
     // Sync the Three.js group position with our animated ref
     useFrame(() => {
@@ -354,159 +372,3 @@ export default function Projects() {
         </group>
     )
 }
-
-// export default function Projects() {
-//     // Replace with state for future extensibility
-//     const [cards] = useState<ProjectCard[]>([
-//         {
-//             position: [50, 12, 30],
-//             rotation: [0, 0.5, 0],
-//             scale: 10,
-//             opacity: 1,
-//             imageUrl: 'images/img_project_1.jpg'
-//         },
-//         {
-//             position: [-50, 12, -35],
-//             rotation: [0, 1, 0],
-//             scale: 10,
-//             opacity: 1,
-//             imageUrl: 'images/img_project_1.jpg'
-//         },
-//         {
-//             position: [-110, 12, -140],
-//             rotation: [0, 0.5, 0],
-//             scale: 10,
-//             opacity: 1,
-//             imageUrl: 'images/img_project_1.jpg'
-//         },
-//     ])
-
-//     // Group position state so GSAP can animate it (must be mutable for GSAP)
-//     const groupPosRef = useRef<[number, number, number]>([0, 0, 0])
-//     // For useFrame group position update
-//     const [, setRenderTick] = useState(0)
-
-//     // Card refs as before
-//     const cardRefs = useRef(
-//         cards.map(card => ({
-//             positionRef: { current: [...card.position] as [number, number, number] },
-//             rotationRef: { current: [...card.rotation] as [number, number, number] },
-//             scaleRef: { current: card.scale },
-//             opacityRef: { current: card.opacity }
-//         }))
-//     ).current
-
-//     // Animate the group position with GSAP
-//     useGSAP(() => {
-//         // Cleanup old triggers on rerun (hot reload)
-//         // ScrollTrigger.getAll().forEach(trg => trg.kill())
-
-//         // Timeline with scrollTrigger as before
-//         const timeline = gsap.timeline({
-//             ease: 'power1.inOut',
-//             scrollTrigger: {
-//                 trigger: `#gsap-projects-trigger`,
-//                 start: 'top top',
-//                 end: '+=500% top',
-//                 scrub: true,
-//                 markers: true,
-//             },
-//         })
-
-//         // Group's animation state
-//         const groupState = {
-//             px: groupPosRef.current[0],
-//             py: groupPosRef.current[1],
-//             pz: groupPosRef.current[2],
-//         }
-
-//         // Animate the group position (can customize as needed)
-//         timeline.to(
-//             groupState,
-//             {
-//                 px: groupState.px + 65 * cardRefs.length,
-//                 py: groupState.py + 0,
-//                 pz: groupState.pz + 70 * cardRefs.length,
-//                 duration: 2,
-//                 ease: "power1.inOut",
-//                 onUpdate: () => {
-//                     groupPosRef.current[0] = groupState.px
-//                     groupPosRef.current[1] = groupState.py
-//                     groupPosRef.current[2] = groupState.pz
-//                     setRenderTick(tick => tick + 1)
-//                 },
-//             },
-//             0 // start of timeline
-//         )
-
-//         // Cards animation, unchanged except for group anim above
-//         cards.forEach((card, idx) => {
-//             const state = {
-//                 px: card.position[0],
-//                 py: card.position[1],
-//                 pz: card.position[2],
-//                 rx: card.rotation[0],
-//                 ry: card.rotation[1],
-//                 rz: card.rotation[2],
-//                 sc: card.scale * 0.7,
-//                 // op: 0.1,
-//             }
-
-//             // delay theo index (card thứ 2 sẽ trễ hơn card 1 một đoạn)
-//             const delay = 0.8 * idx
-
-//             timeline.to(state, {
-//                 // op: 1,
-//                 sc: card.scale,
-//                 ry: card.rotation[1] + (idx % 2 === 0 ? -0.2 : 0.2),
-//                 duration: 1.5,
-//                 ease: 'power3.out',
-//                 onUpdate: () => {
-//                     // cardRefs[idx]!.positionRef.current = [state.px, state.py, state.pz]
-//                     // cardRefs[idx]!.rotationRef.current = [state.rx, state.ry, state.rz]
-//                     // cardRefs[idx]!.scaleRef.current = state.sc
-//                     // cardRefs[idx]!.opacityRef.current = state.op
-//                 },
-//             }, delay)
-//         })
-
-//         return () => {
-//             // Cleanup scroll triggers and timelines on unmount
-//             ScrollTrigger.getAll().forEach(trg => trg.kill())
-//             timeline.kill()
-//         }
-
-//     }, [cards, cardRefs])
-
-//     // Ref for the group
-//     const groupRef = useRef<THREE.Group>(null)
-
-//     // Sync the Three.js group position with our animated ref
-//     useFrame(() => {
-//         if (groupRef.current) {
-//             groupRef.current.position.set(
-//                 groupPosRef.current[0],
-//                 groupPosRef.current[1],
-//                 groupPosRef.current[2]
-//             )
-//         }
-//     })
-
-//     return (
-//         <group ref={groupRef} position={groupPosRef.current}>
-//             {cards.map((item, idx) =>
-//                 <ImageCard
-//                     key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}
-//                     position={item.position}
-//                     rotation={item.rotation}
-//                     scale={item.scale}
-//                     opacity={item.opacity}
-//                     textureUrl={item.imageUrl}
-//                     animated={true}
-//                     cardIdx={idx}
-//                     gsapDataRefs={cardRefs[idx]}
-//                 />
-//             )}
-//         </group>
-//     )
-// }

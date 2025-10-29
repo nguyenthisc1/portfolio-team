@@ -44,7 +44,7 @@ export default function CanvasScene() {
             }}
         >
             <Suspense fallback={null}>
-                <Logo />
+                {/* <Logo /> */}
 
                 {/* <EffectComposer>
                     <Bloom strength={.167} radius={0.7} intensity={0.1} luminanceThreshold={0} luminanceSmoothing={1} mipmapBlur />

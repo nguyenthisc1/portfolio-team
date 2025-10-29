@@ -42,7 +42,7 @@ export default function Home() {
                     </p>
                 </div>
 
-                <div id="gsap-projects-trigger">
+                <div style={{ height: `800vh` }} id="gsap-projects-trigger" className="gsap-projects-trigger">
                     <div className="container">
                         <div className="h-screen flex items-end">
                             <div className="text-center w-full gsap-project-title">
@@ -52,9 +52,6 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            <div className="h-screen"></div>
-            <div className="h-screen"></div>
-            <div className="h-screen"></div>
 
             <section aria-labelledby="about-team-heading" className="mb-32">
                 <h2 id="about-team-heading" className="h2 mb-44 uppercase text-primary text-center">
