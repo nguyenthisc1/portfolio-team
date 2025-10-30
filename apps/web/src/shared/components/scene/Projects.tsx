@@ -247,7 +247,6 @@ export default function Projects() {
 
     // Animate the group position and card state with GSAP
     useGSAP(() => {
-        ScrollTrigger.getAll().forEach(trg => trg.kill())
         const vh = (coef: number) => window.innerHeight * (coef / 100)
 
         const groupState = {
@@ -266,7 +265,7 @@ export default function Projects() {
                 end: () => `${vh(100 * cardRefs.length - 1)} bottom`,
                 pin: false,
                 scrub: true,
-                markers: true,
+                // markers: true,
             },
             onUpdate: () => {
                 groupPosRef.current[0] = groupState.px
@@ -304,7 +303,7 @@ export default function Projects() {
                     end: `${vh(endMesh)} top`,
                     pin: false,
                     scrub: true,
-                    markers: true,
+                    // markers: true,
                 },
             })
             tl.to(
@@ -322,7 +321,7 @@ export default function Projects() {
                     state,
                     {
                         ry: 0.8,
-                        duration: 3,
+                        duration: 5,
                         onUpdate: () => {
                             cardRefs[idx]!.rotationRef.current = [state.rx, state.ry, state.rz]
                         },
@@ -333,18 +332,14 @@ export default function Projects() {
                     state,
                     {
                         op: 0,
-                        duration: 0.5,
+                        duration: 2,
                         onUpdate: () => {
                             cardRefs[idx]!.opacityRef.current = state.op
                         },
                     },
-                    3,
+                    4,
                 )
         })
-
-        return () => {
-            ScrollTrigger.getAll().forEach(trg => trg.kill())
-        }
     }, [cards, cardRefs])
 
     // Sync the Three.js group position with our animated ref
