@@ -7,13 +7,6 @@
 
 @plugin "@tailwindcss/typography";
 
-@layer components {
-    .container {
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
 :root {
     --primary: #fed430;
     --secondary: #fb4800;
@@ -24,6 +17,36 @@
     --color-secondary: var(--secondary);
     --font-primary: var(--font-primary);
     --font-secondary: var(--font-secondary);
+}
+
+@layer components {
+    .container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .tt-heading-wrapper {
+        @apply relative overflow-hidden flex justify-center items-center;
+    }
+
+    .tt-heading-stroke {
+        width: 100%;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 2px var(--color-primary);
+        text-transform: none;
+    }
+
+    .tt-heading-filled {
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+        -webkit-text-fill-color: var(--color-primary);
+        -webkit-text-stroke: 2px var(--color-primary);
+        @apply absolute left-1/2 top-1/2 -translate-1/2 w-full select-none;
+    }
+
+    .footer-content-filled {
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+        @apply absolute left-1/2 top-1/2 -translate-1/2 size-full select-none;
+    }
 }
 
 @layer base {
