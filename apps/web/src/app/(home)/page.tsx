@@ -1,5 +1,6 @@
 import Footer from '@/features/animations/Footer'
 import Heading from '@/features/animations/Heading'
+import Typography from '@/features/animations/Typography'
 
 export default function Home() {
     return (
@@ -26,20 +27,23 @@ export default function Home() {
                 <h2 id="philosophy-heading" className="sr-only">
                     Philosophy
                 </h2>
-                <p className="max-w-xs ml-auto mr-20">
-                    I value simplicity without sacrificing originality. Every solution is effective, purposeful, and
-                    ready for real use.
-                </p>
+                <Typography
+                    className="max-w-xs ml-auto mr-20"
+                    text="
+                 I value simplicity without sacrificing originality. Every solution is effective, purposeful, and
+                    ready for real use."
+                />
             </section>
 
             <section aria-labelledby="projects-heading" className="mb-44">
                 <div className="max-w-4xl mx-auto space-y-10">
                     <Heading as={2} text={'Projects'} className={'uppercase h2'} />
 
-                    <p className="max-w-xs ml-auto mr-20">
-                        Come along and discover a selection of my recent works, from websites to digital products, all
-                        crafted with a focus on clarity, purpose, and meaningful design.
-                    </p>
+                    <Typography
+                        className="max-w-xs ml-auto mr-20"
+                        text="                        Come along and discover a selection of my recent works, from websites to digital products, all
+                        crafted with a focus on clarity, purpose, and meaningful design."
+                    />
                 </div>
 
                 <div style={{ height: `800vh` }} id="gsap-projects-trigger" className="gsap-projects-trigger">
