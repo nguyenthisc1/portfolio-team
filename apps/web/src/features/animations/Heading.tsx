@@ -25,8 +25,8 @@ export default function Heading({ text, className, as = 1, ...props }: Props) {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: ref.current,
-                    start: 'top 40%',
-                    end: 'bottom 20%',
+                    start: 'top 70%',
+                    end: 'bottom top',
                     scrub: true,
                     // markers: true,
                 },
