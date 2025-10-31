@@ -1,9 +1,9 @@
 import { PROJECT_DESCRIPTION, PROJECT_NAME } from '@/shared/consts/common'
 import '@workspace/ui/web.css'
 import { Metadata } from 'next'
-import { GsapProvider } from '@/shared/components/GsapProvider'
 import localFont from 'next/font/local'
 import CanvasScene from '@/shared/components/scene/CanvasScene'
+import { GsapProvider } from '@/shared/providers/GsapProvider'
 
 const ibmPlexSansCondensedBoldItalic = localFont({
     src: [
@@ -50,7 +50,9 @@ export const metadata: Metadata = {
     },
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>): React.JSX.Element {
+export default function RootLayout({
+    children,
+}: Readonly<{ children: React.ReactNode }>): React.JSX.Element {
     return (
         <html
             lang="en"
@@ -62,7 +64,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </head>
-            <body className="antialiased ">
+            <body className="antialiased">
                 <GsapProvider>
                     {children}
                     <CanvasScene />

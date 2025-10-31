@@ -12,7 +12,14 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import { Spinner } from '@workspace/ui/components/Spinner'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@workspace/ui/components/Table'
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@workspace/ui/components/Table'
 import { cn } from '@workspace/ui/lib/utils'
 import { ArrowDownIcon, ArrowUpIcon, FileSearch } from 'lucide-react'
 import React from 'react'
@@ -104,7 +111,9 @@ function DataTable<TData extends Identifiable, TValue>({
     columnPinning,
 }: DataTableProps<TData, TValue>) {
     // sorting
-    const [uncontrolledSorting, setUncontrolledSorting] = React.useState<DataTableSorting | null>(null)
+    const [uncontrolledSorting, setUncontrolledSorting] = React.useState<DataTableSorting | null>(
+        null,
+    )
     const sorting = controlledSorting ?? uncontrolledSorting
     const setSorting = controlledSetSorting ?? setUncontrolledSorting
 
@@ -121,7 +130,7 @@ function DataTable<TData extends Identifiable, TValue>({
         manualSorting: true,
         enableSorting: enableSorting,
         getCoreRowModel: getCoreRowModel(),
-        onSortingChange: updater => {
+        onSortingChange: (updater) => {
             const oldTanstackSorting: TanstackSortingState = sorting
                 ? [
                       {
@@ -131,7 +140,8 @@ function DataTable<TData extends Identifiable, TValue>({
                   ]
                 : []
 
-            const newTanstackSorting = typeof updater === 'function' ? updater(oldTanstackSorting) : updater
+            const newTanstackSorting =
+                typeof updater === 'function' ? updater(oldTanstackSorting) : updater
 
             if (newTanstackSorting[0]?.id) {
                 setSorting({
@@ -157,7 +167,7 @@ function DataTable<TData extends Identifiable, TValue>({
         },
 
         // additional settings
-        getRowId: row => String(row.id),
+        getRowId: (row) => String(row.id),
         defaultColumn: {
             size: 180,
         },
@@ -172,9 +182,9 @@ function DataTable<TData extends Identifiable, TValue>({
     return (
         <Table containerClassName={cn('relative', containerClassName)}>
             <TableHeader>
-                {table.getHeaderGroups().map(headerGroup => (
+                {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map(header => {
+                        {headerGroup.headers.map((header) => {
                             return (
                                 <TableHead
                                     key={header.id}
@@ -189,24 +199,36 @@ function DataTable<TData extends Identifiable, TValue>({
                                 >
                                     {header.isPlaceholder ? null : (
                                         <div
-                                            className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
+                                            className={
+                                                header.column.getCanSort()
+                                                    ? 'cursor-pointer select-none'
+                                                    : ''
+                                            }
                                             onClick={header.column.getToggleSortingHandler()}
                                             title={
                                                 header.column.getCanSort()
                                                     ? header.column.getNextSortingOrder() === 'asc'
                                                         ? 'Sort ascending'
-                                                        : header.column.getNextSortingOrder() === 'desc'
+                                                        : header.column.getNextSortingOrder() ===
+                                                            'desc'
                                                           ? 'Sort descending'
                                                           : 'Clear sort'
                                                     : undefined
                                             }
                                         >
-                                            {flexRender(header.column.columnDef.header, header.getContext())}
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext(),
+                                            )}
                                             {header.column.getCanSort() && (
-                                                <div className="inline-block ml-0.5 -translate-y-px">
+                                                <div className="ml-0.5 inline-block -translate-y-px">
                                                     {{
-                                                        asc: <ArrowUpIcon className="inline-block size-4!" />,
-                                                        desc: <ArrowDownIcon className="inline-block size-4!" />,
+                                                        asc: (
+                                                            <ArrowUpIcon className="inline-block size-4!" />
+                                                        ),
+                                                        desc: (
+                                                            <ArrowDownIcon className="inline-block size-4!" />
+                                                        ),
                                                     }[header.column.getIsSorted() as string] ?? (
                                                         <ArrowUpIcon className="inline-block size-4! opacity-0" />
                                                     )}
@@ -222,9 +244,9 @@ function DataTable<TData extends Identifiable, TValue>({
             </TableHeader>
             <TableBody>
                 {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map(row => (
+                    table.getRowModel().rows.map((row) => (
                         <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                            {row.getVisibleCells().map(cell => (
+                            {row.getVisibleCells().map((cell) => (
                                 <TableCell
                                     key={cell.id}
                                     style={{
@@ -244,7 +266,7 @@ function DataTable<TData extends Identifiable, TValue>({
                     ))
                 ) : (
                     <tr className="h-20">
-                        <td className="flex flex-col items-center justify-center gap-2 absolute inset-0 top-10">
+                        <td className="absolute inset-0 top-10 flex flex-col items-center justify-center gap-2">
                             {isLoading && <Spinner className="text-primary-foreground size-6" />}
                             {!isLoading && <EmptyState />}
                         </td>
@@ -261,7 +283,7 @@ function EmptyState() {
             <div className="bg-background-tertiary rounded-lg p-3">
                 <FileSearch />
             </div>
-            <span className="text-foreground font-medium text-base">No results</span>
+            <span className="text-foreground text-base font-medium">No results</span>
         </>
     )
 }

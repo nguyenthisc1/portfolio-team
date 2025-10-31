@@ -7,5 +7,9 @@ export function TocPortal({ children }: { children: React.ReactNode }) {
 
     if (!mounted) return null
 
-    return <Portal.Root container={document.getElementById('toc') as HTMLDivElement}>{children}</Portal.Root>
+    return (
+        <Portal.Root container={document.getElementById('toc') as HTMLDivElement}>
+            {children}
+        </Portal.Root>
+    )
 }

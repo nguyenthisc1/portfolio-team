@@ -6,7 +6,14 @@ import { useForm } from 'react-hook-form'
 
 import { Button } from '@workspace/ui/components/Button'
 import { BsCheckboxGroup } from '@workspace/ui/components/Checkbox'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { BsSelect } from '@workspace/ui/components/Select'
 import { Input } from '@workspace/ui/components/Textfield'
 
@@ -64,7 +71,7 @@ export function RecFormConditionalFields() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
                 <h2 className="text-xl font-semibold">Create User</h2>
                 <FormField
                     control={form.control}
@@ -99,7 +106,7 @@ export function RecFormConditionalFields() {
                         control={form.control}
                         name="permissions"
                         rules={{
-                            validate: value => {
+                            validate: (value) => {
                                 if (selectedRole === Role.Admin && (!value || value.length === 0)) {
                                     return 'At least one permission is required for admin users'
                                 }

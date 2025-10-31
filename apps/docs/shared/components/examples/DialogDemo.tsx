@@ -23,7 +23,9 @@ export function DialogDemo() {
                         <div className="flex flex-col gap-4">
                             <DialogHeader>
                                 <DialogTitle>Sign up</DialogTitle>
-                                <DialogDescription>Please fill out the form below to sign up.</DialogDescription>
+                                <DialogDescription>
+                                    Please fill out the form below to sign up.
+                                </DialogDescription>
                             </DialogHeader>
                             <div className="flex-1 space-y-4">
                                 <div className="flex flex-col gap-2">

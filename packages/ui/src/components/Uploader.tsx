@@ -96,7 +96,9 @@ export function Uploader({
     isDisabled = false,
     ['aria-invalid']: isInvalid = false,
 }: UploaderProps) {
-    const [uploaderFiles, setUploaderFiles] = React.useState<Array<UploaderFile>>(defaultFileList || [])
+    const [uploaderFiles, setUploaderFiles] = React.useState<Array<UploaderFile>>(
+        defaultFileList || [],
+    )
 
     const validateFiles = useValidateFiles({
         maxFileSize,
@@ -115,12 +117,14 @@ export function Uploader({
         axios({
             ...requestInfo,
             signal: uploaderFile.abortController.signal,
-            onUploadProgress: progressEvent => {
-                const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1))
+            onUploadProgress: (progressEvent) => {
+                const percent = Math.round(
+                    (progressEvent.loaded * 100) / (progressEvent.total || 1),
+                )
 
                 // update the file percent
-                setUploaderFiles(old => {
-                    return old.map(file => {
+                setUploaderFiles((old) => {
+                    return old.map((file) => {
                         if (file.id === uploaderFile.id) {
                             return { ...file, percent: percent }
                         }
@@ -129,15 +133,20 @@ export function Uploader({
                 })
             },
         })
-            .then(response => {
+            .then((response) => {
                 // update the file status to done
-                setUploaderFiles(old => {
-                    const next = old.map(file => {
+                setUploaderFiles((old) => {
+                    const next = old.map((file) => {
                         if (file.id === uploaderFile.id) {
                             const newFileUploader = pickBy(action.formatResponse(response))
 
                             return omit(
-                                { ...file, ...newFileUploader, status: 'done' as const, percent: 0 },
+                                {
+                                    ...file,
+                                    ...newFileUploader,
+                                    status: 'done' as const,
+                                    percent: 0,
+                                },
                                 'file',
                                 'abortController',
                             )
@@ -149,10 +158,10 @@ export function Uploader({
                     return next
                 })
             })
-            .catch(error => {
+            .catch((error) => {
                 // update the file status to error
-                setUploaderFiles(old => {
-                    return old.map(file => {
+                setUploaderFiles((old) => {
+                    return old.map((file) => {
                         if (file.id === uploaderFile.id) {
                             return {
                                 ...file,
@@ -175,7 +184,7 @@ export function Uploader({
 
         const acceptedFiles = validateFiles(files)
 
-        const newUploaderFiles = acceptedFiles.map(file => ({
+        const newUploaderFiles = acceptedFiles.map((file) => ({
             id: Math.random().toString(36).substring(2, 15),
             name: file.name,
             size: file.size,
@@ -196,15 +205,15 @@ export function Uploader({
 
     const onDelete = (uploaderFile: UploaderFile) => {
         uploaderFile.abortController?.abort()
-        const next = uploaderFiles.filter(f => f.id !== uploaderFile.id)
+        const next = uploaderFiles.filter((f) => f.id !== uploaderFile.id)
         onFileListChange?.(next)
         setUploaderFiles(next)
     }
 
     const onRetry = (uploaderFile: UploaderFile) => {
         // reset uploader file status
-        setUploaderFiles(old => {
-            return old.map(file => {
+        setUploaderFiles((old) => {
+            return old.map((file) => {
                 if (file.id === uploaderFile.id) {
                     return { ...file, percent: 0, status: 'uploading', error: undefined }
                 }
@@ -217,7 +226,7 @@ export function Uploader({
     }
 
     return (
-        <div className="w-full flex flex-col gap-2">
+        <div className="flex w-full flex-col gap-2">
             <UploaderTrigger
                 onDrop={onDrop}
                 triggerType={triggerType}
@@ -228,8 +237,8 @@ export function Uploader({
                 isInvalid={isInvalid}
             />
             {uploaderFiles.length > 0 && (
-                <div className={cn('flex gap-2 flex-wrap', listType === 'list' && 'flex-col')}>
-                    {uploaderFiles.map(uploaderFile => (
+                <div className={cn('flex flex-wrap gap-2', listType === 'list' && 'flex-col')}>
+                    {uploaderFiles.map((uploaderFile) => (
                         <UploaderItem
                             key={uploaderFile.id}
                             uploaderFile={uploaderFile}

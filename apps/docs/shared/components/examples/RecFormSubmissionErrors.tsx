@@ -28,7 +28,7 @@ interface FormValues {
  * It throws an error with a cause object that contains the error messages for the email and name fields
  */
 const createUser = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     throw new Error('Failed to create user', {
         cause: { email: 'Email already exists', name: 'Name already exists' },
     })
@@ -68,7 +68,7 @@ export function RecFormSubmissionErrors() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
                 <h2 className="text-xl font-semibold">Sign up</h2>
                 <LoadingOverlay isLoading={createUserMutation.isPending}>
                     <div className="grid gap-4">

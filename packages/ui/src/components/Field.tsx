@@ -47,7 +47,9 @@ interface GroupProps extends AriaGroupProps, VariantProps<typeof fieldGroupVaria
 function FieldGroup({ className, variant, ...props }: GroupProps) {
     return (
         <AriaGroup
-            className={composeRenderProps(className, className => cn(fieldGroupVariants({ variant }), className))}
+            className={composeRenderProps(className, (className) =>
+                cn(fieldGroupVariants({ variant }), className),
+            )}
             {...props}
         />
     )

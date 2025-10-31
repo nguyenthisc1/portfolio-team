@@ -27,8 +27,14 @@ interface PaginationProps {
     pageCount: number
 }
 
-function Pagination({ value: controlledValue, onChange: controlledOnChange, pageCount }: PaginationProps) {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState<number | undefined>(controlledValue)
+function Pagination({
+    value: controlledValue,
+    onChange: controlledOnChange,
+    pageCount,
+}: PaginationProps) {
+    const [uncontrolledValue, setUncontrolledValue] = React.useState<number | undefined>(
+        controlledValue,
+    )
 
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? setUncontrolledValue
@@ -38,15 +44,18 @@ function Pagination({ value: controlledValue, onChange: controlledOnChange, page
     return (
         <ReactPaginate
             forcePage={(value || 1) - 1}
-            onPageChange={data => onChange?.(data.selected + 1)}
+            onPageChange={(data) => onChange?.(data.selected + 1)}
             pageCount={pageCount}
-            previousLabel={<ChevronLeft className="w-4 h-4" />}
-            nextLabel={<ChevronRight className="w-4 h-4" />}
+            previousLabel={<ChevronLeft className="h-4 w-4" />}
+            nextLabel={<ChevronRight className="h-4 w-4" />}
             pageRangeDisplayed={isMobile ? 0 : 2}
             marginPagesDisplayed={isMobile ? 0 : 1}
             containerClassName="flex items-center justify-center gap-1"
             pageLinkClassName={baseClass}
-            activeLinkClassName={cn(baseClass, 'bg-background-secondary shadow-sm border  text-foreground')}
+            activeLinkClassName={cn(
+                baseClass,
+                'bg-background-secondary shadow-sm border  text-foreground',
+            )}
             previousLinkClassName={baseClass}
             nextLinkClassName={baseClass}
             breakLinkClassName={baseClass}
@@ -85,7 +94,9 @@ function PaginationPageSizeSelector({
     defaultValue,
     options = [5, 10, 20, 50, 100],
 }: PaginationPageSizeSelectorProps) {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState<number | undefined>(defaultValue || options[0])
+    const [uncontrolledValue, setUncontrolledValue] = React.useState<number | undefined>(
+        defaultValue || options[0],
+    )
 
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? setUncontrolledValue
@@ -94,8 +105,8 @@ function PaginationPageSizeSelector({
         <div className="flex items-center gap-2">
             <BsSelect
                 value={value}
-                onChange={value => onChange?.(Number(value || 0))}
-                options={options.map(option => ({
+                onChange={(value) => onChange?.(Number(value || 0))}
+                options={options.map((option) => ({
                     id: option,
                     name: option.toString(),
                 }))}
@@ -104,7 +115,7 @@ function PaginationPageSizeSelector({
                 className="min-w-[66px]"
                 popoverClassName="w-[90px]"
             />
-            <span className="text-xs text-muted-foreground whitespace-nowrap">Items per page</span>
+            <span className="text-muted-foreground text-xs whitespace-nowrap">Items per page</span>
         </div>
     )
 }

@@ -20,9 +20,9 @@ const NumberField = AriaNumberField
 function NumberFieldInput({ className, ...props }: AriaInputProps) {
     return (
         <AriaInput
-            className={composeRenderProps(className, className =>
+            className={composeRenderProps(className, (className) =>
                 cn(
-                    'w-fit min-w-0 flex-1 border-r border-transparent pr-2 outline outline-0 placeholder:text-muted-foreground [&::-webkit-search-cancel-button]:hidden',
+                    'placeholder:text-muted-foreground w-fit min-w-0 flex-1 border-r border-transparent pr-2 outline outline-0 [&::-webkit-search-cancel-button]:hidden',
                     className,
                 ),
             )}
@@ -36,7 +36,11 @@ function NumberFieldSteppers({ className, ...props }: React.ComponentProps<'div'
         <div className={cn('absolute right-0 flex items-center', className)} {...props}>
             <Separator orientation="vertical" className="h-5" />
             <div className="flex flex-col px-1.5">
-                <NumberFieldStepper slot="increment" className="translate-y-0.5" aria-label="Increment">
+                <NumberFieldStepper
+                    slot="increment"
+                    className="translate-y-0.5"
+                    aria-label="Increment"
+                >
                     <ChevronUp aria-hidden className="size-[14px]!" />
                 </NumberFieldStepper>
                 <NumberFieldStepper slot="decrement" aria-label="Decrement">
@@ -50,10 +54,10 @@ function NumberFieldSteppers({ className, ...props }: React.ComponentProps<'div'
 function NumberFieldStepper({ className, ...props }: AriaButtonProps) {
     return (
         <AriaButton
-            className={composeRenderProps(className, className =>
+            className={composeRenderProps(className, (className) =>
                 cn(
                     'flex items-center justify-center',
-                    'w-auto grow rounded-none px-0.5 text-muted-foreground size-4 data-[hovered]:text-foreground cursor-pointer',
+                    'text-muted-foreground data-[hovered]:text-foreground size-4 w-auto grow cursor-pointer rounded-none px-0.5',
                     className,
                 ),
             )}
@@ -68,11 +72,18 @@ interface BsNumberFieldProps extends AriaNumberFieldProps {
     'aria-invalid'?: boolean
 }
 
-function BsNumberField({ className, showStepper = true, placeholder, ...props }: BsNumberFieldProps) {
+function BsNumberField({
+    className,
+    showStepper = true,
+    placeholder,
+    ...props
+}: BsNumberFieldProps) {
     return (
         <NumberField
             aria-label="Number Field"
-            className={composeRenderProps(className, className => cn('group flex flex-col gap-2', className))}
+            className={composeRenderProps(className, (className) =>
+                cn('group flex flex-col gap-2', className),
+            )}
             isInvalid={props['aria-invalid']}
             {...props}
         >

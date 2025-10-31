@@ -49,7 +49,7 @@ interface ToggleProps extends AriaToggleButtonProps, VariantProps<typeof toggleV
 
 const Toggle = ({ className, variant, size, ...props }: ToggleProps) => (
     <AriaToggleButton
-        className={composeRenderProps(className, className =>
+        className={composeRenderProps(className, (className) =>
             cn(
                 'group-data-[orientation=vertical]/togglegroup:w-full',
                 toggleVariants({
@@ -65,7 +65,7 @@ const Toggle = ({ className, variant, size, ...props }: ToggleProps) => (
 
 const ToggleButtonGroup = ({ children, className, ...props }: AriaToggleButtonGroupProps) => (
     <AriaToggleButtonGroup
-        className={composeRenderProps(className, className =>
+        className={composeRenderProps(className, (className) =>
             cn(
                 'group/togglegroup flex items-center justify-center gap-1 data-[orientation=vertical]:flex-col',
                 className,

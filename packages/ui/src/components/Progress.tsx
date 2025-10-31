@@ -14,18 +14,32 @@ interface ProgressProps extends AriaProgressBarProps {
     fillClassName?: string
 }
 
-const Progress = ({ className, barClassName, fillClassName, children, ...props }: ProgressProps) => (
+const Progress = ({
+    className,
+    barClassName,
+    fillClassName,
+    children,
+    ...props
+}: ProgressProps) => (
     <AriaProgressBar
         aria-label="Progress"
-        className={composeRenderProps(className, className => cn('w-full', className))}
+        className={composeRenderProps(className, (className) => cn('w-full', className))}
         {...props}
     >
         {composeRenderProps(children, (children, renderProps) => (
             <>
                 {children}
-                <div className={cn('relative h-4 w-full overflow-hidden rounded-full bg-neutral-500/15', barClassName)}>
+                <div
+                    className={cn(
+                        'relative h-4 w-full overflow-hidden rounded-full bg-neutral-500/15',
+                        barClassName,
+                    )}
+                >
                     <div
-                        className={cn('size-full flex-1 bg-primary-foreground transition-all', fillClassName)}
+                        className={cn(
+                            'bg-primary-foreground size-full flex-1 transition-all',
+                            fillClassName,
+                        )}
                         style={{
                             transform: `translateX(-${100 - (renderProps.percentage || 0)}%)`,
                         }}
@@ -36,7 +50,11 @@ const Progress = ({ className, barClassName, fillClassName, children, ...props }
     </AriaProgressBar>
 )
 
-const CircleProgress = ({ className, iconClassName, ...props }: ProgressProps & { iconClassName?: string }) => {
+const CircleProgress = ({
+    className,
+    iconClassName,
+    ...props
+}: ProgressProps & { iconClassName?: string }) => {
     const center = 16
     const strokeWidth = 4
     const r = 16 - strokeWidth
@@ -45,7 +63,7 @@ const CircleProgress = ({ className, iconClassName, ...props }: ProgressProps & 
     return (
         <AriaProgressBar
             aria-label="Progress"
-            className={composeRenderProps(className, className => cn('w-fit', className))}
+            className={composeRenderProps(className, (className) => cn('w-fit', className))}
             {...props}
         >
             {({ percentage }) => (
@@ -58,7 +76,13 @@ const CircleProgress = ({ className, iconClassName, ...props }: ProgressProps & 
                         strokeWidth={strokeWidth}
                         className={cn('size-5', iconClassName)}
                     >
-                        <circle cx={center} cy={center} r={r} strokeWidth={4} className="stroke-neutral-500/30" />
+                        <circle
+                            cx={center}
+                            cy={center}
+                            r={r}
+                            strokeWidth={4}
+                            className="stroke-neutral-500/30"
+                        />
                         <circle
                             cx={center}
                             cy={center}
@@ -88,7 +112,9 @@ interface BsProgressBarProps extends ProgressProps {
 function BsProgressBar({ label, className, showValue = true, ...props }: BsProgressBarProps) {
     return (
         <Progress
-            className={composeRenderProps(className, className => cn('group flex flex-col gap-2', className))}
+            className={composeRenderProps(className, (className) =>
+                cn('group flex flex-col gap-2', className),
+            )}
             {...props}
         >
             {({ valueText }) => (

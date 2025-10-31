@@ -5,7 +5,14 @@ import { toast } from '@workspace/ui/components/Sonner'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@workspace/ui/components/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { Input } from '@workspace/ui/components/Textfield'
 import { Uploader } from '@workspace/ui/components/Uploader'
 import { UploaderFile } from '@workspace/ui/components/UploaderItem'
@@ -52,7 +59,12 @@ export function UploaderForm() {
                 <FormField
                     control={form.control}
                     name="attachments"
-                    rules={{ validate: z.array(z.any()).min(1, 'Please upload at least one file').validateFn() }}
+                    rules={{
+                        validate: z
+                            .array(z.any())
+                            .min(1, 'Please upload at least one file')
+                            .validateFn(),
+                    }}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Attachments</FormLabel>

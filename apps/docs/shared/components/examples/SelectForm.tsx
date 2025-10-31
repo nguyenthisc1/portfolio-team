@@ -4,7 +4,14 @@ import { useForm } from 'react-hook-form'
 import { toast } from '@workspace/ui/components/Sonner'
 
 import { Button } from '@workspace/ui/components/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { BsSelect } from '@workspace/ui/components/Select'
 import { z } from '@workspace/lib/validation'
 
@@ -46,7 +53,7 @@ export function SelectForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-3">
                 <FormField
                     control={form.control}
                     name="role"
@@ -68,7 +75,11 @@ export function SelectForm() {
                         <FormItem>
                             <FormLabel>Language</FormLabel>
                             <FormControl>
-                                <BsSelect selectionMode="multiple" options={languageOptions} {...field} />
+                                <BsSelect
+                                    selectionMode="multiple"
+                                    options={languageOptions}
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

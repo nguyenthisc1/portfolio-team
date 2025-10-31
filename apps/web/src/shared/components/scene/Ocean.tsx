@@ -8,7 +8,7 @@ extend({ Water })
 
 export default function Ocean() {
     const ref = useRef<THREE.Mesh | null>(null)
-    const gl = useThree(state => state.gl)
+    const gl = useThree((state) => state.gl)
     const waterNormals = useLoader(THREE.TextureLoader, 'images/waternormals.jpeg')
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
     const geom = useMemo(() => new THREE.PlaneGeometry(10000, 10000), [])
@@ -47,5 +47,7 @@ export default function Ocean() {
         }
     })
 
-    return <primitive object={water} ref={ref} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]} />
+    return (
+        <primitive object={water} ref={ref} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]} />
+    )
 }

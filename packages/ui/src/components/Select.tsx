@@ -85,19 +85,19 @@ export function BsSelect<T extends BsSelectOption, M extends 'single' | 'multipl
     return (
         <Select<T, M>
             isOpen={isOpen}
-            onOpenChange={isOpen => {
+            onOpenChange={(isOpen) => {
                 if (!isOpen) {
                     setIsOpen(false)
                 }
             }}
             aria-label="Select"
-            className={cn('group w-full relative', className)}
+            className={cn('group relative w-full', className)}
             {...props}
         >
             <Button
                 variant="outline"
                 className={cn(
-                    'justify-between w-full pr-2 h-auto py-[5px] min-h-8 font-normal text-start',
+                    'h-auto min-h-8 w-full justify-between py-[5px] pr-2 text-start font-normal',
                     'group-data-[invalid]:border-destructive group-data-[disabled]:opacity-80',
                     'hover:bg-background-secondary',
                 )}
@@ -128,15 +128,15 @@ export function BsSelect<T extends BsSelectOption, M extends 'single' | 'multipl
 
                         if (selectionMode === 'multiple') {
                             return (
-                                <div className="flex-1 flex gap-1 flex-wrap">
-                                    {selectedItems?.slice(0, maxVisibleBadges).map(item => {
+                                <div className="flex flex-1 flex-wrap gap-1">
+                                    {selectedItems?.slice(0, maxVisibleBadges).map((item) => {
                                         if (!item) return null
 
                                         return (
                                             <Badge
                                                 key={item.id}
                                                 variant="secondary"
-                                                className="pr-0.5 grid grid-cols-[1fr_16px]"
+                                                className="grid grid-cols-[1fr_16px] pr-0.5"
                                             >
                                                 <div className="truncate">
                                                     {renderValue ? renderValue(item) : item.name}
@@ -147,25 +147,34 @@ export function BsSelect<T extends BsSelectOption, M extends 'single' | 'multipl
                                     })}
 
                                     {/* Remaining badges count */}
-                                    {!!selectedItems?.length && selectedItems.length > maxVisibleBadges && (
-                                        <Badge variant="secondary">
-                                            <span>{`+${selectedItems?.length - maxVisibleBadges}`}</span>
-                                        </Badge>
-                                    )}
+                                    {!!selectedItems?.length &&
+                                        selectedItems.length > maxVisibleBadges && (
+                                            <Badge variant="secondary">
+                                                <span>{`+${selectedItems?.length - maxVisibleBadges}`}</span>
+                                            </Badge>
+                                        )}
                                 </div>
                             )
                         }
                     }}
                 </SelectValue>
-                <ChevronDownIcon className="w-4 h-4 text-muted-foreground" />
+                <ChevronDownIcon className="text-muted-foreground h-4 w-4" />
             </Button>
             {isClearable && <SelectClearButton />}
             <Popover
-                className={cn('!max-h-[350px] w-(--trigger-width) flex flex-col p-1.5 gap-1', popoverClassName)}
+                className={cn(
+                    'flex !max-h-[350px] w-(--trigger-width) flex-col gap-1 p-1.5',
+                    popoverClassName,
+                )}
             >
                 <ItemsWrapper isSearchable={isSearchable}>
-                    <ListBox items={options} className="outline-hidden overflow-auto flex-1 scroll-pb-1">
-                        {item => <BsSelectItem renderOption={renderOption}>{item.name}</BsSelectItem>}
+                    <ListBox
+                        items={options}
+                        className="flex-1 scroll-pb-1 overflow-auto outline-hidden"
+                    >
+                        {(item) => (
+                            <BsSelectItem renderOption={renderOption}>{item.name}</BsSelectItem>
+                        )}
                     </ListBox>
                 </ItemsWrapper>
             </Popover>
@@ -183,7 +192,7 @@ function ItemsWrapper({ children, isSearchable }: ItemsWrapperProps) {
 
     return isSearchable ? (
         <Autocomplete filter={contains}>
-            <BsSearchField autoFocus className="ring-0! border " /> {children}
+            <BsSearchField autoFocus className="border ring-0!" /> {children}
         </Autocomplete>
     ) : (
         children
@@ -201,18 +210,20 @@ function BsSelectItem<T extends BsSelectOption>(
             {...props}
             textValue={props.children}
             className={cn(
-                'cursor-pointer group flex items-center select-none gap-2 py-1.5 px-2 outline-hidden rounded-sm text-popover-foreground',
-                'data-[focus-visible]:bg-neutral-500/15 data-focused:bg-primary! data-focused:text-white!',
+                'group text-popover-foreground flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 outline-hidden select-none',
+                'data-focused:bg-primary! data-focused:text-white! data-[focus-visible]:bg-neutral-500/15',
             )}
         >
             {({ isSelected }) => (
                 <>
-                    <div className="text-sm flex-1 font-normal group-selected:font-medium overflow-hidden">
+                    <div className="group-selected:font-medium flex-1 overflow-hidden text-sm font-normal">
                         <div className="truncate">
-                            {props.renderOption ? props.renderOption(props.value as T) : props.children}
+                            {props.renderOption
+                                ? props.renderOption(props.value as T)
+                                : props.children}
                         </div>
                     </div>
-                    <div className="w-5 flex items-center justify-center text-primary-foreground group-data-focused:text-white">
+                    <div className="text-primary-foreground flex w-5 items-center justify-center group-data-focused:text-white">
                         {isSelected && <CheckIcon size={16} />}
                     </div>
                 </>
@@ -231,14 +242,14 @@ function SelectClearButton() {
         <div
             role="button"
             tabIndex={0}
-            onClick={e => {
+            onClick={(e) => {
                 e.stopPropagation()
                 state?.setValue(null)
             }}
             className={cn(
-                'size-6! flex items-center justify-center z-10 rounded bg-background-secondary text-muted-foreground hover:bg-background-tertiary',
-                'absolute right-1 top-1/2 -translate-y-1/2',
-                'transition-opacity opacity-0 group-hover:opacity-100',
+                'bg-background-secondary text-muted-foreground hover:bg-background-tertiary z-10 flex size-6! items-center justify-center rounded',
+                'absolute top-1/2 right-1 -translate-y-1/2',
+                'opacity-0 transition-opacity group-hover:opacity-100',
             )}
         >
             <XIcon className="size-4" />
@@ -256,10 +267,10 @@ function BadgeClearButton({ data }: { data: BsSelectOption }) {
         <div
             role="button"
             tabIndex={0}
-            className="size-4! flex items-center justify-center z-10 rounded bg-transparent hover:bg-neutral-400/15"
-            onClick={e => {
+            className="z-10 flex size-4! items-center justify-center rounded bg-transparent hover:bg-neutral-400/15"
+            onClick={(e) => {
                 e.stopPropagation()
-                const newKeys = value.filter(v => v !== data.id)
+                const newKeys = value.filter((v) => v !== data.id)
                 state?.setValue(newKeys)
             }}
         >

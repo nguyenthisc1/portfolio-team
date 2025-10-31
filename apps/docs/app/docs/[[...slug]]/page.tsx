@@ -11,7 +11,7 @@ interface DocPageProps {
 }
 
 export async function generateStaticParams(): Promise<Awaited<DocPageProps['params']>[]> {
-    return allDocs.map(doc => ({
+    return allDocs.map((doc) => ({
         slug: doc._raw.flattenedPath.split('/'),
     }))
 }
@@ -19,7 +19,7 @@ export async function generateStaticParams(): Promise<Awaited<DocPageProps['para
 async function getDocFromParams({ params }: DocPageProps) {
     const { slug: slugArray } = await params
     const slug = slugArray?.join('/') || ''
-    const doc = allDocs.find(doc => doc.slugAsParams === slug)
+    const doc = allDocs.find((doc) => doc.slugAsParams === slug)
 
     if (!doc) {
         return null

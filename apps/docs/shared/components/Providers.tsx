@@ -21,7 +21,12 @@ const queryClient = new QueryClient({
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <BsProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange enableColorScheme>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                disableTransitionOnChange
+                enableColorScheme
+            >
                 <NuqsAdapter>
                     <QueryClientProvider client={queryClient}>
                         {children}

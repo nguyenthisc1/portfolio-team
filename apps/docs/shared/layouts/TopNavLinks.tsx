@@ -21,7 +21,7 @@ export function TopNavLinks() {
 
     return (
         <div className="flex items-center gap-5">
-            {navLinks.map(link => {
+            {navLinks.map((link) => {
                 const isActive = pathname.includes(link.href)
 
                 return (

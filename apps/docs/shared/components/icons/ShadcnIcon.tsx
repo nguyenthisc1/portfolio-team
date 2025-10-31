@@ -3,7 +3,11 @@ import * as React from 'react'
 
 export function ShadcnIcon({ className }: { className?: string }) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" className={cn('size-5', className)} viewBox="0 0 256 256">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={cn('size-5', className)}
+            viewBox="0 0 256 256"
+        >
             <path fill="none" d="M0 0h256v256H0z"></path>
             <path
                 fill="none"

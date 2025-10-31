@@ -5,7 +5,14 @@ import { toast } from '@workspace/ui/components/Sonner'
 import { z } from '@workspace/lib/validation'
 
 import { Button } from '@workspace/ui/components/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { BsNumberField } from '@workspace/ui/components/Numberfield'
 
 interface FormValues {
@@ -33,7 +40,10 @@ export function NumberFieldForm() {
                     control={form.control}
                     name="age"
                     rules={{
-                        validate: z.number().min(18, 'You must be at least 18 years old').validateFn(),
+                        validate: z
+                            .number()
+                            .min(18, 'You must be at least 18 years old')
+                            .validateFn(),
                     }}
                     render={({ field }) => (
                         <FormItem>

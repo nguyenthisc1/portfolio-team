@@ -37,11 +37,11 @@ const DatePickerContent = ({
     ...props
 }: AriaDialogProps & { popoverClassName?: AriaPopoverProps['className'] }) => (
     <Popover
-        className={composeRenderProps(popoverClassName, className => cn('w-auto p-1', className))}
+        className={composeRenderProps(popoverClassName, (className) => cn('w-auto p-1', className))}
     >
         <AriaDialog
             className={cn(
-                'flex w-full flex-col space-y-4 outline-none sm:flex-row sm:space-x-4 sm:space-y-0',
+                'flex w-full flex-col space-y-4 outline-none sm:flex-row sm:space-y-0 sm:space-x-4',
                 className,
             )}
             {...props}
@@ -69,7 +69,9 @@ function BsDatePicker({
     isDisabled,
     ...props
 }: BsDatePickerProps) {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(defaultValue)
+    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(
+        defaultValue,
+    )
 
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? setUncontrolledValue
@@ -78,9 +80,9 @@ function BsDatePicker({
         <DatePicker
             aria-label="Date Picker"
             isInvalid={(props as any)['aria-invalid']}
-            className={composeRenderProps(className, className => cn('w-full', className))}
+            className={composeRenderProps(className, (className) => cn('w-full', className))}
             value={value ? parseDate(value) : null}
-            onChange={value => onChange(value?.toString() ?? '')}
+            onChange={(value) => onChange(value?.toString() ?? '')}
             minValue={minValue ? parseDate(minValue) : null}
             maxValue={maxValue ? parseDate(maxValue) : null}
             isDisabled={isDisabled}
@@ -88,16 +90,24 @@ function BsDatePicker({
         >
             <FieldGroup>
                 <DateInput className="flex-1" variant="ghost" />
-                <Button variant="ghost" size="icon" className="-mr-1 size-6 data-[focus-visible]:ring-offset-0">
-                    <CalendarIcon aria-hidden className="size-4 text-muted-foreground" />
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="-mr-1 size-6 data-[focus-visible]:ring-offset-0"
+                >
+                    <CalendarIcon aria-hidden className="text-muted-foreground size-4" />
                 </Button>
             </FieldGroup>
             <DatePickerContent>
                 <Calendar>
                     <CalendarHeading />
                     <CalendarGrid>
-                        <CalendarGridHeader>{day => <CalendarHeaderCell>{day}</CalendarHeaderCell>}</CalendarGridHeader>
-                        <CalendarGridBody>{date => <CalendarCell date={date} />}</CalendarGridBody>
+                        <CalendarGridHeader>
+                            {(day) => <CalendarHeaderCell>{day}</CalendarHeaderCell>}
+                        </CalendarGridHeader>
+                        <CalendarGridBody>
+                            {(date) => <CalendarCell date={date} />}
+                        </CalendarGridBody>
                     </CalendarGrid>
                 </Calendar>
             </DatePickerContent>
@@ -132,7 +142,9 @@ function BsDateRangePicker({
     isDisabled,
     ...props
 }: BsDateRangePickerProps) {
-    const [uncontrolledValue, uncontrolledOnChange] = React.useState<BsDateRangePickerValue | undefined>(defaultValue)
+    const [uncontrolledValue, uncontrolledOnChange] = React.useState<
+        BsDateRangePickerValue | undefined
+    >(defaultValue)
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? uncontrolledOnChange
 
@@ -143,9 +155,13 @@ function BsDateRangePicker({
         <DateRangePicker
             aria-label="Date Range Picker"
             isInvalid={(props as any)['aria-invalid']}
-            className={composeRenderProps(className, className => cn('w-full', className))}
-            value={value?.start && value?.end ? { start: parseDate(value.start), end: parseDate(value.end) } : null}
-            onChange={value =>
+            className={composeRenderProps(className, (className) => cn('w-full', className))}
+            value={
+                value?.start && value?.end
+                    ? { start: parseDate(value.start), end: parseDate(value.end) }
+                    : null
+            }
+            onChange={(value) =>
                 onChange?.({
                     start: value?.start?.toString() ?? '',
                     end: value?.end?.toString() ?? '',
@@ -158,25 +174,31 @@ function BsDateRangePicker({
         >
             <FieldGroup>
                 <DateInput variant="ghost" slot={'start'} />
-                <span aria-hidden className="px-2 text-sm text-muted-foreground">
+                <span aria-hidden className="text-muted-foreground px-2 text-sm">
                     -
                 </span>
                 <DateInput className="flex-1" variant="ghost" slot={'end'} />
 
-                <Button variant="ghost" size="icon" className="-mr-1 size-6 data-[focus-visible]:ring-offset-0">
-                    <CalendarIcon aria-hidden className="size-4 text-muted-foreground" />
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="-mr-1 size-6 data-[focus-visible]:ring-offset-0"
+                >
+                    <CalendarIcon aria-hidden className="text-muted-foreground size-4" />
                 </Button>
             </FieldGroup>
             <DatePickerContent>
                 <RangeCalendar visibleDuration={{ months }}>
                     <CalendarHeading />
-                    <div className="flex gap-3 items-start">
+                    <div className="flex items-start gap-3">
                         {Array.from({ length: months }).map((_, index) => (
                             <CalendarGrid key={index} offset={{ months: index }}>
                                 <CalendarGridHeader>
-                                    {day => <CalendarHeaderCell>{day}</CalendarHeaderCell>}
+                                    {(day) => <CalendarHeaderCell>{day}</CalendarHeaderCell>}
                                 </CalendarGridHeader>
-                                <CalendarGridBody>{date => <CalendarCell date={date} type="range" />}</CalendarGridBody>
+                                <CalendarGridBody>
+                                    {(date) => <CalendarCell date={date} type="range" />}
+                                </CalendarGridBody>
                             </CalendarGrid>
                         ))}
                     </div>

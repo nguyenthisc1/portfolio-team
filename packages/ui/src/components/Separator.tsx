@@ -1,6 +1,9 @@
 'use client'
 
-import { Separator as AriaSeparator, SeparatorProps as AriaSeparatorProps } from 'react-aria-components'
+import {
+    Separator as AriaSeparator,
+    SeparatorProps as AriaSeparatorProps,
+} from 'react-aria-components'
 
 import { cn } from '@workspace/ui/lib/utils'
 

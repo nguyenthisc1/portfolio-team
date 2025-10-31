@@ -11,7 +11,7 @@ function getCheckboxColumnDef<T>(): ColumnDef<T> {
                 aria-label="select all"
                 isSelected={table.getIsAllRowsSelected()}
                 isIndeterminate={table.getIsSomePageRowsSelected()}
-                onChange={isSelected => {
+                onChange={(isSelected) => {
                     table.toggleAllRowsSelected(isSelected)
                 }}
             />

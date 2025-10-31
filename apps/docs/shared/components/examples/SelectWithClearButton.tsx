@@ -11,7 +11,7 @@ const languages = [
 
 export function SelectWithClearButton() {
     return (
-        <div className="space-y-4 w-full">
+        <div className="w-full space-y-4">
             <BsSelect options={languages} isClearable />
         </div>
     )

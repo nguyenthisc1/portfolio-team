@@ -87,7 +87,7 @@ const columns = [
     columnHelper.accessor('price', {
         header: 'Price',
         size: 100,
-        cell: info => `$${info.getValue().toFixed(2)}`,
+        cell: (info) => `$${info.getValue().toFixed(2)}`,
         meta: {
             className: 'text-right',
         },
@@ -95,12 +95,12 @@ const columns = [
     columnHelper.accessor('orderDate', {
         header: 'Order Date',
         size: 120,
-        cell: info => new Date(info.getValue()).toLocaleDateString(),
+        cell: (info) => new Date(info.getValue()).toLocaleDateString(),
     }),
     columnHelper.accessor('total', {
         header: 'Total',
         size: 100,
-        cell: info => `$${info.getValue().toFixed(2)}`,
+        cell: (info) => `$${info.getValue().toFixed(2)}`,
         meta: {
             className: 'text-right font-medium',
         },
@@ -111,10 +111,10 @@ const columns = [
         cell: () => (
             <div className="space-x-1">
                 <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <EditIcon className="h-4 w-4 text-primary-foreground" />
+                    <EditIcon className="text-primary-foreground h-4 w-4" />
                 </Button>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <TrashIcon className="h-4 w-4 text-destructive-foreground" />
+                    <TrashIcon className="text-destructive-foreground h-4 w-4" />
                 </Button>
             </div>
         ),
@@ -129,7 +129,11 @@ const columns = [
 export function DataTableSticky() {
     return (
         <div className="w-full">
-            <DataTable columns={columns} data={data} columnPinning={{ left: ['orderNumber'], right: ['actions'] }} />
+            <DataTable
+                columns={columns}
+                data={data}
+                columnPinning={{ left: ['orderNumber'], right: ['actions'] }}
+            />
         </div>
     )
 }

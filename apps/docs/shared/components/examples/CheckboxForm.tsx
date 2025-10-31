@@ -4,7 +4,14 @@ import { toast } from '@workspace/ui/components/Sonner'
 import { useForm } from 'react-hook-form'
 import { Button } from '@workspace/ui/components/Button'
 import { BsCheckboxGroup, Checkbox } from '@workspace/ui/components/Checkbox'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { TextArea } from '@workspace/ui/components/Textfield'
 
 interface FormValues {
@@ -73,7 +80,7 @@ export function CheckboxForm() {
                     control={form.control}
                     name="acceptTerm"
                     rules={{
-                        validate: value => value || 'Please accept the terms and conditions',
+                        validate: (value) => value || 'Please accept the terms and conditions',
                     }}
                     render={({ field }) => (
                         <FormItem>

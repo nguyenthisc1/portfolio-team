@@ -46,7 +46,7 @@ const confirmStore = createStore({
             isOpen: true,
             data,
         }),
-        close: context => ({ ...context, isOpen: false }),
+        close: (context) => ({ ...context, isOpen: false }),
     },
 })
 
@@ -59,8 +59,8 @@ const confirm = (data: ConfirmDialogContext['data']) => {
 }
 
 function ConfirmDialog() {
-    const isOpen = useSelector(confirmStore, state => state.context.isOpen)
-    const data = useSelector(confirmStore, state => state.context.data)
+    const isOpen = useSelector(confirmStore, (state) => state.context.isOpen)
+    const data = useSelector(confirmStore, (state) => state.context.data)
     const variant = data?.variant || 'default'
 
     const handleCancel = () => {
@@ -76,19 +76,25 @@ function ConfirmDialog() {
     return (
         <DialogOverlay
             isOpen={isOpen}
-            onOpenChange={isOpen => {
+            onOpenChange={(isOpen) => {
                 if (!isOpen) {
                     close()
                 }
             }}
         >
-            <DialogContent className="md:max-w-[425px]" isFullscreenOnMobile={false} closeButton={false}>
+            <DialogContent
+                className="md:max-w-[425px]"
+                isFullscreenOnMobile={false}
+                closeButton={false}
+            >
                 <div className="flex flex-col gap-4">
                     <DialogHeader>
                         <div className="mb-2">
-                            {variant === 'default' && <InfoIcon className="size-6 text-blue-500 dark:text-blue-400" />}
+                            {variant === 'default' && (
+                                <InfoIcon className="size-6 text-blue-500 dark:text-blue-400" />
+                            )}
                             {variant === 'destructive' && (
-                                <CircleXIcon className="size-6 text-destructive-foreground" />
+                                <CircleXIcon className="text-destructive-foreground size-6" />
                             )}
                         </div>
                         <DialogTitle>{data?.title || 'Confirm'}</DialogTitle>

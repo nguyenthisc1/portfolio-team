@@ -25,13 +25,13 @@ export function SelectMultipleCustomization() {
         <BsSelect
             selectionMode="multiple"
             options={languages}
-            renderValue={value => (
+            renderValue={(value) => (
                 <div className="flex items-center gap-2">
                     <span>{value.flag}</span>
                     <span>{value.name}</span>
                 </div>
             )}
-            renderOption={value => (
+            renderOption={(value) => (
                 <div className="flex items-center gap-2">
                     <span className="text-xl">{value.flag}</span>
                     <span>{value.name}</span>

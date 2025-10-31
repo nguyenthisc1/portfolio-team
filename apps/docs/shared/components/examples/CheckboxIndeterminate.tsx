@@ -21,17 +21,30 @@ export function CheckboxIndeterminate() {
 
     return (
         <div className="grid gap-2">
-            <Checkbox isSelected={allChecked} isIndeterminate={isIndeterminate} onChange={handleAllChange}>
+            <Checkbox
+                isSelected={allChecked}
+                isIndeterminate={isIndeterminate}
+                onChange={handleAllChange}
+            >
                 Select all
             </Checkbox>
             <div className="ml-4 grid gap-2">
-                <Checkbox isSelected={checkedItems[0]} onChange={checked => handleItemChange(0, checked)}>
+                <Checkbox
+                    isSelected={checkedItems[0]}
+                    onChange={(checked) => handleItemChange(0, checked)}
+                >
                     Item 1
                 </Checkbox>
-                <Checkbox isSelected={checkedItems[1]} onChange={checked => handleItemChange(1, checked)}>
+                <Checkbox
+                    isSelected={checkedItems[1]}
+                    onChange={(checked) => handleItemChange(1, checked)}
+                >
                     Item 2
                 </Checkbox>
-                <Checkbox isSelected={checkedItems[2]} onChange={checked => handleItemChange(2, checked)}>
+                <Checkbox
+                    isSelected={checkedItems[2]}
+                    onChange={(checked) => handleItemChange(2, checked)}
+                >
                     Item 3
                 </Checkbox>
             </div>

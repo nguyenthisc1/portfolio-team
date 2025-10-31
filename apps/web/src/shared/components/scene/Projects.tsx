@@ -134,19 +134,34 @@ function ImageCard({
 
     // If size, radius, opacity, or texture changes, update uniforms for the material
     useEffect(() => {
-        if (material.uniforms?.uWidth?.value !== undefined && material.uniforms.uWidth.value !== width) {
+        if (
+            material.uniforms?.uWidth?.value !== undefined &&
+            material.uniforms.uWidth.value !== width
+        ) {
             material.uniforms.uWidth.value = width
         }
-        if (material.uniforms?.uHeight?.value !== undefined && material.uniforms.uHeight.value !== height) {
+        if (
+            material.uniforms?.uHeight?.value !== undefined &&
+            material.uniforms.uHeight.value !== height
+        ) {
             material.uniforms.uHeight.value = height
         }
-        if (material.uniforms?.uRadius?.value !== undefined && material.uniforms.uRadius.value !== radius) {
+        if (
+            material.uniforms?.uRadius?.value !== undefined &&
+            material.uniforms.uRadius.value !== radius
+        ) {
             material.uniforms.uRadius.value = radius
         }
-        if (material.uniforms?.uTexture?.value !== undefined && material.uniforms.uTexture.value !== texture) {
+        if (
+            material.uniforms?.uTexture?.value !== undefined &&
+            material.uniforms.uTexture.value !== texture
+        ) {
             material.uniforms.uTexture.value = texture
         }
-        if (material.uniforms?.uOpacity?.value !== undefined && material.uniforms.uOpacity.value !== opacity) {
+        if (
+            material.uniforms?.uOpacity?.value !== undefined &&
+            material.uniforms.uOpacity.value !== opacity
+        ) {
             material.uniforms.uOpacity.value = opacity
         }
     }, [material, width, height, radius, texture, opacity])
@@ -158,10 +173,13 @@ function ImageCard({
     useFrame(() => {
         if (meshRef.current) {
             // Use GSAP refs if animating, otherwise props
-            const p = animated && gsapDataRefs?.positionRef ? gsapDataRefs.positionRef.current : position
-            const r = animated && gsapDataRefs?.rotationRef ? gsapDataRefs.rotationRef.current : rotation
+            const p =
+                animated && gsapDataRefs?.positionRef ? gsapDataRefs.positionRef.current : position
+            const r =
+                animated && gsapDataRefs?.rotationRef ? gsapDataRefs.rotationRef.current : rotation
             const s = animated && gsapDataRefs?.scaleRef ? gsapDataRefs.scaleRef.current : scale
-            const o = animated && gsapDataRefs?.opacityRef ? gsapDataRefs.opacityRef.current : opacity
+            const o =
+                animated && gsapDataRefs?.opacityRef ? gsapDataRefs.opacityRef.current : opacity
 
             meshRef.current.position.set(p[0], p[1], p[2])
             meshRef.current.rotation.set(r[0], r[1], r[2])
@@ -195,7 +213,7 @@ export default function Projects() {
 
     const CARD_COUNT = 8
     const CARD_SCALE = 10
-    const CARD_OPACITY = 0.1
+    const CARD_OPACITY = 0.05
 
     const computeCardPosition = (
         idx: number,
@@ -208,14 +226,23 @@ export default function Projects() {
         const cardIdx = idx
         const x = isEven ? cardIdx * cardXOffset * -1.1 + 4 : cardIdx * cardXOffset * -1.1 - 8
         const y = cardY
-        const z = cardZStart - (isEven ? cardIdx * (cardZSpacing * 1) + 4 : cardIdx * (cardZSpacing * 1) - 10)
+        const z =
+            cardZStart -
+            (isEven ? cardIdx * (cardZSpacing * 1) + 4 : cardIdx * (cardZSpacing * 1) - 10)
         return [x, y, z]
     }
 
     const createCard = (idx: number): ProjectCard => {
         const isEven = idx % 2 === 0
         return {
-            position: computeCardPosition(idx, isEven, cardXOffset, cardY, cardZStart, cardZSpacing),
+            position: computeCardPosition(
+                idx,
+                isEven,
+                cardXOffset,
+                cardY,
+                cardZStart,
+                cardZSpacing,
+            ),
             rotation: [0, isEven ? 0.3 : 1.3, 0],
             scale: CARD_SCALE,
             opacity: CARD_OPACITY,
@@ -228,7 +255,7 @@ export default function Projects() {
 
     // Prepare animated data refs for GSAP (one ref obj per card, plus group)
     const cardRefs = useRef(
-        cards.map(card => ({
+        cards.map((card) => ({
             positionRef: { current: [...card.position] as [number, number, number] },
             rotationRef: { current: [...card.rotation] as [number, number, number] },
             scaleRef: { current: card.scale },
@@ -271,7 +298,7 @@ export default function Projects() {
                 groupPosRef.current[0] = groupState.px
                 groupPosRef.current[1] = groupState.py
                 groupPosRef.current[2] = groupState.pz
-                setRenderTick(t => t + 1)
+                setRenderTick((t) => t + 1)
             },
         })
 
@@ -310,7 +337,7 @@ export default function Projects() {
                 state,
                 {
                     op: 1,
-                    duration: 1,
+                    duration: 2,
                     onUpdate: () => {
                         cardRefs[idx]!.opacityRef.current = state.op
                     },
@@ -345,7 +372,11 @@ export default function Projects() {
     // Sync the Three.js group position with our animated ref
     useFrame(() => {
         if (groupRef.current) {
-            groupRef.current.position.set(groupPosRef.current[0], groupPosRef.current[1], groupPosRef.current[2])
+            groupRef.current.position.set(
+                groupPosRef.current[0],
+                groupPosRef.current[1],
+                groupPosRef.current[2],
+            )
         }
     })
 

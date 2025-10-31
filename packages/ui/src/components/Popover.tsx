@@ -21,10 +21,10 @@ const Popover = ({
 }: AriaPopoverProps & { isAnimated?: boolean }) => (
     <AriaPopover
         offset={offset}
-        className={composeRenderProps(className, className =>
+        className={composeRenderProps(className, (className) =>
             cn(
                 // "dark", // dark mode only, disable it if you want to use it in both modes
-                'z-50 rounded-lg border bg-popover/80 backdrop-blur-xl text-popover-foreground shadow-popover outline-none',
+                'bg-popover/80 text-popover-foreground shadow-popover z-50 rounded-lg border backdrop-blur-xl outline-none',
                 /* Entering */
                 isAnimated && 'data-[entering]:animate-in data-[entering]:fade-in-0',
                 /* Exiting */

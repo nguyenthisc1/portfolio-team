@@ -48,7 +48,7 @@ const columns = [
     }),
     columnHelper.accessor('price', {
         header: 'Price',
-        cell: info => `$${info.getValue().toFixed(2)}`,
+        cell: (info) => `$${info.getValue().toFixed(2)}`,
         meta: {
             className: 'text-right',
         },

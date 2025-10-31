@@ -1,11 +1,8 @@
 'use client'
 
 import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
 import React, { JSX, useRef } from 'react'
-gsap.registerPlugin(ScrollTrigger)
+import { setupHeadingAnimation } from '@/features/home/animations/animation'
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6
 
@@ -22,22 +19,7 @@ export default function Heading({ text, className, as = 1, ...props }: Props) {
     useGSAP(
         () => {
             if (!ref.current) return
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: ref.current,
-                    start: 'top 70%',
-                    end: 'bottom top',
-                    scrub: true,
-                    // markers: true,
-                },
-            })
-
-            const filledElement = ref.current.querySelector('.tt-heading-filled')
-            if (filledElement) {
-                tl.to(filledElement, {
-                    clipPath: 'polygon(-5% 0%, 105% 0%, 105% 120%, -5% 120%)',
-                })
-            }
+            setupHeadingAnimation(ref.current)
         },
         { scope: ref },
     )

@@ -24,7 +24,7 @@ const TimeField = AriaTimeField
 function DateSegment({ className, ...props }: AriaDateSegmentProps) {
     return (
         <AriaDateSegment
-            className={composeRenderProps(className, className =>
+            className={composeRenderProps(className, (className) =>
                 cn(
                     'type-literal:px-0 inline rounded px-[1px] caret-transparent outline outline-0',
                     /* Placeholder */
@@ -46,12 +46,12 @@ interface DateInputProps extends AriaDateInputProps, VariantProps<typeof fieldGr
 function DateInput({ className, variant, ...props }: Omit<DateInputProps, 'children'>) {
     return (
         <AriaDateInput
-            className={composeRenderProps(className, className =>
+            className={composeRenderProps(className, (className) =>
                 cn(fieldGroupVariants({ variant }), 'md:text-sm', className),
             )}
             {...props}
         >
-            {segment => <DateSegment segment={segment} />}
+            {(segment) => <DateSegment segment={segment} />}
         </AriaDateInput>
     )
 }
@@ -78,7 +78,9 @@ function BsDateField({
     isDisabled,
     ...props
 }: BsDateFieldProps) {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(defaultValue)
+    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(
+        defaultValue,
+    )
 
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? setUncontrolledValue
@@ -89,7 +91,7 @@ function BsDateField({
             isInvalid={(props as any)['aria-invalid']}
             className={cn('w-full', className)}
             value={value ? parseDate(value) : null}
-            onChange={value => onChange(value?.toString() ?? '')}
+            onChange={(value) => onChange(value?.toString() ?? '')}
             minValue={minValue ? parseDate(minValue) : null}
             maxValue={maxValue ? parseDate(maxValue) : null}
             isDisabled={isDisabled}
@@ -124,7 +126,9 @@ function BsTimeField({
     granularity = 'minute',
     ...props
 }: BsTimeFieldProps) {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(defaultValue)
+    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(
+        defaultValue,
+    )
 
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? setUncontrolledValue
@@ -136,7 +140,7 @@ function BsTimeField({
             granularity={granularity}
             className={cn('w-max', className)}
             value={value ? parseTime(value) : undefined}
-            onChange={value => onChange(value?.toString() ?? '')}
+            onChange={(value) => onChange(value?.toString() ?? '')}
             minValue={minValue ? parseTime(minValue) : null}
             maxValue={maxValue ? parseTime(maxValue) : null}
             isDisabled={isDisabled}

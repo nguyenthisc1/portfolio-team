@@ -6,7 +6,14 @@ import { z } from '@workspace/lib/validation'
 import { PlusCircleIcon, Trash } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { Input } from '@workspace/ui/components/Textfield'
 import { Separator } from 'react-aria-components'
 
@@ -39,7 +46,7 @@ export function RecFormFieldArray() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full max-w-[600px]">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-[600px] space-y-4">
                 <h2 className="text-xl font-semibold">Add Users</h2>
                 {/* FormField is used here just to display validation errors for the entire users array */}
                 <FormField
@@ -55,7 +62,11 @@ export function RecFormFieldArray() {
                 />
                 <Separator />
                 <div className="flex justify-end gap-3">
-                    <Button type="button" variant="outline" onClick={() => form.resetField('users')}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => form.resetField('users')}
+                    >
                         Cancel
                     </Button>
                     <Button type="submit">Add Users</Button>
@@ -104,7 +115,11 @@ function UserFields() {
                         )}
                     />
                     {fields.length > 1 && (
-                        <Button size="icon" variant="outlineDestructive" onClick={() => remove(index)}>
+                        <Button
+                            size="icon"
+                            variant="outlineDestructive"
+                            onClick={() => remove(index)}
+                        >
                             <Trash />
                         </Button>
                     )}

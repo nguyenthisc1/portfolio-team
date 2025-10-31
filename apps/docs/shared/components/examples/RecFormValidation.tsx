@@ -5,7 +5,14 @@ import { toast } from '@workspace/ui/components/Sonner'
 import { z } from '@workspace/lib/validation'
 
 import { Button } from '@workspace/ui/components/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { Input } from '@workspace/ui/components/Textfield'
 
 interface FormInputs {
@@ -30,7 +37,7 @@ export function RecFormValidation() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
                 <h2 className="text-xl font-semibold">Sign up</h2>
                 <FormField
                     control={form.control}
@@ -54,7 +61,10 @@ export function RecFormValidation() {
                         <FormItem>
                             <FormLabel>Name</FormLabel>
                             <FormControl>
-                                <Input {...field} placeholder="Enter your name (min 6 characters)" />
+                                <Input
+                                    {...field}
+                                    placeholder="Enter your name (min 6 characters)"
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

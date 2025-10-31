@@ -30,7 +30,7 @@ export default function RootLayout({
             <head>
                 <link rel="icon" href="/logo.png" sizes="any" />
             </head>
-            <body className={`antialiased text-secondary-foreground`}>
+            <body className={`text-secondary-foreground antialiased`}>
                 <Providers>{children}</Providers>
             </body>
         </html>

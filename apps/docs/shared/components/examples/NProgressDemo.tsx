@@ -11,7 +11,7 @@ function useFakeApiCall() {
     return useQuery({
         queryKey: ['nprogress'],
         queryFn: () => {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve(true)
                 }, 1000)

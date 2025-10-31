@@ -1,5 +1,11 @@
 import { Button } from '@workspace/ui/components/Button'
-import { Menu, MenuItem, MenuPopover, MenuSubTrigger, MenuTrigger } from '@workspace/ui/components/Menu'
+import {
+    Menu,
+    MenuItem,
+    MenuPopover,
+    MenuSubTrigger,
+    MenuTrigger,
+} from '@workspace/ui/components/Menu'
 
 export function MenuWithSubmenu() {
     return (

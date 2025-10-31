@@ -5,7 +5,14 @@ import { toast } from '@workspace/ui/components/Sonner'
 import { z } from '@workspace/lib/validation'
 
 import { Button } from '@workspace/ui/components/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { Input, PasswordInput } from '@workspace/ui/components/Textfield'
 
 interface FormInputs {
@@ -27,7 +34,7 @@ export function RecDependantValidation() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
                 <h2 className="text-xl font-semibold">Register</h2>
                 <FormField
                     control={form.control}
@@ -75,7 +82,11 @@ export function RecDependantValidation() {
                         <FormItem>
                             <FormLabel>Confirm Password</FormLabel>
                             <FormControl>
-                                <PasswordInput {...field} type="password" placeholder="Confirm your password" />
+                                <PasswordInput
+                                    {...field}
+                                    type="password"
+                                    placeholder="Confirm your password"
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

@@ -15,10 +15,10 @@ export function DashboardTableOfContents({ toc }: TocProps) {
         () =>
             toc.items
                 ? toc.items
-                      .flatMap(item => [item.url, item?.items?.map(item => item.url)])
+                      .flatMap((item) => [item.url, item?.items?.map((item) => item.url)])
                       .flat()
                       .filter(Boolean)
-                      .map(id => id?.split('#')[1])
+                      .map((id) => id?.split('#')[1])
                 : [],
         [toc],
     )
@@ -30,7 +30,7 @@ export function DashboardTableOfContents({ toc }: TocProps) {
 
     return (
         <div>
-            <h3 className="text-sm px-4 mb-2 font-semibold">Table of contents</h3>
+            <h3 className="mb-2 px-4 text-sm font-semibold">Table of contents</h3>
             <Tree tree={toc} activeItem={activeHeading} />
         </div>
     )
@@ -41,8 +41,8 @@ function useActiveItem(itemIds: string[]) {
 
     React.useEffect(() => {
         const observer = new IntersectionObserver(
-            entries => {
-                entries.forEach(entry => {
+            (entries) => {
+                entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         setActiveId(entry.target.id)
                     }
@@ -51,7 +51,7 @@ function useActiveItem(itemIds: string[]) {
             { rootMargin: `0% 0% -80% 0%` },
         )
 
-        itemIds?.forEach(id => {
+        itemIds?.forEach((id) => {
             const element = document.getElementById(id)
             if (element) {
                 observer.observe(element)
@@ -59,7 +59,7 @@ function useActiveItem(itemIds: string[]) {
         })
 
         return () => {
-            itemIds?.forEach(id => {
+            itemIds?.forEach((id) => {
                 const element = document.getElementById(id)
                 if (element) {
                     observer.unobserve(element)
@@ -86,7 +86,7 @@ function Tree({ tree, level = 1, activeItem }: TreeProps) {
                         <a
                             href={item.url}
                             className={cn(
-                                'flex text-[13px] items-center min-h-7 py-0.5 text-muted-foreground border-l border-transparent',
+                                'text-muted-foreground flex min-h-7 items-center border-l border-transparent py-0.5 text-[13px]',
                                 item.url === `#${activeItem}`
                                     ? 'text-foreground border-foreground'
                                     : 'hover:text-foreground hover:border-foreground/20',
@@ -97,7 +97,9 @@ function Tree({ tree, level = 1, activeItem }: TreeProps) {
                                 <div className="truncate">{item.title}</div>
                             </div>
                         </a>
-                        {item.items?.length ? <Tree tree={item} level={level + 1} activeItem={activeItem} /> : null}
+                        {item.items?.length ? (
+                            <Tree tree={item} level={level + 1} activeItem={activeItem} />
+                        ) : null}
                     </li>
                 )
             })}

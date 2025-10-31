@@ -23,6 +23,7 @@
     .container {
         margin-left: auto;
         margin-right: auto;
+        @apply xl:!max-w-7xl;
     }
 
     .tt-heading-wrapper {

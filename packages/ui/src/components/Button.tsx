@@ -23,10 +23,12 @@ const buttonVariants = cva(
             variant: {
                 default: 'bg-primary text-white button-3d',
                 destructive: 'bg-destructive text-white button-3d',
-                outline: 'bg-background-secondary shadow-sm border text-foreground hover:bg-background-tertiary/70 ',
+                outline:
+                    'bg-background-secondary shadow-sm border text-foreground hover:bg-background-tertiary/70 ',
                 outlineDestructive:
                     'bg-background-secondary shadow-sm border text-destructive-foreground hover:bg-background-tertiary/70 ',
-                secondary: 'hover:opacity-80 border-transparent bg-neutral-500/15 text-secondary-foreground',
+                secondary:
+                    'hover:opacity-80 border-transparent bg-neutral-500/15 text-secondary-foreground',
                 ghost: 'hover:bg-neutral-500/10 hover:text-accent-foreground active:bg-accent/50 text-secondary-foreground',
                 link: 'text-primary-foreground underline-offset-4 hover:underline px-0! py-0! h-auto! underline',
                 unstyled: '',
@@ -57,7 +59,13 @@ interface ButtonProps
 function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
     const Comp = (asChild ? Slot : AriaButton) as typeof AriaButton
 
-    return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />
+    return (
+        <Comp
+            data-slot="button"
+            className={cn(buttonVariants({ variant, size, className }))}
+            {...props}
+        />
+    )
 }
 
 export { Button, buttonVariants }

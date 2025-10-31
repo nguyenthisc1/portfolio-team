@@ -1,4 +1,7 @@
-import { CalendarCell as AriaCalendarCell, CalendarCellProps as AriaCalendarCellProps } from 'react-aria-components'
+import {
+    CalendarCell as AriaCalendarCell,
+    CalendarCellProps as AriaCalendarCellProps,
+} from 'react-aria-components'
 
 import { cn } from '@workspace/ui/lib/utils'
 import { cva } from 'class-variance-authority'
@@ -28,13 +31,17 @@ export function RangeCalendarCell({ date }: AriaCalendarCellProps) {
         <AriaCalendarCell
             date={date}
             className={cn(
-                'group text-sm outline outline-0 cursor-pointer data-[outside-month=true]:hidden',
+                'group cursor-pointer text-sm outline outline-0 data-[outside-month=true]:hidden',
                 '[td:first-child_&_div]:rounded-s-full [td:last-child_&_div]:rounded-e-full',
             )}
         >
             {({ formattedDate, isSelected, isSelectionStart, isSelectionEnd, isDisabled }) => {
                 const selectionState =
-                    isSelected && (isSelectionStart || isSelectionEnd) ? 'cap' : isSelected ? 'middle' : 'none'
+                    isSelected && (isSelectionStart || isSelectionEnd)
+                        ? 'cap'
+                        : isSelected
+                          ? 'middle'
+                          : 'none'
                 const isEndOfMonth = date.calendar.getDaysInMonth(date) === date.day
                 const isStartOfMonth = date.day === 1
                 const fadeRight = selectionState === 'middle' && isEndOfMonth
@@ -43,13 +50,15 @@ export function RangeCalendarCell({ date }: AriaCalendarCellProps) {
                 return (
                     <div
                         className={cn(
-                            'w-8 h-8 cursor-pointer',
+                            'h-8 w-8 cursor-pointer',
                             isDisabled && 'cursor-default',
                             isSelected && 'bg-neutral-400/15',
                             isSelectionStart && 'rounded-s-full',
                             isSelectionEnd && 'rounded-e-full',
-                            fadeRight && 'bg-transparent bg-gradient-to-r from-neutral-400/15 to-neutral-400/0',
-                            fadeLeft && 'bg-transparent bg-gradient-to-l from-neutral-400/15 to-neutral-400/0',
+                            fadeRight &&
+                                'bg-transparent bg-gradient-to-r from-neutral-400/15 to-neutral-400/0',
+                            fadeLeft &&
+                                'bg-transparent bg-gradient-to-l from-neutral-400/15 to-neutral-400/0',
                         )}
                     >
                         <span

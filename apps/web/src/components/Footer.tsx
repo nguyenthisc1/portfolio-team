@@ -1,8 +1,8 @@
 'use client'
 
 import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
+import { setupFooterAnimation } from '@/features/home/animations/animation'
 
 export default function Footer() {
     const ref = useRef<HTMLElement>(null)
@@ -10,43 +10,21 @@ export default function Footer() {
     useGSAP(
         () => {
             if (!ref.current) return
-
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: ref.current,
-                    start: 'top top',
-                    end: 'bottom top',
-                    pin: true,
-                    scrub: true,
-                    // markers: true,
-                },
-            })
-
-            const contentWrappers = ref.current.querySelectorAll('.footer-content-filled')
-
-            contentWrappers.forEach(c => {
-                tl.to(
-                    c,
-                    {
-                        clipPath: 'polygon(-5% 0%, 105% 0%, 105% 120%, -5% 120%)',
-                    },
-                    0,
-                )
-            })
+            setupFooterAnimation(ref.current)
         },
         { scope: ref },
     )
 
     return (
-        <footer ref={ref} className="footer h-screen flex items-center mb-40">
+        <footer ref={ref} className="footer mb-40 flex h-screen items-center">
             <div className="container">
                 <div className="footer-wrapper relative">
                     <section
                         aria-labelledby="contact-heading"
-                        className="footer-content text-white bg-secondary lg:space-y-36"
+                        className="footer-content bg-secondary text-white lg:space-y-36"
                     >
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-40 gap-y-10 lg:items-end">
-                            <div className="bg-black w-fit">
+                        <div className="grid grid-cols-1 gap-x-40 gap-y-10 lg:grid-cols-2 lg:items-end">
+                            <div className="w-fit bg-black">
                                 <svg
                                     className="w-full lg:w-fit"
                                     width="663"
@@ -92,28 +70,33 @@ export default function Footer() {
                                     </defs>
                                 </svg>
                             </div>
-                            <p className="text-xl max-w-xs">
-                                Whether you need creativity or simply reliable standards, I’ve got you covered. Let’s
-                                work together to create real value.
+                            <p className="max-w-xs text-xl">
+                                Whether you need creativity or simply reliable standards, I’ve got
+                                you covered. Let’s work together to create real value.
                             </p>
                         </div>
-                        <div className="lg:pb-32 lg:px-24 grid grid-cols-1 lg:grid-cols-2 gap-y-10 gap-x-40">
+                        <div className="grid grid-cols-1 gap-x-40 gap-y-10 lg:grid-cols-2 lg:px-24 lg:pb-32">
                             <address className="space-y-7">
                                 <h3 className="text-4xl uppercase">Information</h3>
                                 <ul className="w-fit">
                                     <li className="grid grid-cols-3 gap-5">
                                         <span>Location:</span>
-                                        <span className="uppercase col-span-2">Ho Chi Minh City, Viet Nam</span>
+                                        <span className="col-span-2 uppercase">
+                                            Ho Chi Minh City, Viet Nam
+                                        </span>
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Email:</span>
-                                        <a className="uppercase col-span-2" href="mailto:HOANGVU2486222@GMAIL.COM">
+                                        <a
+                                            className="col-span-2 uppercase"
+                                            href="mailto:HOANGVU2486222@GMAIL.COM"
+                                        >
                                             HOANGVU2486222@GMAIL.COM
                                         </a>
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Phone:</span>
-                                        <a className="uppercase col-span-2" href="tel:0704582758">
+                                        <a className="col-span-2 uppercase" href="tel:0704582758">
                                             0704 58 27 58
                                         </a>
                                     </li>
@@ -127,10 +110,10 @@ export default function Footer() {
 
                     <section
                         aria-labelledby="contact-heading"
-                        className="footer-content-filled text-black bg-primary lg:space-y-36"
+                        className="footer-content-filled bg-primary text-black lg:space-y-36"
                     >
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-40 gap-y-10 lg:items-end">
-                            <div className="bg-black w-fit">
+                        <div className="grid grid-cols-1 gap-x-40 gap-y-10 lg:grid-cols-2 lg:items-end">
+                            <div className="w-fit bg-black">
                                 <svg
                                     className="w-full lg:w-fit"
                                     width="663"
@@ -176,28 +159,33 @@ export default function Footer() {
                                     </defs>
                                 </svg>
                             </div>
-                            <p className="text-xl max-w-xs">
-                                Whether you need creativity or simply reliable standards, I’ve got you covered. Let’s
-                                work together to create real value.
+                            <p className="max-w-xs text-xl">
+                                Whether you need creativity or simply reliable standards, I’ve got
+                                you covered. Let’s work together to create real value.
                             </p>
                         </div>
-                        <div className="lg:pb-32 lg:px-24 grid grid-cols-1 lg:grid-cols-2 gap-y-10 gap-x-40">
+                        <div className="grid grid-cols-1 gap-x-40 gap-y-10 lg:grid-cols-2 lg:px-24 lg:pb-32">
                             <address className="space-y-7">
                                 <h3 className="text-4xl uppercase">Information</h3>
                                 <ul className="w-fit">
                                     <li className="grid grid-cols-3 gap-5">
                                         <span>Location:</span>
-                                        <span className="uppercase col-span-2">Ho Chi Minh City, Viet Nam</span>
+                                        <span className="col-span-2 uppercase">
+                                            Ho Chi Minh City, Viet Nam
+                                        </span>
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Email:</span>
-                                        <a className="uppercase col-span-2" href="mailto:HOANGVU2486222@GMAIL.COM">
+                                        <a
+                                            className="col-span-2 uppercase"
+                                            href="mailto:HOANGVU2486222@GMAIL.COM"
+                                        >
                                             HOANGVU2486222@GMAIL.COM
                                         </a>
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Phone:</span>
-                                        <a className="uppercase col-span-2" href="tel:0704582758">
+                                        <a className="col-span-2 uppercase" href="tel:0704582758">
                                             0704 58 27 58
                                         </a>
                                     </li>

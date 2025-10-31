@@ -37,15 +37,15 @@ const CalendarHeading = (props: React.HTMLAttributes<HTMLElement>) => {
 
     return (
         <header className="flex w-full items-center gap-0.5 pb-1" {...props}>
-            <AriaHeading className="pl-2.5 grow text-sm font-medium" />
+            <AriaHeading className="grow pl-2.5 text-sm font-medium" />
 
             <AriaButton
                 slot="previous"
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
-                    'size-8 rounded-full bg-transparent p-0 text-primary-foreground',
+                    'text-primary-foreground size-8 rounded-full bg-transparent p-0',
                     /* Hover */
-                    'data-[hovered]:opacity-100 data-[hovered]:bg-muted-foreground/10 data-[hovered]:text-primary-foreground',
+                    'data-[hovered]:bg-muted-foreground/10 data-[hovered]:text-primary-foreground data-[hovered]:opacity-100',
                 )}
             >
                 {direction === 'rtl' ? (
@@ -58,9 +58,9 @@ const CalendarHeading = (props: React.HTMLAttributes<HTMLElement>) => {
                 slot="next"
                 className={cn(
                     buttonVariants({ variant: 'ghost' }),
-                    'size-8 rounded-full bg-transparent p-0 text-primary-foreground',
+                    'text-primary-foreground size-8 rounded-full bg-transparent p-0',
                     /* Hover */
-                    'data-[hovered]:opacity-100 data-[hovered]:bg-muted-foreground/10 data-[hovered]:text-primary-foreground',
+                    'data-[hovered]:bg-muted-foreground/10 data-[hovered]:text-primary-foreground data-[hovered]:opacity-100',
                 )}
             >
                 {direction === 'rtl' ? (
@@ -74,14 +74,19 @@ const CalendarHeading = (props: React.HTMLAttributes<HTMLElement>) => {
 }
 
 const CalendarGrid = ({ className, ...props }: AriaCalendarGridProps) => (
-    <AriaCalendarGrid className={cn('border-separate border-spacing-x-0 border-spacing-y-0.5', className)} {...props} />
+    <AriaCalendarGrid
+        className={cn('border-separate border-spacing-x-0 border-spacing-y-0.5', className)}
+        {...props}
+    />
 )
 
-const CalendarGridHeader = ({ ...props }: AriaCalendarGridHeaderProps) => <AriaCalendarGridHeader {...props} />
+const CalendarGridHeader = ({ ...props }: AriaCalendarGridHeaderProps) => (
+    <AriaCalendarGridHeader {...props} />
+)
 
 const CalendarHeaderCell = ({ className, ...props }: AriaCalendarHeaderCellProps) => (
     <AriaCalendarHeaderCell
-        className={cn('w-8 rounded-md text-[0.8rem] font-normal text-muted-foreground', className)}
+        className={cn('text-muted-foreground w-8 rounded-md text-[0.8rem] font-normal', className)}
         {...props}
     />
 )
@@ -104,21 +109,21 @@ const CalendarCell = ({
             className={composeRenderProps(className, (className, renderProps) =>
                 cn(
                     buttonVariants({ variant: 'unstyled' }),
-                    'transition-none relative flex size-8 rounded-full items-center justify-center p-0 text-sm font-normal',
+                    'relative flex size-8 items-center justify-center rounded-full p-0 text-sm font-normal transition-none',
                     /* Disabled */
                     renderProps.isDisabled && 'text-muted-foreground opacity-50',
                     /* Selected */
-                    renderProps.isSelected && 'bg-primary text-white data-[focused]:bg-primary',
+                    renderProps.isSelected && 'bg-primary data-[focused]:bg-primary text-white',
                     /* Current Date */
                     renderProps.date.compare(today(getLocalTimeZone())) === 0 &&
                         !renderProps.isSelected &&
-                        'bg-neutral-400/10 text-accent-foreground',
+                        'text-accent-foreground bg-neutral-400/10',
                     /* Hovered */
                     renderProps.isHovered && 'bg-neutral-400/20',
                     /* Outside Month */
                     renderProps.isOutsideMonth && 'hidden',
                     /* Unavailable Date */
-                    renderProps.isUnavailable && 'cursor-default text-destructive-foreground ',
+                    renderProps.isUnavailable && 'text-destructive-foreground cursor-default',
                     renderProps.isInvalid &&
                         'bg-destructive text-destructive-foreground-foreground data-[focused]:bg-destructive data-[hovered]:bg-destructive data-[focused]:text-destructive-foreground-foreground data-[hovered]:text-destructive-foreground-foreground',
                     className,
@@ -149,7 +154,9 @@ function BsCalendar({
     className,
     variant = 'default',
 }: BsCalendarProps) {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(defaultValue)
+    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | undefined>(
+        defaultValue,
+    )
 
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? setUncontrolledValue
@@ -157,17 +164,23 @@ function BsCalendar({
     return (
         <Calendar
             value={value ? parseDate(value) : null}
-            onChange={value => onChange(value?.toString())}
-            className={composeRenderProps(className, className =>
-                cn('w-fit', variant === 'default' ? 'border rounded-lg p-1 bg-background-secondary/40' : '', className),
+            onChange={(value) => onChange(value?.toString())}
+            className={composeRenderProps(className, (className) =>
+                cn(
+                    'w-fit',
+                    variant === 'default' ? 'bg-background-secondary/40 rounded-lg border p-1' : '',
+                    className,
+                ),
             )}
             minValue={minValue ? parseDate(minValue) : null}
             maxValue={maxValue ? parseDate(maxValue) : null}
         >
             <CalendarHeading />
             <CalendarGrid>
-                <CalendarGridHeader>{day => <CalendarHeaderCell>{day}</CalendarHeaderCell>}</CalendarGridHeader>
-                <CalendarGridBody>{date => <CalendarCell date={date} />}</CalendarGridBody>
+                <CalendarGridHeader>
+                    {(day) => <CalendarHeaderCell>{day}</CalendarHeaderCell>}
+                </CalendarGridHeader>
+                <CalendarGridBody>{(date) => <CalendarCell date={date} />}</CalendarGridBody>
             </CalendarGrid>
         </Calendar>
     )
@@ -198,7 +211,9 @@ function BsRangeCalendar({
     className,
     variant = 'default',
 }: BsRangeCalendarProps) {
-    const [uncontrolledValue, uncontrolledOnChange] = React.useState<BsRangeCalendarValue | undefined>(defaultValue)
+    const [uncontrolledValue, uncontrolledOnChange] = React.useState<
+        BsRangeCalendarValue | undefined
+    >(defaultValue)
     const value = controlledValue ?? uncontrolledValue
     const onChange = controlledOnChange ?? uncontrolledOnChange
 
@@ -208,8 +223,12 @@ function BsRangeCalendar({
     return (
         <RangeCalendar
             visibleDuration={{ months }}
-            value={value?.start && value?.end ? { start: parseDate(value.start), end: parseDate(value.end) } : null}
-            onChange={value =>
+            value={
+                value?.start && value?.end
+                    ? { start: parseDate(value.start), end: parseDate(value.end) }
+                    : null
+            }
+            onChange={(value) =>
                 onChange?.({
                     start: value?.start?.toString(),
                     end: value?.end?.toString(),
@@ -217,16 +236,24 @@ function BsRangeCalendar({
             }
             minValue={minValue ? parseDate(minValue) : null}
             maxValue={maxValue ? parseDate(maxValue) : null}
-            className={composeRenderProps(className, className =>
-                cn('w-fit', variant === 'default' ? 'border rounded-lg p-1 bg-background-secondary/40' : '', className),
+            className={composeRenderProps(className, (className) =>
+                cn(
+                    'w-fit',
+                    variant === 'default' ? 'bg-background-secondary/40 rounded-lg border p-1' : '',
+                    className,
+                ),
             )}
         >
             <CalendarHeading />
-            <div className="flex gap-3 items-start">
+            <div className="flex items-start gap-3">
                 {Array.from({ length: months }).map((_, index) => (
                     <CalendarGrid key={index} offset={{ months: index }}>
-                        <CalendarGridHeader>{day => <CalendarHeaderCell>{day}</CalendarHeaderCell>}</CalendarGridHeader>
-                        <CalendarGridBody>{date => <CalendarCell date={date} type="range" />}</CalendarGridBody>
+                        <CalendarGridHeader>
+                            {(day) => <CalendarHeaderCell>{day}</CalendarHeaderCell>}
+                        </CalendarGridHeader>
+                        <CalendarGridBody>
+                            {(date) => <CalendarCell date={date} type="range" />}
+                        </CalendarGridBody>
                     </CalendarGrid>
                 ))}
             </div>

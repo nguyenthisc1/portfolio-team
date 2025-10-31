@@ -19,9 +19,9 @@ const CheckboxGroup = ({ className, ...props }: AriaCheckboxGroupProps) => {
 
 const Checkbox = ({ className, children, ...props }: AriaCheckboxProps) => (
     <AriaCheckbox
-        className={composeRenderProps(className, className =>
+        className={composeRenderProps(className, (className) =>
             cn(
-                'group/checkbox flex items-center gap-x-2 text-sm cursor-pointer',
+                'group/checkbox flex cursor-pointer items-center gap-x-2 text-sm',
                 /* Disabled */
                 'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70',
                 labelVariants,
@@ -35,11 +35,11 @@ const Checkbox = ({ className, children, ...props }: AriaCheckboxProps) => (
             <>
                 <div
                     className={cn(
-                        'flex size-4 shrink-0 items-center justify-center rounded-[5px] border bg-background-secondary text-white ring-offset-background',
+                        'bg-background-secondary ring-offset-background flex size-4 shrink-0 items-center justify-center rounded-[5px] border text-white',
                         /* Focus Visible */
-                        'group-data-[focus-visible]/checkbox:outline-none group-data-[focus-visible]/checkbox:ring-2 group-data-[focus-visible]/checkbox:ring-primary/40 group-data-[focus-visible]/checkbox:ring-offset-2',
+                        'group-data-[focus-visible]/checkbox:ring-primary/40 group-data-[focus-visible]/checkbox:ring-2 group-data-[focus-visible]/checkbox:ring-offset-2 group-data-[focus-visible]/checkbox:outline-none',
                         /* Selected */
-                        'group-data-[indeterminate]/checkbox:bg-primary group-data-[selected]/checkbox:bg-primary group-data-[indeterminate]/checkbox:border-black/10 group-data-[selected]/checkbox:border-black/10 group-data-[indeterminate]/checkbox:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] group-data-[selected]/checkbox:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]',
+                        'group-data-[indeterminate]/checkbox:bg-primary group-data-[selected]/checkbox:bg-primary group-data-[indeterminate]/checkbox:border-black/10 group-data-[indeterminate]/checkbox:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] group-data-[selected]/checkbox:border-black/10 group-data-[selected]/checkbox:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]',
                         /* Selected Dark */
                         'dark:group-data-[indeterminate]/checkbox:border-none dark:group-data-[selected]/checkbox:border-none',
                         /* Disabled */
@@ -75,7 +75,7 @@ function BsCheckboxGroup({ options, className, ...props }: BsCheckboxProps) {
     return (
         <CheckboxGroup {...props}>
             <div className={cn('grid grid-cols-3 gap-4', className)}>
-                {options.map(option => (
+                {options.map((option) => (
                     <Checkbox key={option.id} value={option.id}>
                         {option.name}
                     </Checkbox>

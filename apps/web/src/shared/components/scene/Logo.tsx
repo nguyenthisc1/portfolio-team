@@ -3,7 +3,13 @@ import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
-function SunGradientMaterial({ left, right }: { left: [number, number, number]; right: [number, number, number] }) {
+function SunGradientMaterial({
+    left,
+    right,
+}: {
+    left: [number, number, number]
+    right: [number, number, number]
+}) {
     const uniforms = useMemo(
         () => ({
             colorLeft: { value: left },
@@ -47,7 +53,7 @@ function hexToRgbArray(hex: string): [number, number, number] {
     if (hex.length === 3) {
         hex = hex
             .split('')
-            .map(x => x + x)
+            .map((x) => x + x)
             .join('')
     }
     const num = parseInt(hex, 16)

@@ -11,7 +11,13 @@ import Projects from './Projects'
 
 extend({ Water })
 
-function SunGradientMaterial({ left, right }: { left: [number, number, number]; right: [number, number, number] }) {
+function SunGradientMaterial({
+    left,
+    right,
+}: {
+    left: [number, number, number]
+    right: [number, number, number]
+}) {
     const uniforms = useMemo(
         () => ({
             colorLeft: { value: left },
@@ -92,7 +98,7 @@ function Ocean({
     rotation?: [number, number, number]
 }) {
     const ref = useRef<THREE.Mesh | null>(null)
-    const gl = useThree(state => state.gl)
+    const gl = useThree((state) => state.gl)
     const waterNormals = useLoader(THREE.TextureLoader, 'images/waternormals.jpeg')
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping
 
@@ -128,7 +134,12 @@ function Ocean({
     })
 
     return (
-        <primitive object={water} ref={ref} position={position} rotation={rotation ? rotation : [-Math.PI / 2, 0, 0]} />
+        <primitive
+            object={water}
+            ref={ref}
+            position={position}
+            rotation={rotation ? rotation : [-Math.PI / 2, 0, 0]}
+        />
     )
 }
 
@@ -202,15 +213,21 @@ export function ThreeLogo() {
     })
 
     // Scene/group controls
-    const { scenePosition, sceneRotation, oceanPosition, oceanRotation, sunBodyPosition, sunBodyRotation } =
-        useControls('Scene', {
-            scenePosition: { value: [0, 0, 0], label: 'Root Position' },
-            sceneRotation: { value: [0, 0, 0], label: 'Root Rotation (rad)' },
-            oceanPosition: { value: [0, 0, 0], label: 'Water Position' },
-            oceanRotation: { value: [-Math.PI / 2, 0, 0], label: 'Water Rotation (rad)' },
-            sunBodyPosition: { value: [0, 2, 0], label: 'Logo Position' },
-            sunBodyRotation: { value: [1.25, -1.25, 0], label: 'Logo Rotation (rad)' },
-        })
+    const {
+        scenePosition,
+        sceneRotation,
+        oceanPosition,
+        oceanRotation,
+        sunBodyPosition,
+        sunBodyRotation,
+    } = useControls('Scene', {
+        scenePosition: { value: [0, 0, 0], label: 'Root Position' },
+        sceneRotation: { value: [0, 0, 0], label: 'Root Rotation (rad)' },
+        oceanPosition: { value: [0, 0, 0], label: 'Water Position' },
+        oceanRotation: { value: [-Math.PI / 2, 0, 0], label: 'Water Rotation (rad)' },
+        sunBodyPosition: { value: [0, 2, 0], label: 'Logo Position' },
+        sunBodyRotation: { value: [1.25, -1.25, 0], label: 'Logo Rotation (rad)' },
+    })
 
     // Convert hex to RGB array [0,1]
     const hexToRgb01 = (hex: string): [number, number, number] => {

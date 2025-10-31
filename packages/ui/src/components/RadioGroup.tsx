@@ -31,9 +31,9 @@ const RadioGroup = ({ className, ...props }: AriaRadioGroupProps) => {
 const Radio = ({ className, children, ...props }: AriaRadioProps) => {
     return (
         <AriaRadio
-            className={composeRenderProps(className, className =>
+            className={composeRenderProps(className, (className) =>
                 cn(
-                    'group/radio flex items-center gap-x-2 text-sm cursor-pointer',
+                    'group/radio flex cursor-pointer items-center gap-x-2 text-sm',
                     /* Disabled */
                     'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70',
                     labelVariants,
@@ -46,11 +46,11 @@ const Radio = ({ className, children, ...props }: AriaRadioProps) => {
                 <>
                     <span
                         className={cn(
-                            'flex aspect-square size-4 items-center justify-center rounded-full border bg-background-secondary text-white ring-offset-background',
+                            'bg-background-secondary ring-offset-background flex aspect-square size-4 items-center justify-center rounded-full border text-white',
                             /* Focus */
                             'group-data-[focused]/radio:outline-none',
                             /* Focus Visible */
-                            'group-data-[focus-visible]/radio:ring-2 group-data-[focus-visible]/radio:ring-primary/40 group-data-[focus-visible]/radio:ring-offset-2',
+                            'group-data-[focus-visible]/radio:ring-primary/40 group-data-[focus-visible]/radio:ring-2 group-data-[focus-visible]/radio:ring-offset-2',
                             /* Selected */
                             'group-data-[selected]/radio:bg-primary group-data-[selected]/radio:border-black/10 group-data-[selected]/radio:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]',
                             /* Selected Dark */
@@ -61,7 +61,9 @@ const Radio = ({ className, children, ...props }: AriaRadioProps) => {
                             'group-data-[invalid]/radio:border-destructive',
                         )}
                     >
-                        {renderProps.isSelected && <Circle className="size-1.5 fill-current text-current" />}
+                        {renderProps.isSelected && (
+                            <Circle className="size-1.5 fill-current text-current" />
+                        )}
                     </span>
                     {children}
                 </>
@@ -82,7 +84,7 @@ interface BsRadioGroupProps extends AriaRadioGroupProps {
 function BsRadioGroup({ options, className, ...props }: BsRadioGroupProps) {
     return (
         <RadioGroup {...props}>
-            {options.map(option => (
+            {options.map((option) => (
                 <Radio key={option.id} value={option.id}>
                     {option.name}
                 </Radio>

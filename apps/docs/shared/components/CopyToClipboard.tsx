@@ -52,7 +52,13 @@ export const machine = setup({
     },
 })
 
-export function CopyToClipboard({ className, text = '12322' }: { className?: string; text: string }) {
+export function CopyToClipboard({
+    className,
+    text = '12322',
+}: {
+    className?: string
+    text: string
+}) {
     const [state, send] = useMachine(machine, {
         input: { text },
     })

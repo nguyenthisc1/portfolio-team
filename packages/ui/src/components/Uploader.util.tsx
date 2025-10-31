@@ -57,7 +57,7 @@ export function useValidateFiles(rules: UploaderRules) {
 
         // validate file extensions
         if (acceptedFileExtensions?.length) {
-            acceptedFiles = acceptedFiles.filter(file => {
+            acceptedFiles = acceptedFiles.filter((file) => {
                 const isValid = validateFileExtension(file, acceptedFileExtensions)
 
                 if (!isValid) {
@@ -70,7 +70,7 @@ export function useValidateFiles(rules: UploaderRules) {
 
         // validate file size
         if (maxFileSize) {
-            acceptedFiles = acceptedFiles.filter(file => {
+            acceptedFiles = acceptedFiles.filter((file) => {
                 const isValid = validateFileSize(file, maxFileSize)
 
                 if (!isValid) {
@@ -81,7 +81,8 @@ export function useValidateFiles(rules: UploaderRules) {
             })
         }
 
-        const containsInvalidFile = rejectedByExtensionFiles.length > 0 || rejectedBySizeFiles.length > 0
+        const containsInvalidFile =
+            rejectedByExtensionFiles.length > 0 || rejectedBySizeFiles.length > 0
 
         if (containsInvalidFile) {
             toast.warning(
@@ -90,7 +91,10 @@ export function useValidateFiles(rules: UploaderRules) {
                     description: (
                         <div>
                             {acceptedFileExtensions && rejectedByExtensionFiles?.length > 0 && (
-                                <p>Only the following file types are allowed: {acceptedFileExtensions?.join(', ')}.</p>
+                                <p>
+                                    Only the following file types are allowed:{' '}
+                                    {acceptedFileExtensions?.join(', ')}.
+                                </p>
                             )}
                             {maxFileSize && rejectedBySizeFiles?.length > 0 && (
                                 <p>Max file size: {formatFileSize(maxFileSize)}.</p>

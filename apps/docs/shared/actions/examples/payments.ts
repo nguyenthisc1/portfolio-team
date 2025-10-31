@@ -29,18 +29,26 @@ export async function getPayments(params?: GetPaymentsParams | null): Promise<{
         totalPages: number
     }
 }> {
-    await new Promise(resolve => setTimeout(resolve, 200))
+    await new Promise((resolve) => setTimeout(resolve, 200))
 
-    let items = sortByString(paymentData, params?.sortBy || '', params?.sortDirection) as Array<Payment>
+    let items = sortByString(
+        paymentData,
+        params?.sortBy || '',
+        params?.sortDirection,
+    ) as Array<Payment>
 
     // filter
     if (params?.paymentMethod) {
-        items = items.filter(payment => payment.paymentMethod.includes(params?.paymentMethod || ''))
+        items = items.filter((payment) =>
+            payment.paymentMethod.includes(params?.paymentMethod || ''),
+        )
     }
 
     // search
     if (params?.search) {
-        items = items.filter(payment => payment.email?.toLowerCase().includes(params?.search?.toLowerCase() || ''))
+        items = items.filter((payment) =>
+            payment.email?.toLowerCase().includes(params?.search?.toLowerCase() || ''),
+        )
     }
 
     const totalPages = Math.ceil(items.length / (params?.pageSize || 10))
@@ -67,6 +75,8 @@ function sortByString(arr: Array<Record<any, any>>, field: string, order = 'asc'
     }
 
     return [...arr].sort((a, b) => {
-        return order === 'asc' ? a[field]?.localeCompare(b[field]) : b[field]?.localeCompare(a[field])
+        return order === 'asc'
+            ? a[field]?.localeCompare(b[field])
+            : b[field]?.localeCompare(a[field])
     })
 }

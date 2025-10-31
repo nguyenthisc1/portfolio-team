@@ -4,7 +4,14 @@ import { useForm } from 'react-hook-form'
 import { toast } from '@workspace/ui/components/Sonner'
 
 import { Button } from '@workspace/ui/components/Button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@workspace/ui/components/Form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@workspace/ui/components/Form'
 import { BsTimeField } from '@workspace/ui/components/Datefield'
 import { BsDatePicker } from '@workspace/ui/components/DatePicker'
 
@@ -29,7 +36,7 @@ export function TimeFieldForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
                 <div className="flex gap-2">
                     <FormField
                         control={form.control}

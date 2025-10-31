@@ -30,7 +30,7 @@ export const columns = [
         header: 'Payment Method',
         cell: ({ getValue }) => {
             const value = getValue()
-            const method = methodOptions.find(option => option.id === value)
+            const method = methodOptions.find((option) => option.id === value)
             return (
                 <div className="flex items-center gap-2">
                     <div className={cn(method?.className, 'rounded-sm p-1.5')}>
@@ -56,10 +56,10 @@ export const columns = [
         header: 'Actions',
         cell: () => (
             <div className="space-x-1">
-                <Button variant="ghost" size="icon" aria-label='edit'>
+                <Button variant="ghost" size="icon" aria-label="edit">
                     <EditIcon className="text-primary-foreground" />
                 </Button>
-                <Button variant="ghost" size="icon" aria-label='delete'>
+                <Button variant="ghost" size="icon" aria-label="delete">
                     <TrashIcon className="text-destructive-foreground" />
                 </Button>
             </div>
@@ -121,7 +121,7 @@ export function DataTableRealworld() {
             <div className="flex gap-2">
                 <BsSearchField
                     value={search}
-                    onChange={value => {
+                    onChange={(value) => {
                         setSearch(value)
                         setPage(1)
                     }}
@@ -129,7 +129,7 @@ export function DataTableRealworld() {
                 />
                 <BsSelect
                     value={paymentMethod}
-                    onChange={value => {
+                    onChange={(value) => {
                         setPaymentMethod(String(value))
                         setPage(1)
                     }}
@@ -138,14 +138,22 @@ export function DataTableRealworld() {
                     options={methodOptions}
                 />
                 {isFiltering && (
-                    <Button className="max-sm:hidden" variant="outline" onClick={handleClearFilters}>
+                    <Button
+                        className="max-sm:hidden"
+                        variant="outline"
+                        onClick={handleClearFilters}
+                    >
                         <XIcon />
                         Clear
                     </Button>
                 )}
 
                 {!!selectedCount && (
-                    <Button variant="destructive" className="ml-auto max-sm:hidden" onClick={handleDeleteSelected}>
+                    <Button
+                        variant="destructive"
+                        className="ml-auto max-sm:hidden"
+                        onClick={handleDeleteSelected}
+                    >
                         Delete Selected
                     </Button>
                 )}
@@ -162,15 +170,19 @@ export function DataTableRealworld() {
                 data={payments.data?.items ?? []}
                 isLoading={payments.isLoading}
             />
-            <div className="flex gap-4 justify-between">
+            <div className="flex justify-between gap-4">
                 <PaginationPageSizeSelector
                     value={pageSize}
-                    onChange={value => {
+                    onChange={(value) => {
                         setPageSize(value)
                         setPage(1)
                     }}
                 />
-                <Pagination value={page} onChange={setPage} pageCount={payments.data?.meta.totalPages ?? 1} />
+                <Pagination
+                    value={page}
+                    onChange={setPage}
+                    pageCount={payments.data?.meta.totalPages ?? 1}
+                />
             </div>
         </div>
     )

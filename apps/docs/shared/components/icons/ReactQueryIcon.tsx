@@ -19,11 +19,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
             </linearGradient>
             <circle cx="316.5" cy="316.5" r="316.5" fill="url(#a-cl-1)"></circle>
             <defs>
-                <filter id="am-cl-1" width="454" height="396.9" x="-137.5" y="412" filterUnits="userSpaceOnUse">
+                <filter
+                    id="am-cl-1"
+                    width="454"
+                    height="396.9"
+                    x="-137.5"
+                    y="412"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="b-cl-1" width="454" height="396.9" x="-137.5" y="412" maskUnits="userSpaceOnUse">
+            <mask
+                id="b-cl-1"
+                width="454"
+                height="396.9"
+                x="-137.5"
+                y="412"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#am-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -40,11 +54,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 ></ellipse>
             </g>
             <defs>
-                <filter id="ah-cl-1" width="454" height="396.9" x="316.5" y="412" filterUnits="userSpaceOnUse">
+                <filter
+                    id="ah-cl-1"
+                    width="454"
+                    height="396.9"
+                    x="316.5"
+                    y="412"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="k-cl-1" width="454" height="396.9" x="316.5" y="412" maskUnits="userSpaceOnUse">
+            <mask
+                id="k-cl-1"
+                width="454"
+                height="396.9"
+                x="316.5"
+                y="412"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#ah-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -61,11 +89,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 ></ellipse>
             </g>
             <defs>
-                <filter id="ae-cl-1" width="454" height="396.9" x="-137.5" y="450" filterUnits="userSpaceOnUse">
+                <filter
+                    id="ae-cl-1"
+                    width="454"
+                    height="396.9"
+                    x="-137.5"
+                    y="450"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="j-cl-1" width="454" height="396.9" x="-137.5" y="450" maskUnits="userSpaceOnUse">
+            <mask
+                id="j-cl-1"
+                width="454"
+                height="396.9"
+                x="-137.5"
+                y="450"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#ae-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -82,11 +124,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 ></ellipse>
             </g>
             <defs>
-                <filter id="ai-cl-1" width="454" height="396.9" x="316.5" y="450" filterUnits="userSpaceOnUse">
+                <filter
+                    id="ai-cl-1"
+                    width="454"
+                    height="396.9"
+                    x="316.5"
+                    y="450"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="i-cl-1" width="454" height="396.9" x="316.5" y="450" maskUnits="userSpaceOnUse">
+            <mask
+                id="i-cl-1"
+                width="454"
+                height="396.9"
+                x="316.5"
+                y="450"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#ai-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -103,11 +159,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 ></ellipse>
             </g>
             <defs>
-                <filter id="aj-cl-1" width="454" height="396.9" x="-137.5" y="486" filterUnits="userSpaceOnUse">
+                <filter
+                    id="aj-cl-1"
+                    width="454"
+                    height="396.9"
+                    x="-137.5"
+                    y="486"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="h-cl-1" width="454" height="396.9" x="-137.5" y="486" maskUnits="userSpaceOnUse">
+            <mask
+                id="h-cl-1"
+                width="454"
+                height="396.9"
+                x="-137.5"
+                y="486"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#aj-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -124,11 +194,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 ></ellipse>
             </g>
             <defs>
-                <filter id="ag-cl-1" width="454" height="396.9" x="316.5" y="486" filterUnits="userSpaceOnUse">
+                <filter
+                    id="ag-cl-1"
+                    width="454"
+                    height="396.9"
+                    x="316.5"
+                    y="486"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="g-cl-1" width="454" height="396.9" x="316.5" y="486" maskUnits="userSpaceOnUse">
+            <mask
+                id="g-cl-1"
+                width="454"
+                height="396.9"
+                x="316.5"
+                y="486"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#ag-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -145,11 +229,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 ></ellipse>
             </g>
             <defs>
-                <filter id="af-cl-1" width="176.9" height="129.3" x="272.2" y="308" filterUnits="userSpaceOnUse">
+                <filter
+                    id="af-cl-1"
+                    width="176.9"
+                    height="129.3"
+                    x="272.2"
+                    y="308"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="f-cl-1" width="176.9" height="129.3" x="272.2" y="308" maskUnits="userSpaceOnUse">
+            <mask
+                id="f-cl-1"
+                width="176.9"
+                height="129.3"
+                x="272.2"
+                y="308"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#af-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -191,11 +289,25 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 ></path>
             </g>
             <defs>
-                <filter id="ak-cl-1" width="280.6" height="317.4" x="73.2" y="113.8" filterUnits="userSpaceOnUse">
+                <filter
+                    id="ak-cl-1"
+                    width="280.6"
+                    height="317.4"
+                    x="73.2"
+                    y="113.8"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
-            <mask id="e-cl-1" width="280.6" height="317.4" x="73.2" y="113.8" maskUnits="userSpaceOnUse">
+            <mask
+                id="e-cl-1"
+                width="280.6"
+                height="317.4"
+                x="73.2"
+                y="113.8"
+                maskUnits="userSpaceOnUse"
+            >
                 <g filter="url(#ak-cl-1)">
                     <circle cx="316.5" cy="316.5" r="316.5" fill="#fff"></circle>
                 </g>
@@ -349,7 +461,14 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 </g>
             </g>
             <defs>
-                <filter id="al-cl-1" width="532" height="633" x="50.5" y="399" filterUnits="userSpaceOnUse">
+                <filter
+                    id="al-cl-1"
+                    width="532"
+                    height="633"
+                    x="50.5"
+                    y="399"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>
@@ -374,7 +493,14 @@ export function ReactQueryIcon({ className }: { className?: string }) {
                 <ellipse cx="316.5" cy="715.5" fill="url(#u-cl-1)" rx="266" ry="316.5"></ellipse>
             </g>
             <defs>
-                <filter id="ad-cl-1" width="288" height="283" x="391" y="-24" filterUnits="userSpaceOnUse">
+                <filter
+                    id="ad-cl-1"
+                    width="288"
+                    height="283"
+                    x="391"
+                    y="-24"
+                    filterUnits="userSpaceOnUse"
+                >
                     <feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>
                 </filter>
             </defs>

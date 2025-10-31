@@ -70,7 +70,11 @@ type FormItemContextValue = {
 
 const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue)
 
-function FormItem({ className, flow = 'column', ...props }: React.ComponentProps<'div'> & { flow?: 'row' | 'column' }) {
+function FormItem({
+    className,
+    flow = 'column',
+    ...props
+}: React.ComponentProps<'div'> & { flow?: 'row' | 'column' }) {
     const id = React.useId()
 
     return (
@@ -110,7 +114,9 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
         <Slot
             data-slot="form-control"
             id={formItemId}
-            aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
+            aria-describedby={
+                !error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`
+            }
             aria-invalid={!!error}
             {...props}
         />
@@ -139,7 +145,12 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
     }
 
     return (
-        <p data-slot="form-message" id={formMessageId} className={cn('text-destructive-foreground text-xs', className)} {...props}>
+        <p
+            data-slot="form-message"
+            id={formMessageId}
+            className={cn('text-destructive-foreground text-xs', className)}
+            {...props}
+        >
             {body}
         </p>
     )
