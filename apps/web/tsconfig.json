@@ -6,7 +6,7 @@
             "@/*": ["./src/*"],
             "@workspace/ui/*": ["../../packages/ui/src/*"],
             "@components/*": ["src/features/home/components/*"],
-            "@animations/*": ["src/features/home/animations/*"]
+            "@animations/*": ["src/features/animations/*"]
         },
         "plugins": [
             {

@@ -2,7 +2,7 @@
 
 import { useGSAP } from '@gsap/react'
 import React, { JSX, useRef } from 'react'
-import { setupHeadingAnimation } from '@/features/home/animations/animation'
+import { setupHeadingAnimation } from '@/features/animations/animation'
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6
 

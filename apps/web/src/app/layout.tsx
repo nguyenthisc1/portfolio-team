@@ -2,8 +2,8 @@ import { PROJECT_DESCRIPTION, PROJECT_NAME } from '@/shared/consts/common'
 import '@workspace/ui/web.css'
 import { Metadata } from 'next'
 import localFont from 'next/font/local'
-import CanvasScene from '@/shared/components/scene/CanvasScene'
 import { GsapProvider } from '@/shared/providers/GsapProvider'
+import Scene from '@/shared/components/canvas/scene/Scene'
 
 const ibmPlexSansCondensedBoldItalic = localFont({
     src: [
@@ -67,7 +67,7 @@ export default function RootLayout({
             <body className="antialiased">
                 <GsapProvider>
                     {children}
-                    <CanvasScene />
+                    <Scene />
                 </GsapProvider>
             </body>
         </html>

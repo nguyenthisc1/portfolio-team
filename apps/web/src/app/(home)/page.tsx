@@ -2,6 +2,7 @@ import Footer from '@/features/home/components/Footer'
 import Heading from '@/features/home/components/Heading'
 import Skill from '@/features/home/components/Skill'
 import Typography from '@/features/home/components/Typography'
+import CanvasScene from '@/shared/components/canvas/scene/Scene'
 
 export default function Home() {
     return (

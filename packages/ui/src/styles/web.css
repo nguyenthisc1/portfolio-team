@@ -74,7 +74,11 @@
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+
         @apply font-primary bg-black text-base text-white md:text-lg xl:text-xl;
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     h1,
@@ -130,6 +134,43 @@
         border-radius: 8px;
         border: 2px solid transparent;
         background-clip: content-box;
+    }
+
+    html.lenis,
+    html.lenis body {
+        height: auto;
+    }
+
+    .lenis:not(.lenis-autoToggle).lenis-stopped {
+        overflow: clip;
+    }
+
+    .lenis [data-lenis-prevent],
+    .lenis [data-lenis-prevent-wheel],
+    .lenis [data-lenis-prevent-touch] {
+        overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-smooth iframe {
+        pointer-events: none;
+    }
+
+    .lenis.lenis-autoToggle {
+        transition-property: overflow;
+        transition-duration: 1ms;
+        transition-behavior: allow-discrete;
+    }
+
+    html.lenis-is-scrolling {
+        /* body {
+            ::-webkit-scrollbar-thumb {
+                background: rgba(90, 90, 90);
+            }
+
+            ::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.2);
+            }
+        } */
     }
 }
 
@@ -212,7 +253,11 @@
         @apply flex size-full flex-col justify-stretch gap-1;
 
         li {
-            @apply flex size-full h-full items-center justify-center rounded border border-white uppercase;
+            @apply relative flex size-full h-full items-center justify-center rounded uppercase;
+            &::before {
+                background: url(/images/img-skill-frame.svg) center center / contain no-repeat;
+                @apply absolute inset-0 content-[''];
+            }
         }
     }
 

@@ -2,7 +2,7 @@
 
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
-import { setupCardSkillAnimation } from '../animations/animation'
+import { setupCardSkillAnimation } from '../../animations/animation'
 
 type SkillData = {
     id: string
@@ -69,9 +69,7 @@ function CardSkill({ id, imgSrc, imgAlt, title, items, index = 0 }: SkillData) {
                         <div className="glint-card-content">
                             <ul className="skill-card">
                                 {items.map((item, idx) => (
-                                    <>
-                                        <li key={idx}>{item}</li>
-                                    </>
+                                    <li key={idx}>{item}</li>
                                 ))}
                             </ul>
                         </div>

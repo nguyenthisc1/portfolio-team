@@ -1,6 +1,5 @@
 'use client'
 
-import { time } from 'console'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
@@ -185,4 +184,46 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
                 index === 0 ? '>' : `>+=${delay.toFixed(2)}`,
             )
     })
+}
+
+export function setupLoadingPage(
+    texts: string[],
+    onTextChange: (index: number) => void,
+    onLoadingChange?: (loading: boolean) => void,
+) {
+    const obj = { i: 0 }
+    const tl = gsap.to(obj, {
+        i: texts.length,
+        duration: texts.length * 0.3,
+        ease: 'none',
+        repeat: -1,
+        modifiers: {
+            i: (i) => Math.floor(Number(i)) % texts.length,
+        },
+        onUpdate: () => {
+            onTextChange(Math.floor(obj.i) % texts.length)
+        },
+    })
+
+    const handleLoaded = () => {
+        if (document.readyState === 'complete') {
+            // Wait for one more "run" of the animation before ending loading
+            setTimeout(
+                () => {
+                    tl.pause(0)
+                    onLoadingChange?.(false)
+                },
+                texts.length * 0.3 * 1000,
+            )
+        }
+    }
+
+    window.addEventListener('load', handleLoaded)
+    handleLoaded()
+
+    // Return cleanup handler
+    return () => {
+        window.removeEventListener('load', handleLoaded)
+        tl.kill()
+    }
 }
