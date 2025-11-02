@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@source "../../../apps/web/*.{ts,tsx}";
-@source "../../../components/**/*.{ts,tsx}";
-@source "../**/*.{ts,tsx}";
+@source '../../../apps/web/*.{ts,tsx}';
+@source '../../../components/**/*.{ts,tsx}';
+@source '../**/*.{ts,tsx}';
 
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
 :root {
     --primary: #fed430;
@@ -27,7 +27,7 @@
     }
 
     .tt-heading-wrapper {
-        @apply relative overflow-hidden flex justify-center items-center;
+        @apply relative flex items-center justify-center overflow-hidden;
     }
 
     .tt-heading-stroke {
@@ -41,12 +41,12 @@
         clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
         -webkit-text-fill-color: var(--color-primary);
         -webkit-text-stroke: 2px var(--color-primary);
-        @apply absolute left-1/2 top-1/2 -translate-1/2 w-full select-none;
+        @apply absolute top-1/2 left-1/2 w-full -translate-1/2 select-none;
     }
 
     .footer-content-filled {
         clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        @apply absolute left-1/2 top-1/2 -translate-1/2 size-full select-none;
+        @apply absolute top-1/2 left-1/2 size-full -translate-1/2 select-none;
     }
 }
 
@@ -74,7 +74,7 @@
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        @apply bg-black text-white font-primary text-base md:text-lg xl:text-xl;
+        @apply font-primary bg-black text-base text-white md:text-lg xl:text-xl;
     }
 
     h1,
@@ -94,22 +94,22 @@
 
     h1,
     .h1 {
-        @apply text-[100px] lg:text-[180px] xl:text-[210px] 2xl:text-[310px] leading-[0.95];
+        @apply text-[100px] leading-[0.95] lg:text-[180px] xl:text-[210px] 2xl:text-[310px];
     }
 
     h2,
     .h2 {
-        @apply text-[80px] lg:text-[180px] 2xl:text-[210px] leading-[0.95];
+        @apply text-[80px] leading-[0.95] lg:text-[180px] 2xl:text-[210px];
     }
 
     h3,
     .h3 {
-        @apply text-[40px] lg:text-[80px] leading-[0.95];
+        @apply text-[40px] leading-[0.95] lg:text-[80px];
     }
 
     h4,
     .h4 {
-        @apply text-[28px] lg:text-[40px] leading-[0.95];
+        @apply text-[28px] leading-[0.95] lg:text-[40px];
     }
 
     ::selection {
@@ -135,20 +135,33 @@
 
 @layer components {
     .glint-card {
-        @apply overflow-hidden relative p-px rounded-4xl;
-
+        @apply relative backface-hidden transform-3d;
+    }
+    .glint-card-hover {
         &:hover {
-            &::after {
-                opacity: 1;
-                animation: border-spin 6s linear infinite;
-                will-change: transform;
+            .glint-card-wrapper {
+                &::after {
+                    opacity: 1;
+                    animation: border-spin 6s linear infinite;
+                    will-change: transform;
+                }
             }
         }
+    }
+
+    .glint-card-content {
+        background: url(/images/bg-image.webp) center center / cover;
+        @apply relative z-10 flex size-full items-center justify-center rounded-4xl p-6 text-center backface-hidden;
+    }
+
+    .glint-card-wrapper {
+        /* background: url(/images/bg-image.webp) center center / cover; */
+        @apply relative size-full overflow-hidden rounded-4xl p-px backface-hidden;
 
         &::before {
             z-index: 1;
             background: radial-gradient(circle, #565656 0% 100%);
-            @apply content-[''] -left-1/2 pointer-events-none -top-1/2 absolute w-[200%] h-[200%];
+            @apply pointer-events-none absolute -top-1/2 -left-1/2 h-[200%] w-[200%] content-[''];
         }
 
         &::after {
@@ -178,15 +191,35 @@
         }
     }
 
+    .glint-card-title {
+        @apply absolute bottom-8 left-1/2 -translate-x-1/2 uppercase;
+    }
+
+    .glint-card-front {
+        @apply flex min-h-full flex-col items-center justify-center;
+    }
+
+    .glint-card-back {
+        @apply rotate-y-180 flex-col items-center justify-center bg-black text-center;
+    }
+
+    .glint-card-front,
+    .glint-card-back {
+        @apply pointer-events-auto absolute inset-0 size-full rounded-4xl backface-hidden;
+    }
+
+    .skill-card {
+        @apply flex size-full flex-col justify-stretch gap-1;
+
+        li {
+            @apply flex size-full h-full items-center justify-center rounded border border-white uppercase;
+        }
+    }
+
     @keyframes border-spin {
         to {
             transform: rotate(360deg);
         }
-    }
-
-    .glint-card-content {
-        background: url(/images/bg-image.webp) center center / cover;
-        @apply rounded-4xl relative z-10 p-6;
     }
 }
 

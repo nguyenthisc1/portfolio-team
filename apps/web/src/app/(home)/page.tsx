@@ -118,10 +118,12 @@ export default function Home() {
                         </article>
                         <div className="text-right">
                             <a href="#">
-                                <div className="glint-card inline-block cursor-pointer rounded">
-                                    <div className="glint-card-content rounded !bg-black font-bold">
-                                        <span className="text-primary">hey</span>
-                                        <span>, click to see my skill over here</span>
+                                <div className="glint-card glint-card-hover inline-block cursor-pointer rounded">
+                                    <div className="glint-card-wrapper rounded">
+                                        <div className="glint-card-content rounded !bg-black font-bold">
+                                            <span className="text-primary">hey</span>
+                                            <span>, click to see my skill over here</span>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -130,14 +132,7 @@ export default function Home() {
                 </div>
             </section>
 
-            <section aria-labelledby="skills-heading" className="mb-44">
-                <h2 id="skills-heading" className="hidden">
-                    Skills
-                </h2>
-                <div className="container">
-                    <Skill />
-                </div>
-            </section>
+            <Skill />
 
             <Footer />
         </>

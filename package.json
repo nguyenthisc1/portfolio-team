@@ -16,13 +16,11 @@
         "prettier": "^3.6.2",
         "tsx": "^4.20.6",
         "turbo": "^2.5.5",
-        "typescript": "^5.9.2"
+        "typescript": "^5.9.2",
+        "prettier-plugin-tailwindcss": "^0.7.1"
     },
     "packageManager": "pnpm@10.4.1",
     "engines": {
         "node": ">=20"
-    },
-    "dependencies": {
-        "prettier-plugin-tailwindcss": "^0.7.1"
     }
 }
