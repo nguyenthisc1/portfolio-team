@@ -1,7 +1,12 @@
+'use client'
+
+import { useGlobal } from '@/shared/stores/global'
 /* eslint-disable react/no-unknown-property */
+import { useGSAP } from '@gsap/react'
 import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 function SunGradientMaterial({
     left,
@@ -61,6 +66,9 @@ function hexToRgbArray(hex: string): [number, number, number] {
 }
 
 export default function Logo() {
+    const isAccess = useGlobal((state) => state.isAccess)
+    const isLoading = useGlobal((state) => state.isLoading)
+
     const boxRef = useRef<THREE.Mesh>(null)
     const groupRef = useRef<THREE.Group>(null)
 
@@ -85,24 +93,58 @@ export default function Logo() {
     const sunLeftColor = hexToRgbArray(sun_left.value)
     const sunRightColor = hexToRgbArray(sun_right.value)
 
-    return (
-        <>
-            <group ref={groupRef} scale={24}>
-                {/* Sun-like sphere */}
-                <mesh position={[0, 0, 0]}>
-                    <sphereGeometry args={[0.65, 32, 32]} />
-                    <SunGradientMaterial left={sunLeftColor} right={sunRightColor} />
-                </mesh>
+    useGSAP(() => {
+        if (isAccess && groupRef.current) {
+            const SCALE = 24
 
-                {/* <mesh ref={boxRef}>
-                    <boxGeometry args={[1.75, 1.75, 1.75]} />
-                    <meshBasicMaterial color="white" transparent opacity={0.01} />
-                    <lineSegments>
-                        <edgesGeometry args={[new THREE.BoxGeometry(1.75, 1.75, 1.75)]} />
-                        <lineBasicMaterial color="white" />
-                    </lineSegments>
-                </mesh> */}
-            </group>
-        </>
+            gsap.to(groupRef.current.scale, {
+                delay: 0.5,
+                x: SCALE,
+                y: SCALE,
+                z: SCALE,
+                duration: 0.8,
+                ease: 'power2.out',
+            })
+            gsap.to(groupRef.current.position, {
+                delay: 0.5,
+                x: 0,
+                y: -20,
+                z: 0,
+                duration: 0.8,
+                ease: 'power2.out',
+            })
+        }
+    }, [isAccess])
+
+    useGSAP(() => {
+        if (!isLoading && groupRef.current) {
+            gsap.to(groupRef.current.scale, {
+                delay: 0.3,
+                x: 32,
+                y: 32,
+                z: 32,
+                duration: 0.5,
+                ease: 'circ.out',
+            })
+        }
+    }, [isLoading])
+
+    return (
+        <group ref={groupRef} scale={0}>
+            {/* Sun-like sphere */}
+            <mesh position={[0, 0, 0]}>
+                <sphereGeometry args={[0.65, 32, 32]} />
+                <SunGradientMaterial left={sunLeftColor} right={sunRightColor} />
+            </mesh>
+
+            <mesh ref={boxRef}>
+                <boxGeometry args={[1.75, 1.75, 1.75]} />
+                <meshBasicMaterial color="white" transparent opacity={0.01} />
+                <lineSegments>
+                    <edgesGeometry args={[new THREE.BoxGeometry(1.75, 1.75, 1.75)]} />
+                    <lineBasicMaterial color="white" />
+                </lineSegments>
+            </mesh>
+        </group>
     )
 }
