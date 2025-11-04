@@ -303,6 +303,9 @@ export default function Projects() {
         })
 
         // Animate each card's opacity and rotation using their refs
+
+        const cardsInfo = document.querySelectorAll('.gsap-project-info')
+
         cards.forEach((card, idx) => {
             const isEven = idx % 2 === 0
             const state = {
@@ -333,6 +336,23 @@ export default function Projects() {
                     // markers: true,
                 },
             })
+
+            tl.to(
+                cardsInfo[idx]!,
+                {
+                    opacity: 1,
+                    duration: 2,
+                },
+                0,
+            ).to(
+                cardsInfo[idx]!,
+                {
+                    opacity: 0,
+                    duration: 2,
+                },
+                4,
+            )
+
             tl.to(
                 state,
                 {
@@ -355,6 +375,7 @@ export default function Projects() {
                     },
                     0,
                 )
+
                 .to(
                     state,
                     {

@@ -2,7 +2,6 @@ import Footer from '@/features/home/components/Footer'
 import Heading from '@/features/home/components/Heading'
 import Skill from '@/features/home/components/Skill'
 import Typography from '@/features/home/components/Typography'
-import CanvasScene from '@/shared/components/canvas/scene/Scene'
 
 export default function Home() {
     return (
@@ -50,17 +49,28 @@ export default function Home() {
                     />
                 </div>
 
-                <div
-                    style={{ height: `800vh` }}
-                    id="gsap-projects-trigger"
-                    className="gsap-projects-trigger"
-                >
-                    <div className="container">
-                        <div className="flex h-screen items-end">
-                            <div className="gsap-project-title w-full text-center">
-                                {/* <h3 >IWC Schaffhausen</h3> */}
+                <div style={{ height: `800vh` }} id="gsap-projects-trigger" className="relative">
+                    <div className="fixed inset-0">
+                        {Array.from({ length: 8 }).map((_, idx) => (
+                            <div
+                                className="gsap-project-info absolute inset-0 flex items-end opacity-0"
+                                key={idx}
+                            >
+                                <div className="w-full space-y-10 text-center lg:py-40">
+                                    <h3>IWC Schaffhausen {idx + 1}</h3>
+
+                                    <a href="#">
+                                        <div className="glint-card glint-card-hover inline-block cursor-pointer rounded">
+                                            <div className="glint-card-wrapper rounded">
+                                                <div className="glint-card-content rounded !bg-black font-bold">
+                                                    Find out more
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
