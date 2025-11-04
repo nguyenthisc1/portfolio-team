@@ -83,7 +83,7 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
     const cards = Array.from(scopeElement.querySelectorAll('.glint-card'))
 
     const floatingAnim = gsap.to(cards, {
-        // yPercent: -5,
+        yPercent: -5,
         duration: 1.5,
         repeat: -1,
         ease: 'power1.inOut',
@@ -106,7 +106,7 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
             trigger: scopeElement,
             id: 'skill-pin',
             start: 'top 10%',
-            end: '150% top',
+            end: '200% top',
             pin: true,
             scrub: true,
             // markers: true,

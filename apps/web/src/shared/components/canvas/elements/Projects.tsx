@@ -332,7 +332,7 @@ export default function Projects() {
                     start: `${vh(startMesh)} top`,
                     end: `${vh(endMesh)} top`,
                     pin: false,
-                    scrub: true,
+                    scrub: 2,
                     // markers: true,
                 },
             })
