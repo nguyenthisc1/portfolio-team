@@ -50,6 +50,58 @@ export function setupHeadingAnimation(scopeElement: HTMLElement) {
     }
 }
 
+export function setupSpinningText(scopeElement: HTMLElement) {
+    const tl = gsap.timeline({ paused: true })
+
+    const split = new SplitText(scopeElement, {
+        type: 'chars',
+    }) as unknown as {
+        chars: Element[]
+        revert: () => void
+    }
+
+    split.chars.forEach((obj) => {
+        const txt = obj.textContent || ''
+        // Create two clones, each with increasing yOffset: -100 (1st clone), -200 (2nd clone)
+        const clone1 = `<div class="clone-text">${txt}</div>`
+        const clone2 = `<div class="clone-text">${txt}</div>`
+        const newHTML = `<div class="original-text">${txt}</div>${clone1}${clone2}`
+        obj.innerHTML = newHTML
+
+        const originalNode = obj.childNodes[0]
+        const cloneNode1 = obj.childNodes[1]
+        const cloneNode2 = obj.childNodes[2]
+
+        // Assign a random direction and speed for each char
+        const up = Math.random() < 0.5
+        // random duration between 2 and 5 seconds per char
+        const charDuration = 1 + Math.random() * 3
+
+        // Set the initial positions for the clones
+        gsap.set(cloneNode1!, {
+            yPercent: up ? -100 : 100,
+        })
+        gsap.set(cloneNode2!, {
+            yPercent: up ? -200 : 200,
+        })
+
+        // Animate all three (including original) together, with the same logic
+        const tween = gsap.to([originalNode, cloneNode1, cloneNode2], {
+            yPercent: up ? '+=200' : '-=200',
+            ease: 'power2.inOut',
+            duration: charDuration,
+        })
+
+        tl.add(tween, 0)
+    })
+
+    tl.play()
+
+    return () => {
+        if (typeof split.revert === 'function') split.revert()
+    }
+}
+
 export function setupSplitLinesAnimation(scopeElement: HTMLElement) {
     // Create SplitText instance on the provided scope element
     const split = new SplitText(scopeElement, { type: 'lines' }) as unknown as {

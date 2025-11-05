@@ -1,13 +1,14 @@
 import Footer from '@/features/home/components/Footer'
 import Heading from '@/features/home/components/Heading'
 import Skill from '@/features/home/components/Skill'
+import SpiningText from '@/features/home/components/SpinningText'
 import Typography from '@/features/home/components/Typography'
 
 export default function Home() {
     return (
         <>
             <header className="mx-auto mt-20 max-w-xl text-center">
-                <h1 className="hidden">Hoang Vu - Creative Designer & Web Developer</h1>
+                {/* <h1 className="hidden">Hoang Vu - </h1> */}
                 <p className="uppercase">
                     I’m a creative designer and web developer, passionate about building smart
                     design solutions that drive business growth.
@@ -21,7 +22,7 @@ export default function Home() {
                 <div className="space-y-5 text-center">
                     <h2 className="font-primary text-xl uppercase">Hoang Vu</h2>
                     <div className="mx-auto max-w-7xl text-center">
-                        <Heading as={3} text={'Website Developer'} className="h2 uppercase" />
+                        <SpiningText as={2} text="Website Developer" />
                     </div>
                 </div>
             </section>
@@ -49,7 +50,11 @@ export default function Home() {
                     />
                 </div>
 
-                <div style={{ height: `800vh` }} id="gsap-projects-trigger" className="relative">
+                <div
+                    style={{ height: `800vh` }}
+                    id="gsap-projects-trigger"
+                    className="pointer-events-none relative"
+                >
                     <div className="fixed inset-0">
                         {Array.from({ length: 8 }).map((_, idx) => (
                             <div
