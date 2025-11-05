@@ -340,14 +340,14 @@ export default function Projects() {
             tl.to(
                 cardsInfo[idx]!,
                 {
-                    opacity: 1,
+                    autoAlpha: 1,
                     duration: 2,
                 },
                 0,
             ).to(
                 cardsInfo[idx]!,
                 {
-                    opacity: 0,
+                    autoAlpha: 0,
                     duration: 2,
                 },
                 4,

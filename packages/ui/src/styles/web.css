@@ -266,6 +266,22 @@
             transform: rotate(360deg);
         }
     }
+
+    .spinning-text {
+        div {
+            /* vertical-align: top; */
+        }
+        .clone-text {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        span {
+            > div {
+                @apply overflow-hidden leading-[140px];
+            }
+        }
+    }
 }
 
 @layer utilities {
