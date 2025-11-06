@@ -97,22 +97,22 @@ export default function Logo() {
         if (isAccess && groupRef.current) {
             const SCALE = 24
 
-            gsap.to(groupRef.current.scale, {
-                delay: 0.5,
-                x: SCALE,
-                y: SCALE,
-                z: SCALE,
-                duration: 0.8,
-                ease: 'power2.out',
-            })
-            gsap.to(groupRef.current.position, {
-                delay: 0.5,
-                x: 0,
-                y: -20,
-                z: 0,
-                duration: 0.8,
-                ease: 'power2.out',
-            })
+            // gsap.to(groupRef.current.scale, {
+            //     delay: 0.5,
+            //     x: SCALE,
+            //     y: SCALE,
+            //     z: SCALE,
+            //     duration: 0.8,
+            //     ease: 'power2.out',
+            // })
+            // gsap.to(groupRef.current.position, {
+            //     delay: 0.5,
+            //     x: 0,
+            //     y: -20,
+            //     z: 0,
+            //     duration: 0.8,
+            //     ease: 'power2.out',
+            // })
         }
     }, [isAccess])
 
@@ -131,7 +131,6 @@ export default function Logo() {
 
     return (
         <group ref={groupRef} scale={0}>
-            {/* Sun-like sphere */}
             <mesh position={[0, 0, 0]}>
                 <sphereGeometry args={[0.65, 32, 32]} />
                 <SunGradientMaterial left={sunLeftColor} right={sunRightColor} />

@@ -2,7 +2,7 @@
 
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
-import { setupCardSkillAnimation } from '../../animations/animation'
+import { setupCardSkillAnimation } from '../animations/animation'
 
 type SkillData = {
     id: string

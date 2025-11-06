@@ -154,7 +154,7 @@ const StarField: React.FC<React.HTMLAttributes<HTMLCanvasElement>> = (props) => 
         if (!isLoading && canvasRef.current) {
             // Animate speedRef.current down
             gsap.to(speedRef, {
-                current: 0.005,
+                current: 0.003,
                 duration: 1,
                 ease: 'circ.out',
             })

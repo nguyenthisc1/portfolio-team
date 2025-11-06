@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 'use client'
 
-import { setupLoadingPage } from '@/features/animations/animation'
+import { setupLoadingPage } from '@/features/home/animations/animation'
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { Canvas, useLoader, useThree } from '@react-three/fiber'
@@ -134,21 +134,21 @@ export default function Scene() {
                 >
                     <Suspense fallback={null}>
                         <group name="global">
-                            <Logo />
+                            {/* <Logo /> */}
 
-                            {/* <Sky /> */}
+                            <Sky />
                         </group>
-                        {/* 
-                        <group name="projects" >
+
+                        <group name="projects">
                             <Ocean />
                             <Projects />
-                        </group> */}
+                        </group>
                     </Suspense>
                 </Canvas>
             </div>
 
-            <StarField />
-
+            {/* <StarField /> */}
+            {/* 
             <div
                 ref={textIntroRef}
                 className="h4 fixed inset-0 z-10 flex items-end justify-center py-40 text-black uppercase"
@@ -164,7 +164,7 @@ export default function Scene() {
                         Click to explore
                     </button>
                 )}
-            </div>
+            </div> */}
         </>
     )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { setupSpinningText } from '@/features/animations/animation'
+import { setupSpinningText } from '@/features/home/animations/animation'
 import { useGSAP } from '@gsap/react'
 import React, { JSX, useRef } from 'react'
 

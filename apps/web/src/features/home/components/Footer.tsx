@@ -2,7 +2,7 @@
 
 import { useGSAP } from '@gsap/react'
 import React, { useRef } from 'react'
-import { setupFooterAnimation } from '@/features/animations/animation'
+import { setupFooterAnimation } from '@/features/home/animations/animation'
 
 export default function Footer() {
     const ref = useRef<HTMLElement>(null)
