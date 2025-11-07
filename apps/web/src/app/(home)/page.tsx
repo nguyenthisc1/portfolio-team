@@ -9,6 +9,19 @@ export default function Home() {
         <>
             <Intro />
 
+            <section
+                aria-labelledby="philosophy-heading"
+                className="mx-auto mb-44 max-w-4xl space-y-10"
+            >
+                <h2 id="philosophy-heading" className="sr-only">
+                    Philosophy
+                </h2>
+                <Typography
+                    className="mr-20 ml-auto max-w-xs"
+                    text="I value simplicity without sacrificing originality. Every solution is effective, purposeful, and ready for real use."
+                />
+            </section>
+
             <section aria-labelledby="projects-heading" className="mb-44 space-y-10">
                 <div className="mx-auto max-w-5xl">
                     <Heading as={2} text={'Projects'} className={'h2 uppercase'} />

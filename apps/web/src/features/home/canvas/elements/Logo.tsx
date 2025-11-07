@@ -4,9 +4,10 @@ import { useGlobal } from '@/shared/stores/global'
 /* eslint-disable react/no-unknown-property */
 import { useGSAP } from '@gsap/react'
 import { useFrame } from '@react-three/fiber'
-import { useMemo, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import gsap from 'gsap'
+import Box from './Box'
 
 function SunGradientMaterial({
     left,
@@ -68,7 +69,7 @@ function hexToRgbArray(hex: string): [number, number, number] {
 export default function Logo() {
     const isAccess = useGlobal((state) => state.isAccess)
     const isLoading = useGlobal((state) => state.isLoading)
-
+    const [isAddBox, setisAddBox] = useState(false)
     const boxRef = useRef<THREE.Mesh>(null)
     const groupRef = useRef<THREE.Group>(null)
 
@@ -97,22 +98,22 @@ export default function Logo() {
         if (isAccess && groupRef.current) {
             const SCALE = 24
 
-            // gsap.to(groupRef.current.scale, {
-            //     delay: 0.5,
-            //     x: SCALE,
-            //     y: SCALE,
-            //     z: SCALE,
-            //     duration: 0.8,
-            //     ease: 'power2.out',
-            // })
-            // gsap.to(groupRef.current.position, {
-            //     delay: 0.5,
-            //     x: 0,
-            //     y: -20,
-            //     z: 0,
-            //     duration: 0.8,
-            //     ease: 'power2.out',
-            // })
+            gsap.to(groupRef.current.scale, {
+                delay: 0.5,
+                x: SCALE,
+                y: SCALE,
+                z: SCALE,
+                duration: 1,
+                ease: 'power2.inOut',
+            })
+            gsap.to(groupRef.current.position, {
+                delay: 0.5,
+                x: 0,
+                y: -28,
+                z: 0,
+                duration: 1,
+                ease: 'power2.inOut',
+            })
         }
     }, [isAccess])
 
@@ -125,6 +126,7 @@ export default function Logo() {
                 z: 32,
                 duration: 0.5,
                 ease: 'circ.out',
+                onComplete: () => setisAddBox(true),
             })
         }
     }, [isLoading])
@@ -136,6 +138,8 @@ export default function Logo() {
                 <SunGradientMaterial left={sunLeftColor} right={sunRightColor} />
             </mesh>
 
+            {isAddBox && <Box />}
+            {/* 
             <mesh ref={boxRef}>
                 <boxGeometry args={[1.75, 1.75, 1.75]} />
                 <meshBasicMaterial color="white" transparent opacity={0.01} />
@@ -143,7 +147,7 @@ export default function Logo() {
                     <edgesGeometry args={[new THREE.BoxGeometry(1.75, 1.75, 1.75)]} />
                     <lineBasicMaterial color="white" />
                 </lineSegments>
-            </mesh>
+            </mesh> */}
         </group>
     )
 }

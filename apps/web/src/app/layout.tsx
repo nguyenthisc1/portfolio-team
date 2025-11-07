@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { GsapProvider } from '@/shared/providers/GsapProvider'
 import Scene from '@/features/home/canvas/scene/Scene'
+import Loading from '@/shared/components/Loading'
 
 const ibmPlexSansCondensedBoldItalic = localFont({
     src: [
@@ -66,8 +67,8 @@ export default function RootLayout({
             </head>
             <body className="antialiased">
                 <GsapProvider>
-                    {children}
-                    {/* <Scene /> */}
+                    <Loading>{children}</Loading>
+                    <Scene />
                 </GsapProvider>
             </body>
         </html>

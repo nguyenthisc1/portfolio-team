@@ -31,35 +31,19 @@ export function GsapProvider({ children }: Props): React.JSX.Element {
         }
 
         lenis.on('scroll', updateScrollTrigger)
-
         ScrollTrigger.defaults({ markers: false })
         ScrollTrigger.config({ ignoreMobileResize: true })
 
-        // Setup ScrollTrigger's scrollerProxy
         if (ScrollTrigger.scrollerProxy) {
             ScrollTrigger.scrollerProxy(document.body, {
                 scrollTop(value) {
-                    if (typeof value !== 'undefined') {
-                        lenis.scrollTo(value, { immediate: true })
-                    }
+                    if (typeof value !== 'undefined') lenis.scrollTo(value, { immediate: true })
                     return lenis.scroll
                 },
                 getBoundingClientRect() {
-                    return {
-                        top: 0,
-                        left: 0,
-                        width: window.innerWidth,
-                        height: window.innerHeight,
-                    }
+                    return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }
                 },
             })
-        }
-
-        // Stop/start Lenis based on isAccess
-        if (isAccess) {
-            lenis.stop()
-        } else {
-            lenis.start()
         }
 
         return () => {
@@ -67,6 +51,12 @@ export function GsapProvider({ children }: Props): React.JSX.Element {
             lenis.destroy()
             lenisRef.current = null
         }
+    }, [])
+
+    useEffect(() => {
+        if (!lenisRef.current) return
+        if (!isAccess) lenisRef.current.stop()
+        else lenisRef.current.start()
     }, [isAccess])
 
     return <>{children}</>

@@ -276,18 +276,18 @@
             left: 0;
             top: 0;
         }
-   
+
         span {
             > div {
-                @apply overflow-hidden
+                @apply overflow-hidden;
             }
         }
 
-        h2,.h2 {
-            span {
-                > div {
-                    @apply leading-[140px] 2xl:leading-[170px];
-                }
+        &h2,
+        &.h2 {
+            .original-text,
+            .clone-text {
+                @apply leading-[140px] 2xl:leading-[170px];
             }
         }
     }

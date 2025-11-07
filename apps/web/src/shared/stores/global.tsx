@@ -6,7 +6,7 @@ interface Global {
     isLoading: boolean
     setIsLoading: (loading: boolean) => void
     isAccess: boolean
-    setIsAccess: (loading: boolean) => void
+    setIsAccess: (access: boolean) => void
 }
 
 export const useGlobal = create<Global>((set) => ({
@@ -15,5 +15,5 @@ export const useGlobal = create<Global>((set) => ({
     isLoading: true,
     setIsLoading: (loading: boolean) => set({ isLoading: loading }),
     isAccess: false,
-    setIsAccess: (loading: boolean) => set({ isAccess: loading }),
+    setIsAccess: (access: boolean) => set({ isAccess: access }),
 }))
