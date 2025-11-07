@@ -9,6 +9,60 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger, SplitText)
 }
 
+export function setupIntroHomeAnimation(scopeElement: HTMLElement) {
+    const cleanups: (() => void)[] = []
+
+    const timeline = gsap.timeline({ paused: true, delay: 0.5 })
+
+    const introHeading = scopeElement.querySelector('.intro-heading') as HTMLElement | null
+    if (introHeading) {
+        gsap.set(introHeading, { autoAlpha: 0 })
+
+        // Reveal with delay
+        timeline.to(introHeading, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0)
+
+        const cleanupSpinning = setupSpinningText(introHeading, 0.5)
+        if (typeof cleanupSpinning === 'function') cleanups.push(cleanupSpinning)
+    }
+
+    const introDescription = scopeElement.querySelector('.intro-description') as HTMLElement | null
+    if (introDescription) {
+        const split = new SplitText(introDescription, { type: 'lines' }) as unknown as {
+            lines: Element[]
+            revert: () => void
+        }
+
+        timeline.from(
+            split.lines,
+            {
+                autoAlpha: 0,
+                y: 30,
+                stagger: 0.1,
+                duration: 0.6,
+                ease: 'power1.out',
+            },
+            0,
+        )
+
+        // Clean up SplitText afterwards to prevent DOM leak
+        cleanups.push(() => {
+            split.revert()
+        })
+    }
+
+    // Make timelineRef compatibility:
+    // Add .pause, .play, .cleanup directly onto timeline for ref forwarding like a real Timeline instance
+    const withExtras = timeline as typeof timeline & {
+        cleanup: () => void
+    }
+    withExtras.cleanup = () => {
+        timeline.kill()
+        cleanups.forEach((fn) => typeof fn === 'function' && fn())
+    }
+
+    return withExtras
+}
+
 export function setupFooterAnimation(scopeElement: HTMLElement) {
     const timeline = gsap.timeline({
         scrollTrigger: {
@@ -50,49 +104,64 @@ export function setupHeadingAnimation(scopeElement: HTMLElement) {
     }
 }
 
-export function setupSpinningText(scopeElement: HTMLElement) {
+export function setupSpinningText(scopeElement: HTMLElement, delay?: number) {
     const tl = gsap.timeline({ paused: true })
 
     const split = new SplitText(scopeElement, {
-        type: 'chars',
+        type: 'lines, chars',
+        linesClass: 'line',
+        charsClass: 'char',
     }) as unknown as {
         chars: Element[]
+        lines: Element[]
         revert: () => void
     }
 
-    split.chars.forEach((obj) => {
-        const txt = obj.textContent || ''
-        // Create two clones, each with increasing yOffset: -100 (1st clone), -200 (2nd clone)
-        const clone1 = `<div class="clone-text">${txt}</div>`
-        const clone2 = `<div class="clone-text">${txt}</div>`
-        const newHTML = `<div class="original-text">${txt}</div>${clone1}${clone2}`
-        obj.innerHTML = newHTML
+    split.lines.forEach((line, lineIdx) => {
+        const lineChars = Array.from(line.querySelectorAll('.char'))
+        console.log(lineChars)
+        lineChars.forEach((obj) => {
+            const txt = obj.textContent || ''
+            // Create two clones, each with increasing yOffset: -100 (1st clone), -200 (2nd clone)
+            const clone1 = `<div class="clone-text">${txt}</div>`
+            const clone2 = `<div class="clone-text">${txt}</div>`
+            const newHTML = `<div class="original-text">${txt}</div>${clone1}${clone2}`
+            obj.innerHTML = newHTML
 
-        const originalNode = obj.childNodes[0]
-        const cloneNode1 = obj.childNodes[1]
-        const cloneNode2 = obj.childNodes[2]
+            const originalNode = obj.childNodes[0]
+            const cloneNode1 = obj.childNodes[1]
+            const cloneNode2 = obj.childNodes[2]
 
-        // Assign a random direction and speed for each char
-        const up = Math.random() < 0.5
-        // random duration between 2 and 5 seconds per char
-        const charDuration = 1 + Math.random() * 3
+            // Assign a random direction and speed for each char
+            const up = Math.random() < 0.5
+            // random duration between 2 and 5 seconds per char
+            const charDuration = 1 + Math.random() * 3
 
-        // Set the initial positions for the clones
-        gsap.set(cloneNode1!, {
-            yPercent: up ? -100 : 100,
+            // Set initial positions for original and clones based on direction
+            const baseYOffset = up ? -100 : 100
+
+            gsap.set(originalNode!, {
+                yPercent: baseYOffset,
+            })
+            gsap.set(cloneNode1!, {
+                yPercent: baseYOffset + (up ? -100 : 100),
+            })
+            gsap.set(cloneNode2!, {
+                yPercent: baseYOffset + (up ? -200 : 200),
+            })
+
+            // Stagger based on line index
+            const lineDelay = (typeof delay === 'number' ? delay : 0) + lineIdx * 0.2 // 0.2s delay per line
+
+            const tween = gsap.to([originalNode, cloneNode1, cloneNode2], {
+                yPercent: up ? `+=300` : `-=300`,
+                ease: 'power2.inOut',
+                duration: charDuration,
+                delay: lineDelay,
+            })
+
+            tl.add(tween, lineIdx + 0.2)
         })
-        gsap.set(cloneNode2!, {
-            yPercent: up ? -200 : 200,
-        })
-
-        // Animate all three (including original) together, with the same logic
-        const tween = gsap.to([originalNode, cloneNode1, cloneNode2], {
-            yPercent: up ? '+=200' : '-=200',
-            ease: 'power2.inOut',
-            duration: charDuration,
-        })
-
-        tl.add(tween, 0)
     })
 
     tl.play()
