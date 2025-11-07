@@ -176,7 +176,7 @@ const StarField: React.FC<React.HTMLAttributes<HTMLCanvasElement>> = (props) => 
                     }
                     // Remove from DOM after duration (in case onComplete runs slightly before end)
                     setTimeout(() => {
-                        setVisible(false)
+                        setVisible(true)
                     }, 0) // Already fully faded, remove immediately
                 },
             })
