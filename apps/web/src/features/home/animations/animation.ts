@@ -181,9 +181,10 @@ export function setupSplitLinesAnimation(scopeElement: HTMLElement) {
     const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: scopeElement,
-            start: 'top 70%',
-            end: 'bottom 20%',
+            start: 'top 90%',
+            end: 'bottom center',
             scrub: true,
+            // markers: true,
         },
     })
 
