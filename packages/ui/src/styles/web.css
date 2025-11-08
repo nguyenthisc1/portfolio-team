@@ -75,7 +75,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
 
-        @apply font-primary bg-black text-base text-white md:text-lg xl:text-xl;
+        @apply font-primary bg-[#090909] text-base text-white md:text-lg xl:text-xl;
         &::-webkit-scrollbar {
             display: none;
         }
