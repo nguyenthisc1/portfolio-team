@@ -5,7 +5,7 @@ import { Suspense, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import Logo from '../elements/Logo'
 import Ocean from '../elements/Ocean'
-import { useControls } from 'leva'
+import { Leva, useControls } from 'leva'
 import Projects from '../elements/Projects'
 import { useGSAP } from '@gsap/react'
 import { useGlobal } from '@/shared/stores/global'
@@ -122,6 +122,8 @@ export default function Scene() {
                         </group>
                     </Suspense>
                 </Canvas>
+
+                <Leva hidden={true} />
             </div>
         </>
     )
