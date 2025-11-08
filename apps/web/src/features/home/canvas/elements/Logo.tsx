@@ -95,41 +95,74 @@ export default function Logo() {
     const sunRightColor = hexToRgbArray(sun_right.value)
 
     useGSAP(() => {
-        if (isAccess && groupRef.current) {
+        if (!isLoading && groupRef.current) {
             const SCALE = 24
 
             gsap.to(groupRef.current.scale, {
-                delay: 0.5,
+                delay: 0.3,
                 x: SCALE,
                 y: SCALE,
                 z: SCALE,
-                duration: 1,
-                ease: 'power2.inOut',
-            })
-            gsap.to(groupRef.current.position, {
-                delay: 0.5,
-                x: 0,
-                y: -28,
-                z: 0,
-                duration: 1,
-                ease: 'power2.inOut',
-            })
-        }
-    }, [isAccess])
-
-    useGSAP(() => {
-        if (!isLoading && groupRef.current) {
-            gsap.to(groupRef.current.scale, {
-                delay: 0.3,
-                x: 32,
-                y: 32,
-                z: 32,
                 duration: 0.5,
                 ease: 'circ.out',
                 onComplete: () => setisAddBox(true),
             })
         }
     }, [isLoading])
+
+    useGSAP(() => {
+        if (isAccess && groupRef.current) {
+            const SCALE = 32
+            gsap.to(groupRef.current.scale, {
+                x: SCALE,
+                y: SCALE,
+                z: SCALE,
+                duration: 1.5,
+                ease: 'power2.inOut',
+                scrollTrigger: {
+                    trigger: '#profile',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1.5,
+                },
+            })
+        }
+    }, [isAccess])
+
+    useGSAP(() => {
+        if (isAccess && groupRef.current) {
+            const timeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.tt-heading-wrapper',
+                    start: 'top 70%',
+                    end: '300% 30%',
+                    scrub: true,
+                    // markers: true,
+                },
+            })
+
+            const SCALE = 0
+            timeline.to(
+                groupRef.current.scale,
+                {
+                    x: SCALE,
+                    y: SCALE,
+                    z: SCALE,
+                    ease: 'power2.inOut',
+                },
+                0,
+            )
+            timeline.to(
+                groupRef.current.position,
+                {
+                    x: -500,
+                    z: -500,
+                    ease: 'power2.inOut',
+                },
+                0,
+            )
+        }
+    }, [isAccess])
 
     return (
         <group ref={groupRef} scale={0}>
