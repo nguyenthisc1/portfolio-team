@@ -86,7 +86,7 @@ function BoxPlanes() {
                 start: 'top top',
                 end: 'bottom top',
                 scrub: 1.5,
-                markers: true,
+                // markers: true,
             },
         })
 
@@ -133,7 +133,7 @@ function BoxPlanes() {
     useGSAP(() => {
         if (!isAccess) return
 
-        const distance = 4
+        const distance = 10
         animateScroll(distance)
     }, [isAccess])
 
