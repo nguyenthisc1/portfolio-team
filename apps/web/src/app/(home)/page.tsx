@@ -10,8 +10,9 @@ export default function Home() {
             <Intro />
 
             <section
+                id="philosophy"
                 aria-labelledby="philosophy-heading"
-                className="mx-auto mb-44 max-w-4xl space-y-10"
+                className="mx-auto mb-[50%] max-w-4xl space-y-10"
             >
                 <h2 id="philosophy-heading" className="sr-only">
                     Philosophy
@@ -62,7 +63,7 @@ export default function Home() {
                 </div>
             </section>
 
-            <section aria-labelledby="about-team-heading" className="mb-32">
+            <section id="about" aria-labelledby="about-team-heading" className="mb-32">
                 <div className="text-primary mb-44 text-center uppercase">
                     <Heading
                         id="about-team-heading"
