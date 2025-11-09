@@ -3,7 +3,6 @@ import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
@@ -195,7 +194,32 @@ function ImageCard({
         }
     })
 
-    return <mesh ref={meshRef} geometry={geometry} material={material} />
+    const shaderControls = useControls('Glow Card', {
+        falloff: { value: 1.4, min: 0.0, max: 10.0 },
+        glowSharpness: {
+            value: 0.0,
+            min: 0.0,
+            max: 10.0,
+        },
+        glowColor: { value: 'fd5d00' },
+        glowInternalRadius: {
+            value: 1.5,
+            min: -5.0,
+            max: 5.0,
+        },
+        opacity: {
+            value: 0.8,
+            min: 0.0,
+            max: 1.0,
+        },
+        depthTest: false,
+    })
+
+    return (
+        <>
+            <mesh ref={meshRef} geometry={geometry} material={material} />
+        </>
+    )
 }
 
 type ProjectCard = {
@@ -381,9 +405,21 @@ export default function Projects() {
                 },
             })
 
-            tl.to(cardsInfo[idx]!, { autoAlpha: 1, duration: 2 }, 0).to(
+            tl.to(
                 cardsInfo[idx]!,
-                { autoAlpha: 0, duration: 2 },
+                {
+                    autoAlpha: 1,
+                    duration: 2,
+                    pointerEvents: 'auto',
+                },
+                0,
+            ).to(
+                cardsInfo[idx]!,
+                {
+                    autoAlpha: 0,
+                    duration: 2,
+                    pointerEvents: 'none',
+                },
                 4,
             )
 
