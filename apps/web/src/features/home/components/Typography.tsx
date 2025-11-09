@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
 import { setupSplitLinesAnimation } from '@/features/home/animations/animation'
+import { useGlobal } from '@/shared/stores/global'
+import { useGSAP } from '@gsap/react'
+import { useRef } from 'react'
 
 interface Props {
     text: string
@@ -11,14 +12,15 @@ interface Props {
 
 export default function Typography({ text, className }: Props) {
     const textRef = useRef<HTMLDivElement | null>(null)
+    const isAccess = useGlobal((state) => state.isAccess)
 
     useGSAP(() => {
-        if (!textRef.current) return
-        const cleanup = setupSplitLinesAnimation(textRef.current)
+        if (!textRef.current && !isAccess) return
+        const cleanup = setupSplitLinesAnimation(textRef.current!)
         return () => {
             if (cleanup) cleanup()
         }
-    }, [text])
+    }, [isAccess])
 
     return (
         <div ref={textRef} className={className}>
