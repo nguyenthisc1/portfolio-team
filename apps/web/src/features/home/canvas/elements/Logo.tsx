@@ -4,24 +4,27 @@ import { useGlobal } from '@/shared/stores/global'
 /* eslint-disable react/no-unknown-property */
 import { useGSAP } from '@gsap/react'
 import { useFrame } from '@react-three/fiber'
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
-import * as THREE from 'three'
 import gsap from 'gsap'
+import { useControls } from 'leva'
+import { useMemo, useRef, useState } from 'react'
+import * as THREE from 'three'
 import Box from './Box'
+import FakeGlowMaterial from './FakeGlow'
 
+// Gradient is now vertical: colorTop (at vUv.y = 0.7) to colorBottom (at vUv.y = 1.0)
 function SunGradientMaterial({
-    left,
-    right,
+    top,
+    bottom,
 }: {
-    left: [number, number, number]
-    right: [number, number, number]
+    top: [number, number, number]
+    bottom: [number, number, number]
 }) {
     const uniforms = useMemo(
         () => ({
-            colorLeft: { value: left },
-            colorRight: { value: right },
+            colorTop: { value: top },
+            colorBottom: { value: bottom },
         }),
-        [left, right],
+        [top, bottom],
     )
 
     return (
@@ -39,12 +42,14 @@ function SunGradientMaterial({
             }
             fragmentShader={
                 /* glsl */ `
-                uniform vec3 colorLeft;
-                uniform vec3 colorRight;
+                uniform vec3 colorTop;
+                uniform vec3 colorBottom;
                 varying vec2 vUv;
                 void main() {
-                  vec3 color = mix(colorLeft, colorRight, vUv.x);
-                  gl_FragColor = vec4(color, 1.0);
+                  // Create a gradient that is colorTop for top 70%, then blends to colorBottom
+                  float grad = smoothstep(0.1, 0.8, vUv.y);
+                  vec3 color = mix(colorBottom, colorTop, grad);
+                  gl_FragColor = vec4(color, 1);
                 }
             `
             }
@@ -53,9 +58,7 @@ function SunGradientMaterial({
 }
 
 function hexToRgbArray(hex: string): [number, number, number] {
-    // Remove hash
     hex = hex.replace(/^#/, '')
-    // Parse short hex
     if (hex.length === 3) {
         hex = hex
             .split('')
@@ -73,16 +76,17 @@ export default function Logo() {
     const boxRef = useRef<THREE.Mesh>(null)
     const groupRef = useRef<THREE.Group>(null)
 
-    const { sun_left, sun_right } = {
-        sun_left: {
-            label: 'Gradient Left',
-            value: '#ffdd6e',
-        },
-        sun_right: {
-            label: 'Gradient Right',
+    // Use Leva UI for gradient color picking; now vertical (top/bottom)
+    const { sunTopHex, sunBottomHex } = useControls('Logo Gradient', {
+        sunTopHex: {
+            label: 'Gradient Top',
             value: '#fd5d00',
         },
-    }
+        sunBottomHex: {
+            label: 'Gradient Bottom',
+            value: '#ff9041',
+        },
+    })
 
     useFrame((_, delta) => {
         if (boxRef.current) {
@@ -91,8 +95,8 @@ export default function Logo() {
         }
     })
 
-    const sunLeftColor = hexToRgbArray(sun_left.value)
-    const sunRightColor = hexToRgbArray(sun_right.value)
+    const sunTopColor = hexToRgbArray(sunTopHex)
+    const sunBottomColor = hexToRgbArray(sunBottomHex)
 
     useGSAP(() => {
         if (!isLoading && groupRef.current) {
@@ -134,7 +138,7 @@ export default function Logo() {
             const timeline = gsap.timeline({
                 scrollTrigger: {
                     trigger: '.tt-heading-wrapper',
-                    start: 'top 70%',
+                    start: '-50% 70%',
                     end: '300% 30%',
                     scrub: true,
                     // markers: true,
@@ -164,15 +168,43 @@ export default function Logo() {
         }
     }, [isAccess])
 
-    return (
-        <group ref={groupRef} scale={0}>
-            <mesh position={[0, 0, 0]}>
-                <sphereGeometry args={[0.65, 32, 32]} />
-                <SunGradientMaterial left={sunLeftColor} right={sunRightColor} />
-            </mesh>
+    const shaderControls = useControls('Glow Logo', {
+        falloff: { value: 1.4, min: 0.0, max: 10.0 },
+        glowSharpness: {
+            value: 0.0,
+            min: 0.0,
+            max: 10.0,
+        },
+        glowColor: { value: sunTopHex },
+        glowInternalRadius: {
+            value: 1.5,
+            min: -5.0,
+            max: 5.0,
+        },
+        opacity: {
+            value: 0.8,
+            min: 0.0,
+            max: 1.0,
+        },
+        depthTest: false,
+    })
 
-            {isAddBox && <Box />}
-            {/* 
+    return (
+        <>
+            <group ref={groupRef} scale={0}>
+                <mesh scale={2}>
+                    <sphereGeometry args={[0.65, 64, 64]} />
+                    <FakeGlowMaterial {...shaderControls} />
+                </mesh>
+
+                {isAddBox && <Box />}
+
+                <mesh position={[0, 0, 0]}>
+                    <sphereGeometry args={[0.65, 32, 32]} />
+                    <SunGradientMaterial top={sunTopColor} bottom={sunBottomColor} />
+                </mesh>
+
+                {/* 
             <mesh ref={boxRef}>
                 <boxGeometry args={[1.75, 1.75, 1.75]} />
                 <meshBasicMaterial color="white" transparent opacity={0.01} />
@@ -181,6 +213,7 @@ export default function Logo() {
                     <lineBasicMaterial color="white" />
                 </lineSegments>
             </mesh> */}
-        </group>
+            </group>
+        </>
     )
 }
