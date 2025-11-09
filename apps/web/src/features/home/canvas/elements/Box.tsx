@@ -1,19 +1,22 @@
 /* eslint-disable react/no-unknown-property */
 'use client'
 
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { useGlobal } from '@/shared/stores/global'
+import { useGSAP } from '@gsap/react'
+import { useFrame } from '@react-three/fiber'
+import gsap from 'gsap'
+import { useRef, useState } from 'react'
+import * as THREE from 'three'
 
 function BoxPlanes() {
     const planeGroups = useRef<THREE.Group[]>([])
     const planes = useRef<THREE.Mesh[]>([])
     const lineMaterials = useRef<THREE.LineBasicMaterial[]>([])
     const groupRef = useRef<THREE.Group>(null)
+
     const isAccess = useGlobal((state) => state.isAccess)
+    const [isRotate, setIsRotate] = useState(true)
+
     const POSITIONS = [
         { axis: 'x', sign: 1, rot: [0, Math.PI / 2, 0] }, // right
         { axis: 'x', sign: -1, rot: [0, -Math.PI / 2, 0] }, // left
@@ -87,6 +90,8 @@ function BoxPlanes() {
                 end: 'bottom top',
                 scrub: 1.5,
                 // markers: true,
+                onEnterBack: () => setIsRotate(true),
+                onLeave: () => setIsRotate(false),
             },
         })
 
@@ -140,13 +145,17 @@ function BoxPlanes() {
     // Rotate group
     useFrame((_, delta) => {
         if (groupRef.current) {
-            groupRef.current.rotation.x += delta * 0.2
-            groupRef.current.rotation.y += delta * 0.3
+            if (isRotate) {
+                groupRef.current.rotation.x += delta * 0.2
+                groupRef.current.rotation.y += delta * 0.3
+            }
         }
     })
 
     return (
         <group ref={groupRef}>
+            <pointLight position={[0, 0, 0]} intensity={5} color={'#fd5d00'} distance={2} />
+
             {[...Array(6)].map((_, i) => (
                 <group
                     key={i}
@@ -156,7 +165,7 @@ function BoxPlanes() {
                     <mesh ref={(el) => el && (planes.current[i]! = el)}>
                         <planeGeometry args={[1.8, 1.8]} />
                         <meshBasicMaterial
-                            color="#ffffff"
+                            color="#00000f"
                             transparent
                             opacity={0}
                             side={THREE.DoubleSide}
@@ -167,10 +176,10 @@ function BoxPlanes() {
                         <edgesGeometry args={[new THREE.PlaneGeometry(1.8, 1.8)]} />
                         <lineBasicMaterial
                             ref={(el) => el && (lineMaterials.current[i] = el)}
-                            color="#000fff"
+                            color="#ffffff"
                             transparent
                             opacity={0}
-                            linewidth={2}
+                            linewidth={5}
                         />
                     </lineSegments>
                 </group>
