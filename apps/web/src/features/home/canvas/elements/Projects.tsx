@@ -49,21 +49,30 @@ float roundedBoxSDF(vec2 p, vec2 b, float r) {
 }
 
 void main(){
-    // Map vUv (0,1) to (centered) positions in card units
+  vec4 tex = texture2D(uTexture, vUv);
+        
     float w = uWidth * 0.5;
     float h = uHeight * 0.5;
     vec2 p = vec2(vUv.x * uWidth - w, vUv.y * uHeight - h);
     float radius = min(uRadius, min(w, h));
 
+    // Distance field for rounded box
     float sdf = roundedBoxSDF(p, vec2(w, h) - vec2(radius), radius);
 
-    // Opacity mask: antialiased border for soft edges
-    float antiAlias = fwidth(sdf) * 2.0; // 2px feather
+    // Antialiased edges
+    float antiAlias = fwidth(sdf) * 2.0;
     float alpha = smoothstep(0.0, -antiAlias, sdf);
-
     if (alpha < 0.01) discard;
-    vec4 color = texture2D(uTexture, vUv);
-    gl_FragColor = vec4(color.rgb, color.a * alpha * uOpacity);
+
+    // --- Border glow logic ---
+    float borderThickness = 0.0; // pixels, chỉnh cho phù hợp
+    float borderMask = smoothstep(borderThickness, 1.0, abs(sdf)); 
+
+    // Màu sáng của border
+    vec3 baseColor = tex.rgb;
+    vec3 glowColor = mix(baseColor, baseColor * 1.1, borderMask);
+
+    gl_FragColor = vec4(glowColor, tex.a * uOpacity);
 }
 `
 
@@ -475,6 +484,7 @@ export default function Projects() {
             ref={groupRefFirst}
             position={groupFirstPosRef.current}
             scale={groupFirstScaleRef.current}
+            layers={10}
         >
             <group ref={groupRefSecond} position={groupSecondPosRef.current} rotation={[0, 0, 0]}>
                 {cards.map((item, idx) => (
