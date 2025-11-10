@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unknown-property */
 'use client'
 
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
-import { Suspense, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import Logo from '../elements/Logo'
 import Ocean from '../elements/Ocean'
@@ -10,6 +11,7 @@ import Projects from '../elements/Projects'
 import { useGSAP } from '@gsap/react'
 import { useGlobal } from '@/shared/stores/global'
 import gsap from 'gsap'
+import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing'
 
 function Sky() {
     const { scene } = useThree()
@@ -36,7 +38,24 @@ function CameraController({ leva }: { leva: any }) {
         camera.rotation.set(leva.rotX, leva.rotY, leva.rotZ)
     })
 
-    return null
+    useEffect(() => {
+        camera.layers.enable(0)
+        camera.layers.enable(10)
+    }, [camera])
+
+    return (
+        <>
+            <EffectComposer multisampling={0}>
+                <SelectiveBloom
+                    selectionLayer={10}
+                    intensity={0.2}
+                    luminanceThreshold={1}
+                    luminanceSmoothing={1}
+                    mipmapBlur
+                />
+            </EffectComposer>
+        </>
+    )
 }
 
 export default function Scene() {
@@ -58,20 +77,22 @@ export default function Scene() {
     // and NOT include camera.position/rotation as react props below.
 
     useGSAP(() => {
-        if (!canvasRef.current && !isAccess) return
+        if (!canvasRef.current) return
 
-        gsap.to(leva, {
-            camY: 10,
-            duration: 1.5,
-            ease: 'power2.inOut',
-            scrollTrigger: {
-                trigger: '#gsap-projects-trigger',
-                start: 'top top',
-                end: '450px top',
-                scrub: 2,
-                // markers: true,
-            },
-        })
+        if (isAccess) {
+            gsap.to(leva, {
+                camY: 10,
+                duration: 1.5,
+                ease: 'power2.inOut',
+                scrollTrigger: {
+                    trigger: '#gsap-projects-trigger',
+                    start: 'top top',
+                    end: '450px top',
+                    scrub: 2,
+                    // markers: true,
+                },
+            })
+        }
     }, [isAccess])
 
     return (
@@ -105,7 +126,8 @@ export default function Scene() {
                     }}
                     gl={{
                         toneMapping: THREE.NeutralToneMapping,
-                        toneMappingExposure: 0.2,
+                        toneMappingExposure: 0,
+                        outputColorSpace: THREE.LinearSRGBColorSpace,
                     }}
                 >
                     <CameraController leva={leva} />

@@ -3,7 +3,6 @@ import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
@@ -50,21 +49,30 @@ float roundedBoxSDF(vec2 p, vec2 b, float r) {
 }
 
 void main(){
-    // Map vUv (0,1) to (centered) positions in card units
+  vec4 tex = texture2D(uTexture, vUv);
+        
     float w = uWidth * 0.5;
     float h = uHeight * 0.5;
     vec2 p = vec2(vUv.x * uWidth - w, vUv.y * uHeight - h);
     float radius = min(uRadius, min(w, h));
 
+    // Distance field for rounded box
     float sdf = roundedBoxSDF(p, vec2(w, h) - vec2(radius), radius);
 
-    // Opacity mask: antialiased border for soft edges
-    float antiAlias = fwidth(sdf) * 2.0; // 2px feather
+    // Antialiased edges
+    float antiAlias = fwidth(sdf) * 2.0;
     float alpha = smoothstep(0.0, -antiAlias, sdf);
-
     if (alpha < 0.01) discard;
-    vec4 color = texture2D(uTexture, vUv);
-    gl_FragColor = vec4(color.rgb, color.a * alpha * uOpacity);
+
+    // --- Border glow logic ---
+    float borderThickness = 0.0; // pixels, chỉnh cho phù hợp
+    float borderMask = smoothstep(borderThickness, 1.0, abs(sdf)); 
+
+    // Màu sáng của border
+    vec3 baseColor = tex.rgb;
+    vec3 glowColor = mix(baseColor, baseColor * 1.1, borderMask);
+
+    gl_FragColor = vec4(glowColor, tex.a * uOpacity);
 }
 `
 
@@ -195,7 +203,32 @@ function ImageCard({
         }
     })
 
-    return <mesh ref={meshRef} geometry={geometry} material={material} />
+    const shaderControls = useControls('Glow Card', {
+        falloff: { value: 1.4, min: 0.0, max: 10.0 },
+        glowSharpness: {
+            value: 0.0,
+            min: 0.0,
+            max: 10.0,
+        },
+        glowColor: { value: 'fd5d00' },
+        glowInternalRadius: {
+            value: 1.5,
+            min: -5.0,
+            max: 5.0,
+        },
+        opacity: {
+            value: 0.8,
+            min: 0.0,
+            max: 1.0,
+        },
+        depthTest: false,
+    })
+
+    return (
+        <>
+            <mesh ref={meshRef} geometry={geometry} material={material} />
+        </>
+    )
 }
 
 type ProjectCard = {
@@ -381,9 +414,21 @@ export default function Projects() {
                 },
             })
 
-            tl.to(cardsInfo[idx]!, { autoAlpha: 1, duration: 2 }, 0).to(
+            tl.to(
                 cardsInfo[idx]!,
-                { autoAlpha: 0, duration: 2 },
+                {
+                    autoAlpha: 1,
+                    duration: 2,
+                    pointerEvents: 'auto',
+                },
+                0,
+            ).to(
+                cardsInfo[idx]!,
+                {
+                    autoAlpha: 0,
+                    duration: 2,
+                    pointerEvents: 'none',
+                },
                 4,
             )
 
@@ -439,6 +484,7 @@ export default function Projects() {
             ref={groupRefFirst}
             position={groupFirstPosRef.current}
             scale={groupFirstScaleRef.current}
+            layers={10}
         >
             <group ref={groupRefSecond} position={groupSecondPosRef.current} rotation={[0, 0, 0]}>
                 {cards.map((item, idx) => (

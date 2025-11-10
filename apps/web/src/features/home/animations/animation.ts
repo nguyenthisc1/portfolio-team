@@ -119,7 +119,7 @@ export function setupSpinningText(scopeElement: HTMLElement, delay?: number) {
 
     split.lines.forEach((line, lineIdx) => {
         const lineChars = Array.from(line.querySelectorAll('.char'))
-        console.log(lineChars)
+
         lineChars.forEach((obj) => {
             const txt = obj.textContent || ''
             // Create two clones, each with increasing yOffset: -100 (1st clone), -200 (2nd clone)
