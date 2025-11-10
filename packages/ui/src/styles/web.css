@@ -75,7 +75,10 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
 
-        @apply font-primary bg-[#090909] text-base text-white md:text-lg xl:text-xl;
+        @apply font-primary text-base text-white md:text-lg xl:text-xl;
+        background-color: #1a1a1a;
+        /* background-color: #090909; */
+        /* bg-[#090909] */
         &::-webkit-scrollbar {
             display: none;
         }
@@ -278,12 +281,12 @@
         }
 
         span {
-            > div {
+            div {
                 @apply overflow-hidden;
             }
         }
 
-        &h2,
+        h2,
         &.h2 {
             .original-text,
             .clone-text {
