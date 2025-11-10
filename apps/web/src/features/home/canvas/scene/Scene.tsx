@@ -45,13 +45,12 @@ function CameraController({ leva }: { leva: any }) {
 
     return (
         <>
-            <EffectComposer autoClear>
+            <EffectComposer multisampling={0}>
                 <SelectiveBloom
-                    // lights={false}
                     selectionLayer={10}
-                    intensity={10}
-                    luminanceThreshold={10}
-                    luminanceSmoothing={10}
+                    intensity={0.2}
+                    luminanceThreshold={1}
+                    luminanceSmoothing={1}
                     mipmapBlur
                 />
             </EffectComposer>
@@ -127,7 +126,7 @@ export default function Scene() {
                     }}
                     gl={{
                         toneMapping: THREE.NeutralToneMapping,
-                        toneMappingExposure: -10,
+                        toneMappingExposure: 0,
                         outputColorSpace: THREE.LinearSRGBColorSpace,
                     }}
                 >
