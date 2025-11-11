@@ -3,11 +3,14 @@ import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { extend, useFrame, useLoader, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Water } from 'three-stdlib'
 
 extend({ Water })
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Ocean() {
     const groupRef = useRef<THREE.Group | null>(null)

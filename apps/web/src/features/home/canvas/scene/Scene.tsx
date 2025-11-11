@@ -1,17 +1,17 @@
 /* eslint-disable react/no-unknown-property */
 'use client'
 
+import { useGlobal } from '@/shared/stores/global'
+import { useGSAP } from '@gsap/react'
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
+import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing'
+import gsap from 'gsap'
+import { Leva, useControls } from 'leva'
 import { Suspense, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import Logo from '../elements/Logo'
 import Ocean from '../elements/Ocean'
-import { Leva, useControls } from 'leva'
 import Projects from '../elements/Projects'
-import { useGSAP } from '@gsap/react'
-import { useGlobal } from '@/shared/stores/global'
-import gsap from 'gsap'
-import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing'
 
 function Sky() {
     const { scene } = useThree()
@@ -144,7 +144,6 @@ export default function Scene() {
                         </group>
                     </Suspense>
                 </Canvas>
-
                 <Leva hidden={true} />
             </div>
         </>
