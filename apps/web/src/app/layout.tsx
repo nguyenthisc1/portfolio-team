@@ -5,6 +5,7 @@ import localFont from 'next/font/local'
 import { GsapProvider } from '@/shared/providers/GsapProvider'
 import Scene from '@/features/home/canvas/scene/Scene'
 import Loading from '@/shared/components/Loading'
+import StarGalaxy from '@/features/home/canvas/scene/StarGalaxy'
 
 const ibmPlexSansCondensedBoldItalic = localFont({
     src: [
@@ -69,6 +70,7 @@ export default function RootLayout({
                 <GsapProvider>
                     <Loading>{children}</Loading>
                     <Scene />
+                    <StarGalaxy />
                 </GsapProvider>
             </body>
         </html>
