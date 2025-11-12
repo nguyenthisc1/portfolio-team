@@ -69,6 +69,7 @@ export default function RootLayout({
             <body className="antialiased">
                 <GsapProvider>
                     <Loading>{children}</Loading>
+                    {/* {children} */}
                     <Scene />
                     <StarGalaxy />
                 </GsapProvider>

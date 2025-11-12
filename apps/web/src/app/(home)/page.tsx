@@ -26,6 +26,9 @@ export default function Home() {
             <section aria-labelledby="projects-heading" className="mb-44 space-y-10">
                 <div className="mx-auto max-w-5xl">
                     <Heading as={2} text={'Projects'} className={'h2 uppercase'} />
+                </div>
+
+                <div className="mx-auto mt-[20%] max-w-5xl">
                     <Typography
                         className="mr-32 ml-auto max-w-xs"
                         text="Come along and discover a selection of my recent works, from websites to digital products, all
@@ -45,17 +48,7 @@ export default function Home() {
                                 key={idx}
                             >
                                 <div className="w-full space-y-10 text-center lg:py-40">
-                                    <h3>IWC Schaffhausen {idx + 1}</h3>
-
-                                    <a href="#">
-                                        <div className="glint-card glint-card-hover inline-block cursor-pointer rounded">
-                                            <div className="glint-card-wrapper rounded">
-                                                <div className="glint-card-content rounded !bg-black font-bold">
-                                                    Find out more
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    <h4>IWC Schaffhausen {idx + 1}</h4>
                                 </div>
                             </div>
                         ))}

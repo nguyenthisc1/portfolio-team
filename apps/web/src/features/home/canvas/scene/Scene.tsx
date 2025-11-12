@@ -7,11 +7,12 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing'
 import gsap from 'gsap'
 import { Leva, useControls } from 'leva'
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import Logo from '../elements/Logo'
-import Ocean from '../elements/Ocean'
-import Projects from '../elements/Projects'
+
+const Ocean = lazy(() => import('../elements/Ocean'))
+const Projects = lazy(() => import('../elements/Projects'))
 
 function Sky() {
     const { scene } = useThree()
@@ -48,7 +49,7 @@ function CameraController({ leva }: { leva: any }) {
             <EffectComposer multisampling={0}>
                 <SelectiveBloom
                     selectionLayer={10}
-                    intensity={0.2}
+                    intensity={1}
                     luminanceThreshold={1}
                     luminanceSmoothing={1}
                     mipmapBlur
@@ -100,13 +101,12 @@ export default function Scene() {
             <div
                 ref={canvasRef}
                 style={{
-                    // background: '#ffffff',
                     position: 'fixed',
                     inset: 0,
                     zIndex: -10,
                     width: '100vw',
                     height: '100vh',
-                    // pointerEvents: 'none',
+                    pointerEvents: 'none',
                 }}
             >
                 <Canvas
@@ -115,7 +115,6 @@ export default function Scene() {
                         width: '100vw',
                         height: '100vh',
                     }}
-                    // DO NOT provide position/rotation here for dynamic update from leva!
                     camera={{
                         fov: 55,
                         near: 1,
@@ -132,11 +131,7 @@ export default function Scene() {
                 >
                     <CameraController leva={leva} />
                     <Suspense fallback={null}>
-                        <group name="global">
-                            <Logo />
-
-                            {/* <Sky /> */}
-                        </group>
+                        <Logo />
 
                         <group name="projects">
                             <Ocean />

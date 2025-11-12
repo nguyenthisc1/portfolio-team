@@ -161,6 +161,7 @@ export default function Logo() {
                 {
                     x: -500,
                     z: -500,
+                    y: -1,
                     ease: 'power2.inOut',
                 },
                 0,
@@ -192,27 +193,17 @@ export default function Logo() {
     return (
         <>
             <group ref={groupRef} scale={0}>
-                <mesh scale={2}>
+                <mesh position={[0, 0, 0]} scale={2}>
                     <sphereGeometry args={[0.65, 64, 64]} />
                     <FakeGlowMaterial {...shaderControls} />
                 </mesh>
 
-                {isAddBox && <Box />}
-
-                <mesh position={[0, 0, 0]}>
+                <mesh position={[0, 0.1, 0]} renderOrder={999}>
                     <sphereGeometry args={[0.65, 32, 32]} />
                     <SunGradientMaterial top={sunTopColor} bottom={sunBottomColor} />
                 </mesh>
 
-                {/* 
-            <mesh ref={boxRef}>
-                <boxGeometry args={[1.75, 1.75, 1.75]} />
-                <meshBasicMaterial color="white" transparent opacity={0.01} />
-                <lineSegments>
-                    <edgesGeometry args={[new THREE.BoxGeometry(1.75, 1.75, 1.75)]} />
-                    <lineBasicMaterial color="white" />
-                </lineSegments>
-            </mesh> */}
+                {isAddBox && <Box />}
             </group>
         </>
     )

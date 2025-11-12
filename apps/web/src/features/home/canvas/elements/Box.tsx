@@ -64,15 +64,15 @@ function BoxPlanes() {
 
             intro.to(
                 planes.current[i]!.material,
-                { opacity: 0.5, duration: 1.5, ease: 'power2.inOut' },
+                { opacity: 0.03, duration: 1.5, ease: 'power2.inOut' },
                 i * 0.1,
             )
 
-            intro.to(
-                planes.current[i]!.material,
-                { opacity: 0.05, duration: 1, ease: 'power2.inOut' },
-                1.5,
-            )
+            // intro.to(
+            //     planes.current[i]!.material,
+            //     { opacity: 0.05, duration: 1, ease: 'power2.inOut' },
+            //     1.5,
+            // )
 
             intro.to(
                 lineMaterials.current[i]!,
@@ -83,43 +83,49 @@ function BoxPlanes() {
     }
 
     const animateScroll = (distance: number) => {
-        const scrollTl = gsap.timeline({
+        const timeline = gsap.timeline({
             scrollTrigger: {
                 trigger: '#profile',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: 1.5,
+                start: '-50% top',
+                // scrub: 1.5,
                 // markers: true,
                 onEnterBack: () => setIsRotate(true),
                 onLeave: () => setIsRotate(false),
+                onUpdate: (self) => {
+                    if (self.progress < 0.2) {
+                        timeline.reverse()
+                    } else {
+                        timeline.play()
+                    }
+                },
             },
         })
 
         planeGroups.current.forEach((group, i) => {
             const { axis, sign } = POSITIONS[i]!
 
-            scrollTl.to(
+            timeline.to(
                 group.position,
                 { [axis]: sign * distance, duration: 1.5, ease: 'power2.inOut' },
-                i * 0.1,
+                0,
             )
 
-            scrollTl.to(
+            timeline.to(
                 group.scale,
                 { x: 0.2, y: 0.2, z: 1, duration: 1.5, ease: 'power2.inOut' },
-                i * 0.1,
+                0,
             )
 
-            scrollTl.to(
+            timeline.to(
                 planes.current[i]!.material,
                 { opacity: 0, duration: 1, ease: 'power2.inOut' },
-                i * 0.1,
+                0,
             )
 
-            scrollTl.to(
+            timeline.to(
                 lineMaterials.current[i]!,
                 { opacity: 0, duration: 1, ease: 'power2.inOut' },
-                i * 0.1,
+                0,
             )
         })
     }

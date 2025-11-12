@@ -35,6 +35,9 @@ export default function Ocean() {
         rotX: -0.32,
         rotY: -0.06,
         rotZ: 0.34,
+        // rotX: 0,
+        // rotY: 0,
+        // rotZ: 0,
     }
 
     const gl = useThree((state) => state.gl)

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
-import { useFrame, useLoader } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -76,6 +76,84 @@ void main(){
 }
 `
 
+// Lazy load image in Three.js (textureLoader) when in view/frustum
+function useLazyTexture(
+    url: string | undefined,
+    meshRef: React.RefObject<THREE.Mesh>,
+    onProgress?: (loaded: boolean) => void,
+) {
+    const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined)
+    const [loaded, setLoaded] = useState(false)
+    const { camera } = useThree()
+
+    useEffect(() => {
+        if (!url) return
+        setLoaded(false)
+        setTexture(undefined)
+        if (!meshRef.current) return
+
+        let cancelled = false
+
+        // Helper: Load texture
+        const load = () => {
+            const loader = new THREE.TextureLoader()
+            loader.load(
+                url,
+                (tex) => {
+                    if (!cancelled) {
+                        setTexture(tex)
+                        setLoaded(true)
+                        onProgress?.(true)
+                    }
+                },
+                undefined,
+                () => {
+                    if (!cancelled) setLoaded(false)
+                },
+            )
+        }
+
+        // Frustum/laziness
+        let animationId: number
+
+        function checkVisibility() {
+            if (!meshRef.current) {
+                animationId = requestAnimationFrame(checkVisibility)
+                return
+            }
+            // Compute world position for mesh center
+            meshRef.current.updateWorldMatrix(true, false)
+            const position = new THREE.Vector3()
+            meshRef.current.getWorldPosition(position)
+            // Frustum test
+            const frustum = new THREE.Frustum()
+            const viewProj = new THREE.Matrix4()
+            camera.updateMatrixWorld()
+            camera.updateProjectionMatrix()
+            viewProj.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
+            frustum.setFromProjectionMatrix(viewProj)
+
+            if (frustum.containsPoint(position)) {
+                load()
+            } else {
+                // Keep checking until it becomes visible
+                animationId = requestAnimationFrame(checkVisibility)
+            }
+        }
+
+        checkVisibility()
+
+        return () => {
+            cancelled = true
+            if (animationId) cancelAnimationFrame(animationId)
+        }
+        // Only rerun if url or meshRef changes (camera static from context)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [url, meshRef])
+
+    return [texture, loaded] as [THREE.Texture | undefined, boolean]
+}
+
 interface ImageCardProps {
     width?: number
     height?: number
@@ -95,6 +173,7 @@ interface ImageCardProps {
     }
 }
 
+// Main component for single 'card'
 function ImageCard({
     width = 3.6,
     height = 2.2,
@@ -108,7 +187,10 @@ function ImageCard({
     cardIdx,
     gsapDataRefs,
 }: ImageCardProps) {
-    const texture = useLoader(THREE.TextureLoader, textureUrl)
+    // Mesh ref for lazy load visibility
+    const meshRef = useRef<THREE.Mesh>(null)
+    // Lazy load the card texture only if the card is entering the frustum
+    const [texture, textureLoaded] = useLazyTexture(textureUrl, meshRef)
 
     useMemo(() => {
         if (texture && texture.image && texture.image.width && texture.image.height) {
@@ -127,7 +209,7 @@ function ImageCard({
     const material = useMemo(() => {
         const mat = new THREE.ShaderMaterial({
             uniforms: {
-                uTexture: { value: texture },
+                uTexture: { value: texture ?? null },
                 uWidth: { value: width },
                 uHeight: { value: height },
                 uRadius: { value: radius },
@@ -138,7 +220,6 @@ function ImageCard({
             transparent: true,
         })
         mat.toneMapped = false
-
         return mat
     }, [texture, width, height, radius, opacity])
 
@@ -166,7 +247,7 @@ function ImageCard({
             material.uniforms?.uTexture?.value !== undefined &&
             material.uniforms.uTexture.value !== texture
         ) {
-            material.uniforms.uTexture.value = texture
+            material.uniforms.uTexture.value = texture ?? null
         }
         if (
             material.uniforms?.uOpacity?.value !== undefined &&
@@ -177,9 +258,6 @@ function ImageCard({
     }, [material, width, height, radius, texture, opacity])
 
     // Animate mesh via useFrame and refs
-    const meshRef = useRef<THREE.Mesh>(null)
-
-    // Use gsapDataRefs for correct animation/scroll-triggering support
     useFrame(() => {
         if (meshRef.current) {
             // Use GSAP refs if animating, otherwise props
@@ -224,9 +302,13 @@ function ImageCard({
         depthTest: false,
     })
 
+    // Optionally show a "loading" geometry if not loaded
     return (
         <>
-            <mesh ref={meshRef} geometry={geometry} material={material} />
+            <mesh ref={meshRef} geometry={geometry} material={material}>
+                {/* optionally add fallback here if !textureLoaded */}
+                {/* { !textureLoaded && <SomeThreeJsLoader /> } */}
+            </mesh>
         </>
     )
 }
@@ -488,6 +570,7 @@ export default function Projects() {
         >
             <group ref={groupRefSecond} position={groupSecondPosRef.current} rotation={[0, 0, 0]}>
                 {cards.map((item, idx) => (
+                    // Suspense boundary here is not useful for low-level texture: it's handled in useLazyTexture
                     <ImageCard
                         key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}
                         position={item.position}

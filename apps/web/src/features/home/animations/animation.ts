@@ -91,8 +91,8 @@ export function setupHeadingAnimation(scopeElement: HTMLElement) {
         scrollTrigger: {
             trigger: scopeElement,
             start: 'top 70%',
-            end: 'bottom top',
-            scrub: true,
+            // end: 'bottom top',
+            // scrub: true,
         },
     })
 
@@ -100,6 +100,8 @@ export function setupHeadingAnimation(scopeElement: HTMLElement) {
     if (filledElement) {
         timeline.to(filledElement, {
             clipPath: 'polygon(-5% 0%, 105% 0%, 105% 120%, -5% 120%)',
+            duration: 1,
+            ease: 'power2.in',
         })
     }
 }
