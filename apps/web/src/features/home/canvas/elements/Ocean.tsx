@@ -3,20 +3,16 @@ import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { extend, useFrame, useLoader, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Water } from 'three-stdlib'
 
 extend({ Water })
 
-gsap.registerPlugin(ScrollTrigger)
-
 export default function Ocean() {
     const groupRef = useRef<THREE.Group | null>(null)
     const waterRef = useRef<THREE.Mesh | null>(null)
     const isAccess = useGlobal((state) => state.isAccess)
-    // const [isShowOcean, setIsShowOcean] = useState(false)
     const isShowOceanRef = useRef(false)
 
     // const leva = useControls('Ocean Group', {
@@ -122,7 +118,9 @@ export default function Ocean() {
                     }
                 },
             },
-            onEnter: () => (isShowOceanRef.current = true),
+            onEnter: () => {
+                isShowOceanRef.current = true
+            },
         })
 
         // gsap.to(leva, {
