@@ -294,6 +294,30 @@
             }
         }
     }
+
+    .projects-menu-dots {
+        .menu-dot {
+            &:first-of-type {
+                margin-top: 0 !important;
+            }
+
+            &:last-of-type {
+                margin-bottom: 0 !important;
+            }
+
+            &.active-enter {
+                &::before {
+                    width: 0.75rem !important;
+                    height: 0.75rem !important;
+                    left: -5.5px !important;
+                }
+            }
+
+            &.active {
+                opacity: 1 !important;
+            }
+        }
+    }
 }
 
 @layer utilities {

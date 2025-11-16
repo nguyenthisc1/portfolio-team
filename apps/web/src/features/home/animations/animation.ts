@@ -210,7 +210,7 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
         yPercent: -5,
         duration: 1.5,
         repeat: -1,
-        ease: 'power1.inOut',
+        ease: 'sine.inOut',
         stagger: {
             each: 0.15,
             amount: 0.5,
@@ -221,15 +221,17 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
     })
 
     const timelineDefaults = {
-        ease: 'power1.inOut',
+        // ease: 'sine.inOut',
     }
 
     const showCardTl = gsap.timeline({
-        defaults: timelineDefaults,
+        defaults: {
+            ease: 'power1.inOut',
+        },
         scrollTrigger: {
             trigger: scopeElement,
             id: 'skill-pin',
-            start: 'top 10%',
+            start: '10% 10%',
             end: '200% top',
             pin: true,
             scrub: true,
@@ -239,12 +241,12 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
     })
 
     const introTl = gsap.timeline({
-        defaults: timelineDefaults,
+        defaults: { ease: 'power1.inOut' },
         scrollTrigger: {
             trigger: scopeElement,
             id: 'intro',
-            start: '-30% 40%',
-            end: '-10% top',
+            start: '-50% 30%',
+            end: '-10% -20%',
             scrub: true,
             // markers: true,
             onEnter: () => floatingAnim.play(),
@@ -254,17 +256,17 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
 
     const introCardConfigs = [
         {
-            from: { y: '-120%', x: '130%', rotate: '-10deg', scale: 0.4, opacity: 0 },
+            from: { y: '-200%', x: '130%', rotate: '-10deg', scale: 0.4, opacity: 0 },
             to: { y: '30%', rotate: '-5deg', scale: 1, opacity: 1 },
             delay: 0,
         },
         {
-            from: { y: '-130%', x: '20%', rotate: '2deg', scale: 0.4, opacity: 0 },
+            from: { y: '-210%', x: '20%', rotate: '2deg', scale: 0.4, opacity: 0 },
             to: { y: '20%', rotate: '0deg', scale: 1, opacity: 1 },
             delay: 0.03,
         },
         {
-            from: { y: '-140%', x: '-90%', rotate: '6deg', scale: 0.4, opacity: 0 },
+            from: { y: '-220%', x: '-90%', rotate: '6deg', scale: 0.4, opacity: 0 },
             to: { y: '10%', rotate: '3deg', scale: 1, opacity: 1 },
             delay: 0.06,
         },
@@ -277,9 +279,9 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
     })
 
     const cardConfigs = [
-        { yStart: '30%', index: 0, delay: 0, initialDuration: 0.1, yTo: '-20%' },
-        { yStart: '30%', index: 1, delay: 0.03, initialDuration: 0.1, yTo: '-20%' },
-        { yStart: '30%', index: 2, delay: 0.06, initialDuration: 0.1, yTo: '-20%' },
+        { yStart: '30%', index: 0, delay: 0, initialDuration: 0, yTo: '-10%' },
+        { yStart: '30%', index: 1, delay: 0.03, initialDuration: 0, yTo: '-10%' },
+        { yStart: '30%', index: 2, delay: 0.06, initialDuration: 0, yTo: '-10%' },
     ]
 
     cardConfigs.forEach(({ yStart, index, delay, initialDuration = 0.1, yTo }) => {

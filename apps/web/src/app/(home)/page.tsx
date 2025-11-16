@@ -1,6 +1,7 @@
 import Footer from '@/features/home/components/Footer'
 import Heading from '@/features/home/components/Heading'
 import Intro from '@/features/home/components/Intro'
+import Projects from '@/features/home/components/Projects'
 import Skill from '@/features/home/components/Skill'
 import Typography from '@/features/home/components/Typography'
 
@@ -23,38 +24,7 @@ export default function Home() {
                 />
             </section>
 
-            <section aria-labelledby="projects-heading" className="mb-44 space-y-10">
-                <div className="mx-auto max-w-5xl">
-                    <Heading as={2} text={'Projects'} className={'h2 uppercase'} />
-                </div>
-
-                <div className="mx-auto mt-[20%] max-w-5xl">
-                    <Typography
-                        className="mr-32 ml-auto max-w-xs"
-                        text="Come along and discover a selection of my recent works, from websites to digital products, all
-                        crafted with a focus on clarity, purpose, and meaningful design."
-                    />
-                </div>
-
-                <div
-                    style={{ height: `800vh` }}
-                    id="gsap-projects-trigger"
-                    className="pointer-events-none relative"
-                >
-                    <div className="fixed inset-0">
-                        {Array.from({ length: 8 }).map((_, idx) => (
-                            <div
-                                className="gsap-project-info absolute inset-0 flex items-end opacity-0"
-                                key={idx}
-                            >
-                                <div className="w-full space-y-10 text-center lg:py-40">
-                                    <h4>IWC Schaffhausen {idx + 1}</h4>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <Projects />
 
             <section id="about" aria-labelledby="about-team-heading" className="mb-32">
                 <div className="text-primary mb-44 text-center uppercase">

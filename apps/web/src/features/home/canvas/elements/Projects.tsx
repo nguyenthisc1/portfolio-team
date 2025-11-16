@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unknown-property */
+import { PROJECTS } from '@/shared/consts/common'
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { useFrame, useThree } from '@react-three/fiber'
@@ -188,7 +189,7 @@ function ImageCard({
     gsapDataRefs,
 }: ImageCardProps) {
     // Mesh ref for lazy load visibility
-    const meshRef = useRef<THREE.Mesh>(null)
+    const meshRef = useRef<THREE.Mesh>(null!)
     // Lazy load the card texture only if the card is entering the frustum
     const [texture, textureLoaded] = useLazyTexture(textureUrl, meshRef)
 
@@ -319,15 +320,14 @@ type ProjectCard = {
     scale: number
     opacity: number
     imageUrl: string
+    category: string
 }
 
 export default function Projects() {
     // Card layout constants
-    const CARD_COUNT = 8
     const CARD_SCALE = 10
     const CARD_OPACITY = 0.05
-
-    const cardLayout = {
+    const CARD_LAYOUT = {
         y: 12,
         zStart: 30,
         zSpacing: 55,
@@ -339,27 +339,36 @@ export default function Projects() {
 
     // Compute position for a project card
     const computeCardPosition = (idx: number, isEven: boolean): [number, number, number] => {
-        const { y, zStart, zSpacing, xOffset } = cardLayout
+        const { y, zStart, zSpacing, xOffset } = CARD_LAYOUT
         const x = isEven ? idx * xOffset * -1.1 + 4 : idx * xOffset * -1.1 - 8
         const z = zStart - (isEven ? idx * zSpacing + 4 : idx * zSpacing - 10)
         return [x, y, z]
     }
 
     // Create a ProjectCard instance
-    const createCard = (idx: number): ProjectCard => {
+    const createCard = (idx: number, imageUrl: string, category: string): ProjectCard => {
         const isEven = idx % 2 === 0
         return {
             position: computeCardPosition(idx, isEven),
             rotation: [0, isEven ? 0.3 : 1.3, 0],
             scale: CARD_SCALE,
             opacity: CARD_OPACITY,
-            imageUrl: `images/img_project_${idx + 1}.avif`,
+            category: category,
+            imageUrl: imageUrl,
         }
     }
 
     // Initialize all cards once
     const [cards] = useState<ProjectCard[]>(() =>
-        Array.from({ length: CARD_COUNT }, (_, idx) => createCard(idx)),
+        PROJECTS.flatMap((project, pIdx) =>
+            project.items.map((item, idx) =>
+                createCard(
+                    idx + pIdx * project.items.length,
+                    `images/${item.image}`,
+                    project.category,
+                ),
+            ),
+        ),
     )
 
     // Prepare GSAP refs for each card
@@ -440,9 +449,18 @@ export default function Projects() {
             pz: groupSecondPosRef.current[2],
         }
 
+        const updateProjectsMenuOpacity = (opacity: string) => {
+            const projectsMenu = document.querySelector('.projects-menu')
+            if (projectsMenu instanceof HTMLElement) {
+                projectsMenu.style.opacity = opacity
+            }
+        }
+
+        const totalSpacing = CARD_LAYOUT.zSpacing * cards.length
+
         gsap.to(groupPosState, {
-            px: groupPosState.px + cardLayout.zSpacing * cards.length,
-            pz: groupPosState.pz + cardLayout.zSpacing * cards.length,
+            px: groupPosState.px + totalSpacing,
+            pz: groupPosState.pz + totalSpacing,
             ease: 'none',
             scrollTrigger: {
                 trigger: '#gsap-projects-trigger',
@@ -450,6 +468,10 @@ export default function Projects() {
                 end: () => `${vh(100 * cardRefs.length - 1)} bottom`,
                 pin: false,
                 scrub: true,
+                onEnter: () => updateProjectsMenuOpacity('1'),
+                onLeave: () => updateProjectsMenuOpacity('0'),
+                onEnterBack: () => updateProjectsMenuOpacity('1'),
+                onLeaveBack: () => updateProjectsMenuOpacity('0'),
             },
             onUpdate: () => {
                 groupSecondPosRef.current[0] = groupPosState.px
@@ -470,42 +492,69 @@ export default function Projects() {
         const perMeshHeight = totalScrollHeight / itemCount
         const overlap = 10
 
-        cards.forEach((card, idx) => {
-            const isEven = idx % 2 === 0
-            const state = {
-                px: card.position[0],
-                py: card.position[1],
-                pz: card.position[2],
-                rx: card.rotation[0],
-                ry: card.rotation[1],
-                rz: card.rotation[2],
-                sc: card.scale,
-                op: card.opacity,
-            }
+        // Util to handle category element class manipulation
+        const getCategoryElement = (category: string) =>
+            document.querySelector(`[data-category="${category}"]`) as HTMLElement | null
 
-            const startMesh = Math.max(idx * perMeshHeight - overlap, 0)
-            const endMesh = Math.max((idx + 1) * perMeshHeight - overlap, 0)
-
+        const createCardTimeline = ({
+            idx,
+            category,
+            state,
+            infoEl,
+            cardRef,
+            startMesh,
+            endMesh,
+        }: {
+            idx: number
+            category: string
+            state: any
+            infoEl: Element
+            cardRef: any
+            startMesh: number
+            endMesh: number
+        }) => {
             const tl = gsap.timeline({
+                id: category,
                 scrollTrigger: {
                     trigger: '#gsap-projects-trigger',
                     start: `${vh(startMesh)} top`,
                     end: `${vh(endMesh)} top`,
                     pin: false,
                     scrub: 2,
+                    onEnter: () => {
+                        const el = getCategoryElement(category)
+                        if (el) {
+                            el.classList.add('active-enter', 'active')
+                        }
+                    },
+                    onLeave: () => {
+                        const el = getCategoryElement(category)
+                        if (el) {
+                            el.classList.remove('active-enter')
+                        }
+                    },
+                    onLeaveBack: () => {
+                        const el = getCategoryElement(category)
+                        if (el) {
+                            el.classList.remove('active')
+                        }
+                    },
                 },
             })
 
+            // Info fade in
             tl.to(
-                cardsInfo[idx]!,
+                infoEl,
                 {
                     autoAlpha: 1,
                     duration: 2,
                     pointerEvents: 'auto',
                 },
                 0,
-            ).to(
-                cardsInfo[idx]!,
+            )
+            // Info fade out
+            tl.to(
+                infoEl,
                 {
                     autoAlpha: 0,
                     duration: 2,
@@ -514,39 +563,79 @@ export default function Projects() {
                 4,
             )
 
+            // Card fade in
             tl.to(
                 state,
                 {
                     op: 1,
                     duration: 2,
                     onUpdate: () => {
-                        cardRefs[idx]!.opacityRef.current = state.op
+                        cardRef.opacityRef.current = state.op
                     },
                 },
                 0,
             )
-                .to(
-                    state,
-                    {
-                        ry: 0.8,
-                        duration: 5,
-                        onUpdate: () => {
-                            cardRefs[idx]!.rotationRef.current = [state.rx, state.ry, state.rz]
-                        },
+            // Card rotation animation
+            tl.to(
+                state,
+                {
+                    ry: 0.8,
+                    duration: 5,
+                    onUpdate: () => {
+                        cardRef.rotationRef.current = [state.rx, state.ry, state.rz]
                     },
-                    0,
-                )
-                .to(
-                    state,
-                    {
-                        op: 0,
-                        duration: 2,
-                        onUpdate: () => {
-                            cardRefs[idx]!.opacityRef.current = state.op
-                        },
+                },
+                0,
+            )
+            // Card fade out
+            tl.to(
+                state,
+                {
+                    op: 0,
+                    duration: 2,
+                    onUpdate: () => {
+                        cardRef.opacityRef.current = state.op
                     },
-                    4,
-                )
+                },
+                4,
+            )
+
+            return tl
+        }
+
+        let cardIdx = 0
+        PROJECTS.forEach((project) => {
+            const category = project.category
+            project.items.forEach(() => {
+                const idx = cardIdx
+                const card = cards[idx]!
+                const cardRef = cardRefs[idx]!
+                const state = {
+                    px: card.position[0],
+                    py: card.position[1],
+                    pz: card.position[2],
+                    rx: card.rotation[0],
+                    ry: card.rotation[1],
+                    rz: card.rotation[2],
+                    sc: card.scale,
+                    op: card.opacity,
+                }
+
+                const startMesh = Math.max(idx * perMeshHeight - overlap, 0)
+                const endMesh = Math.max((idx + 1) * perMeshHeight - overlap, 0)
+
+                createCardTimeline({
+                    idx,
+                    category,
+                    state,
+                    infoEl: cardsInfo[idx]!,
+                    cardRef,
+                    startMesh,
+                    endMesh,
+                })
+
+                cardIdx++
+            })
         })
     }, [isAccess])
 

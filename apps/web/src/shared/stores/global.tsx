@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 
 interface Global {
-    oceanIntensity: number
-    setOceanIntensity: (v: number) => void
+    isOceanIntensity: boolean
+    setIsOceanIntensity: (v: boolean) => void
     isLoading: boolean
     setIsLoading: (loading: boolean) => void
     isAccess: boolean
@@ -10,8 +10,8 @@ interface Global {
 }
 
 export const useGlobal = create<Global>((set) => ({
-    oceanIntensity: 0,
-    setOceanIntensity: (v: number) => set({ oceanIntensity: v }),
+    isOceanIntensity: false,
+    setIsOceanIntensity: (v: boolean) => set({ isOceanIntensity: v }),
     isLoading: true,
     setIsLoading: (loading: boolean) => set({ isLoading: loading }),
     isAccess: false,
