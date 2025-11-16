@@ -13,8 +13,7 @@ export default function Projects() {
             <div className="mx-auto mt-[20%] max-w-5xl">
                 <Typography
                     className="mr-32 ml-auto max-w-xs"
-                    text="Come along and discover a selection of my recent works, from websites to digital products, all
-            crafted with a focus on clarity, purpose, and meaningful design."
+                    text="Come along and discover a selection of my recent works, from websites to digital products, all  crafted with a focus on clarity, purpose, and meaningful design."
                 />
             </div>
 
@@ -42,16 +41,17 @@ export default function Projects() {
                     )}
                 </div>
 
-                <div className="projects-menu pointer-events-auto fixed top-1/2 left-5 -translate-y-1/2 opacity-0 transition-opacity duration-500">
-                    <ul className="projects-menu-dots whitespace-nowrap">
+                <div className="projects-menu fixed top-1/2 left-5 -translate-y-1/2 opacity-0 transition-opacity duration-500">
+                    <ul className="projects-menu-dots relative whitespace-nowrap before:absolute before:left-0 before:h-full before:w-px before:bg-white/10 after:absolute after:top-0 after:left-0 after:z-10 after:h-[var(--progress-percent)] after:w-px after:origin-top after:bg-white">
                         {PROJECTS.map((p, idx) => (
                             <li
                                 data-category={p.category}
-                                className={`menu-dot relative flex items-center py-2 pl-5 text-sm opacity-10 transition-all duration-500 before:absolute before:-left-[3.5px] before:size-2 before:rounded-full before:bg-white before:transition-all before:duration-500 after:absolute after:left-0 after:h-full after:w-px after:bg-white after:transition-all after:duration-500`}
+                                className={`menu-dot relative flex items-center py-2 pl-5 text-sm transition-all duration-500 before:absolute before:-left-[3.5px] before:size-2 before:rounded-full before:bg-white before:opacity-10 before:transition-all before:duration-500`}
                                 key={idx}
                             >
-                                {' '}
-                                <span>{p.category}</span>
+                                <span className="opacity-10 transition-opacity duration-500">
+                                    {p.category}
+                                </span>
                             </li>
                         ))}
                     </ul>

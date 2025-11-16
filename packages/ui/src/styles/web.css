@@ -297,6 +297,8 @@
 
     .projects-menu-dots {
         .menu-dot {
+            /* --progress-percent: 0%; */
+
             &:first-of-type {
                 margin-top: 0 !important;
             }
@@ -315,6 +317,12 @@
 
             &.active {
                 opacity: 1 !important;
+                &::before {
+                    opacity: 1 !important;
+                }
+                span {
+                    opacity: 1 !important;
+                }
             }
         }
     }

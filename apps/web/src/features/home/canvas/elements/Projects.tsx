@@ -7,6 +7,7 @@ import gsap from 'gsap'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 // Helper: set image UV to cover (center crop) on mesh
 function setTextureCoverUVFull(texture: THREE.Texture, imageAspect: number, meshAspect: number) {
@@ -472,6 +473,13 @@ export default function Projects() {
                 onLeave: () => updateProjectsMenuOpacity('0'),
                 onEnterBack: () => updateProjectsMenuOpacity('1'),
                 onLeaveBack: () => updateProjectsMenuOpacity('0'),
+                onUpdate: (self) => {
+                    const el = document.querySelector('.projects-menu-dots') as HTMLElement
+                    if (el) {
+                        const progressPercent = self.progress * 100
+                        el.style.setProperty('--progress-percent', progressPercent.toString() + '%')
+                    }
+                },
             },
             onUpdate: () => {
                 groupSecondPosRef.current[0] = groupPosState.px
@@ -520,8 +528,14 @@ export default function Projects() {
                     start: `${vh(startMesh)} top`,
                     end: `${vh(endMesh)} top`,
                     pin: false,
-                    scrub: 2,
+                    scrub: true,
                     onEnter: () => {
+                        const el = getCategoryElement(category)
+                        if (el) {
+                            el.classList.add('active-enter', 'active')
+                        }
+                    },
+                    onEnterBack: () => {
                         const el = getCategoryElement(category)
                         if (el) {
                             el.classList.add('active-enter', 'active')
