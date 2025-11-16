@@ -6,6 +6,7 @@ import { GsapProvider } from '@/shared/providers/GsapProvider'
 import Scene from '@/features/home/canvas/scene/Scene'
 import Loading from '@/shared/components/Loading'
 import StarGalaxy from '@/features/home/canvas/scene/StarGalaxy'
+import SceneCursor from '@/features/home/canvas/scene/SceneCursor'
 
 const ibmPlexSansCondensedBoldItalic = localFont({
     src: [
@@ -71,6 +72,7 @@ export default function RootLayout({
                     <Loading>{children}</Loading>
                     {/* {children} */}
                     <Scene />
+                    <SceneCursor />
                     <StarGalaxy />
                 </GsapProvider>
             </body>
