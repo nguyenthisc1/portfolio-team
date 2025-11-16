@@ -6,68 +6,11 @@ import { useGSAP } from '@gsap/react'
 import { useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useControls } from 'leva'
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import * as THREE from 'three'
-import Box from './Box'
+import { Box } from './Box'
 import FakeGlowMaterial from './FakeGlow'
-
-// Gradient is now vertical: colorTop (at vUv.y = 0.7) to colorBottom (at vUv.y = 1.0)
-function SunGradientMaterial({
-    top,
-    bottom,
-}: {
-    top: [number, number, number]
-    bottom: [number, number, number]
-}) {
-    const uniforms = useMemo(
-        () => ({
-            colorTop: { value: top },
-            colorBottom: { value: bottom },
-        }),
-        [top, bottom],
-    )
-
-    return (
-        <shaderMaterial
-            attach="material"
-            uniforms={uniforms}
-            vertexShader={
-                /* glsl */ `
-                varying vec2 vUv;
-                void main() {
-                  vUv = uv;
-                  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-            `
-            }
-            fragmentShader={
-                /* glsl */ `
-                uniform vec3 colorTop;
-                uniform vec3 colorBottom;
-                varying vec2 vUv;
-                void main() {
-                  // Create a gradient that is colorTop for top 70%, then blends to colorBottom
-                  float grad = smoothstep(0.1, 0.8, vUv.y);
-                  vec3 color = mix(colorBottom, colorTop, grad);
-                  gl_FragColor = vec4(color, 1);
-                }
-            `
-            }
-        />
-    )
-}
-
-function hexToRgbArray(hex: string): [number, number, number] {
-    hex = hex.replace(/^#/, '')
-    if (hex.length === 3) {
-        hex = hex
-            .split('')
-            .map((x) => x + x)
-            .join('')
-    }
-    const num = parseInt(hex, 16)
-    return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255]
-}
+import GradientSphere from './GradientSphere'
 
 export default function Logo() {
     const isAccess = useGlobal((state) => state.isAccess)
@@ -94,9 +37,6 @@ export default function Logo() {
             boxRef.current.rotation.y += delta * 0.2
         }
     })
-
-    const sunTopColor = hexToRgbArray(sunTopHex)
-    const sunBottomColor = hexToRgbArray(sunBottomHex)
 
     useGSAP(() => {
         if (!isLoading && groupRef.current) {
@@ -199,10 +139,12 @@ export default function Logo() {
                     <FakeGlowMaterial {...shaderControls} />
                 </mesh>
 
-                <mesh position={[0, 0.1, 0]} renderOrder={999}>
+                <GradientSphere />
+
+                {/* <mesh position={[0, 0.1, 0]} renderOrder={999}>
                     <sphereGeometry args={[0.65, 32, 32]} />
                     <SunGradientMaterial top={sunTopColor} bottom={sunBottomColor} />
-                </mesh>
+                </mesh> */}
 
                 {isAddBox && <Box />}
             </group>

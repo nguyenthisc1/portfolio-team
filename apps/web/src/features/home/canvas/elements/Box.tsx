@@ -8,7 +8,7 @@ import gsap from 'gsap'
 import { useRef, useState } from 'react'
 import * as THREE from 'three'
 
-function BoxPlanes() {
+export function BoxPlanes() {
     const planeGroups = useRef<THREE.Group[]>([])
     const planes = useRef<THREE.Mesh[]>([])
     const lineMaterials = useRef<THREE.LineBasicMaterial[]>([])
@@ -194,6 +194,6 @@ function BoxPlanes() {
     )
 }
 
-export default function Box() {
+export function Box() {
     return <BoxPlanes />
 }
