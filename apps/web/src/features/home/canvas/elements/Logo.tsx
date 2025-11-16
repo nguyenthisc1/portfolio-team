@@ -114,24 +114,24 @@ export default function Logo() {
         }
     }, [isLoading])
 
-    useGSAP(() => {
-        if (isAccess && groupRef.current) {
-            const SCALE = 32
-            gsap.to(groupRef.current.scale, {
-                x: SCALE,
-                y: SCALE,
-                z: SCALE,
-                duration: 1.5,
-                ease: 'power2.inOut',
-                scrollTrigger: {
-                    trigger: '#profile',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 1.5,
-                },
-            })
-        }
-    }, [isAccess])
+    // useGSAP(() => {
+    //     if (isAccess && groupRef.current) {
+    //         const SCALE = 32
+    //         gsap.to(groupRef.current.scale, {
+    //             x: SCALE,
+    //             y: SCALE,
+    //             z: SCALE,
+    //             duration: 1.5,
+    //             ease: 'power2.inOut',
+    //             scrollTrigger: {
+    //                 trigger: '#profile',
+    //                 start: 'top top',
+    //                 end: 'bottom top',
+    //                 scrub: 1.5,
+    //             },
+    //         })
+    //     }
+    // }, [isAccess])
 
     useGSAP(() => {
         if (isAccess && groupRef.current) {
@@ -146,26 +146,27 @@ export default function Logo() {
             })
 
             const SCALE = 0
-            timeline.to(
-                groupRef.current.scale,
-                {
-                    x: SCALE,
-                    y: SCALE,
-                    z: SCALE,
-                    ease: 'power2.inOut',
-                },
-                0,
-            )
-            timeline.to(
-                groupRef.current.position,
-                {
-                    x: -500,
-                    z: -500,
-                    y: -1,
-                    ease: 'power2.inOut',
-                },
-                0,
-            )
+            timeline
+                .to(
+                    groupRef.current.scale,
+                    {
+                        x: SCALE,
+                        y: SCALE,
+                        z: SCALE,
+                        ease: 'power2.inOut',
+                    },
+                    0,
+                )
+                .to(
+                    groupRef.current.position,
+                    {
+                        x: -2000,
+                        z: -2000,
+                        y: -1,
+                        ease: 'power2.inOut',
+                    },
+                    0,
+                )
         }
     }, [isAccess])
 
