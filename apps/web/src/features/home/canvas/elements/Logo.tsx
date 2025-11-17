@@ -78,9 +78,9 @@ export default function Logo() {
             const timeline = gsap.timeline({
                 scrollTrigger: {
                     trigger: '.tt-heading-wrapper',
-                    start: '-50% 70%',
+                    start: '-80% 70%',
                     end: '300% 30%',
-                    scrub: true,
+                    scrub: 2,
                     // markers: true,
                 },
             })

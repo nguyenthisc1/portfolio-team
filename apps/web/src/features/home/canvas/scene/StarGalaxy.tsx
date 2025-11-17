@@ -140,6 +140,20 @@ export default function StarGalaxy() {
         }
     }, [])
 
+    useEffect(() => {
+        const el = document.getElementById('tsparticles')
+        if (!el) return
+
+        const handleMove = (e: PointerEvent) => {
+            const x = (e.clientX / window.innerWidth) * 2 - 1
+
+            el.style.transform = `translateX(${x * -20}px)`
+        }
+
+        window.addEventListener('pointermove', handleMove)
+        return () => window.removeEventListener('pointermove', handleMove)
+    }, [])
+
     useGSAP(() => {
         if (!ref) return
 
@@ -162,6 +176,7 @@ export default function StarGalaxy() {
                 height: '100vh',
                 pointerEvents: 'none',
                 opacity: 0,
+                transition: 'transform 1s ease-out',
             }}
         />
     )

@@ -38,8 +38,8 @@ export function BoxPlanes() {
     // Animate rotation
     useFrame((_, delta) => {
         if (groupRef.current) {
-            groupRef.current.rotation.x += delta * 0.2
-            groupRef.current.rotation.y += delta * 0.3
+            groupRef.current.rotation.x += delta * 0.5
+            groupRef.current.rotation.y += delta * 0.8
         }
     })
 
