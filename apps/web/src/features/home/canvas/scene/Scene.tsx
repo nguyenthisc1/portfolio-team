@@ -9,6 +9,7 @@ import gsap from 'gsap'
 import { Leva, useControls } from 'leva'
 import { lazy, Suspense, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
+import CameraGroup from '../elements/CameraGroup'
 import Logo from '../elements/Logo'
 
 const Ocean = lazy(() => import('../elements/Ocean'))
@@ -42,7 +43,7 @@ function CameraController({ leva }: { leva: any }) {
     useEffect(() => {
         camera.layers.enable(0)
         camera.layers.enable(10)
-    }, [camera])
+    }, [])
 
     return (
         <>
@@ -131,12 +132,14 @@ export default function Scene() {
                 >
                     <CameraController leva={leva} />
                     <Suspense fallback={null}>
-                        <Logo />
+                        <CameraGroup>
+                            <Logo />
 
-                        <group name="projects">
-                            <Ocean />
-                            <Projects />
-                        </group>
+                            <group name="projects">
+                                <Ocean />
+                                <Projects />
+                            </group>
+                        </CameraGroup>
                     </Suspense>
                 </Canvas>
                 <Leva hidden={true} />
