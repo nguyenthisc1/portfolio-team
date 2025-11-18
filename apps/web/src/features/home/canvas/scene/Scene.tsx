@@ -132,14 +132,14 @@ export default function Scene() {
                 >
                     <CameraController leva={leva} />
                     <Suspense fallback={null}>
-                        <CameraGroup>
-                            <Logo />
+                        <Logo />
 
-                            <group name="projects">
-                                <Ocean />
+                        <group name="projects">
+                            <Ocean />
+                            <CameraGroup>
                                 <Projects />
-                            </group>
-                        </CameraGroup>
+                            </CameraGroup>
+                        </group>
                     </Suspense>
                 </Canvas>
                 <Leva hidden={true} />

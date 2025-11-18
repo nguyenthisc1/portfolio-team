@@ -19,7 +19,7 @@ export default function CameraGroup({ children }: { children: React.ReactNode })
     useFrame(() => {
         if (cameraGroup.current) {
             const rotY = cursor.current.x * -0.02
-            const rotX = cursor.current.y * -0.002
+            const rotX = cursor.current.y * -0.01
 
             gsap.to(cameraGroup.current!.rotation, {
                 y: rotY,

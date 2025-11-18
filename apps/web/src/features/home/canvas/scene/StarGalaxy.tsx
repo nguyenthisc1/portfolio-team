@@ -147,7 +147,12 @@ export default function StarGalaxy() {
         const handleMove = (e: PointerEvent) => {
             const x = (e.clientX / window.innerWidth) * 2 - 1
 
-            el.style.transform = `translateX(${x * -20}px)`
+            gsap.to(el, {
+                x: x * -20,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power2.out',
+            })
         }
 
         window.addEventListener('pointermove', handleMove)
