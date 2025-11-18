@@ -81,7 +81,7 @@ export default function Logo() {
                     trigger: '.tt-heading-wrapper',
                     start: '-80% 70%',
                     end: '300% 30%',
-                    scrub: 1.5,
+                    scrub: true,
                     // markers: true,
                 },
             })
