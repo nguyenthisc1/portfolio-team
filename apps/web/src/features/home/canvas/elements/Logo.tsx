@@ -17,6 +17,7 @@ export default function Logo() {
     const isLoading = useGlobal((state) => state.isLoading)
     const [isAddBox, setisAddBox] = useState(false)
     const boxRef = useRef<THREE.Mesh>(null)
+    const groupFirstRef = useRef<THREE.Group>(null)
     const groupRef = useRef<THREE.Group>(null)
 
     // Use Leva UI for gradient color picking; now vertical (top/bottom)
@@ -54,24 +55,24 @@ export default function Logo() {
         }
     }, [isLoading])
 
-    // useGSAP(() => {
-    //     if (isAccess && groupRef.current) {
-    //         const SCALE = 32
-    //         gsap.to(groupRef.current.scale, {
-    //             x: SCALE,
-    //             y: SCALE,
-    //             z: SCALE,
-    //             duration: 1.5,
-    //             ease: 'power2.inOut',
-    //             scrollTrigger: {
-    //                 trigger: '#profile',
-    //                 start: 'top top',
-    //                 end: 'bottom top',
-    //                 scrub: 1.5,
-    //             },
-    //         })
-    //     }
-    // }, [isAccess])
+    useGSAP(() => {
+        if (isAccess && groupFirstRef.current) {
+            const SCALE = 1.5
+            gsap.to(groupFirstRef.current.scale, {
+                x: SCALE,
+                y: SCALE,
+                z: SCALE,
+                duration: 1.5,
+                ease: 'power2.inOut',
+                scrollTrigger: {
+                    trigger: '#profile',
+                    start: '-50% top',
+                    end: 'bottom top',
+                    scrub: 1.5,
+                },
+            })
+        }
+    }, [isAccess])
 
     useGSAP(() => {
         if (isAccess && groupRef.current) {
@@ -80,7 +81,7 @@ export default function Logo() {
                     trigger: '.tt-heading-wrapper',
                     start: '-80% 70%',
                     end: '300% 30%',
-                    scrub: 2,
+                    scrub: 1.5,
                     // markers: true,
                 },
             })
@@ -133,20 +134,22 @@ export default function Logo() {
 
     return (
         <>
-            <group ref={groupRef} scale={0}>
-                <mesh position={[0, 0, 0]} scale={2}>
-                    <sphereGeometry args={[0.65, 64, 64]} />
-                    <FakeGlowMaterial {...shaderControls} />
-                </mesh>
+            <group ref={groupFirstRef} scale={1}>
+                <group ref={groupRef} scale={0}>
+                    <mesh position={[0, 0, 0]} scale={2}>
+                        <sphereGeometry args={[0.65, 64, 64]} />
+                        <FakeGlowMaterial {...shaderControls} />
+                    </mesh>
 
-                <GradientSphere />
+                    <GradientSphere />
 
-                {/* <mesh position={[0, 0.1, 0]} renderOrder={999}>
+                    {/* <mesh position={[0, 0.1, 0]} renderOrder={999}>
                     <sphereGeometry args={[0.65, 32, 32]} />
                     <SunGradientMaterial top={sunTopColor} bottom={sunBottomColor} />
                 </mesh> */}
 
-                {isAddBox && <Box />}
+                    {isAddBox && <Box />}
+                </group>
             </group>
         </>
     )
