@@ -1,0 +1,136 @@
+{
+    "seo": {
+        "title": "Creative Website Developer - Smart & Purposeful Web Design",
+        "description": "Portfolio of a creative designer and developer specializing in smart, business-driving websites, digital products, and unique design solutions.",
+        "image": "https://utfs.io/f/cuH9KLr6qOUNDavvj3BLWxFcPRGoIYwn59T2fgMyJQEiUS7O",
+        "keywords": [
+            "website developer",
+            "creative designer",
+            "web development",
+            "digital products",
+            "portfolio",
+            "business growth",
+            "design solutions"
+        ]
+    },
+    "hero": {
+        "title": "website developer ",
+        "description": "I’m a creative designer and web developer, passionate about building smart design solutions that drive business growth."
+    },
+    "philosophy": {
+        "text": "I value simplicity without sacrificing originality. Every solution is effective, purposeful, and ready for real use."
+    },
+    "projects": {
+        "title": "Projects",
+        "description": "Come along and discover a selection of my recent works, from websites to digital products, all crafted with a focus on clarity, purpose, and meaningful design.",
+        "projectList": [
+            {
+                "category": "3D Projects",
+                "items": [
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNmfKrPYcnbR7zo8vPZ5AJawjN6lFeCTH0sdKt",
+                        "name": "3D Home Visualization",
+                        "link": ""
+                    },
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNhxsmAlj5Dec2uzYX81Aaio7RqH3GESQt9wry",
+                        "name": "Architectural Walkthrough",
+                        "link": ""
+                    }
+                ]
+            },
+            {
+                "category": "Hospitality",
+                "items": [
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNLrcfQtuEFXtdOZTAsvJmY0fQWB8qgzuwHkL7",
+                        "name": "Boutique Hotel Website",
+                        "link": ""
+                    },
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNQbLXNohupOGEXdVHMJoemxs09TUAlC7iZWYt",
+                        "name": "Resort Booking Platform",
+                        "link": ""
+                    }
+                ]
+            },
+            {
+                "category": "Corporate",
+                "items": [
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNmBzkAKcnbR7zo8vPZ5AJawjN6lFeCTH0sdKt",
+                        "name": "Enterprise Intranet Portal",
+                        "link": ""
+                    },
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNBaxZvEmM7S5tNyPrzfxYUblhFWX8v4ogjGAL",
+                        "name": "Corporate Website",
+                        "link": ""
+                    }
+                ]
+            },
+            {
+                "category": "Restaurant & Coffee",
+                "items": [
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNk5RnsnpuMANX2gG1SCIv3mHUKFeL5zi0EVZq",
+                        "name": "Cafe Online Menu",
+                        "link": ""
+                    },
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNc2oR2hr6qOUNeZ9PBGK1ubdQDgrkXoTxLn3i",
+                        "name": "Restaurant Reservation App",
+                        "link": ""
+                    }
+                ]
+            },
+            {
+                "category": "Education",
+                "items": [
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNDavvj3BLWxFcPRGoIYwn59T2fgMyJQEiUS7O",
+                        "name": "E-learning Platform",
+                        "link": ""
+                    },
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNDavvj3BLWxFcPRGoIYwn59T2fgMyJQEiUS7O",
+                        "name": "Online Course Website",
+                        "link": ""
+                    }
+                ]
+            },
+            {
+                "category": "App & More",
+                "items": [
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNSHyfHPnds8bBx924T1HqVejU3rgvwpaAtCnk",
+                        "name": "Mobile Note App",
+                        "link": ""
+                    },
+                    {
+                        "image": "https://utfs.io/f/cuH9KLr6qOUNmfKrPYcnbR7zo8vPZ5AJawjN6lFeCTH0sdKt",
+                        "name": "Portfolio Showcase",
+                        "link": ""
+                    }
+                ]
+            }
+        ]
+    },
+    "skills": [
+        {
+            "title": "Frontend",
+            "name": "Web Development",
+            "skills": ["React", "Next.js", "TypeScript"]
+        },
+        {
+            "title": "Design",
+            "name": "UI/UX",
+            "skills": ["Figma", "Adobe XD", "Illustrator"]
+        },
+        {
+            "title": "Other",
+            "name": "Misc",
+            "skills": ["Git", "Testing", "Performance"]
+        }
+    ]
+}
