@@ -14,8 +14,8 @@ import {
 } from 'react-hook-form'
 
 import { cn } from '@workspace/ui/lib/utils'
-import { Label } from '@workspace/ui/components/Field'
 import { LabelProps } from 'react-aria-components'
+import { Label } from '@radix-ui/react-label'
 
 const Form = FormProvider
 
