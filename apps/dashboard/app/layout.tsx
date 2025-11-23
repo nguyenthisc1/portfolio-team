@@ -32,6 +32,7 @@ export default function RootLayout({
             </head>
             <body className={`text-secondary-foreground antialiased`}>
                 <Providers>{children}</Providers>
+                {/* <Analytics debug />; */}
             </body>
         </html>
     )

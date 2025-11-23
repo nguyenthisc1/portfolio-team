@@ -2,6 +2,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/component
 import { Home, Settings } from 'lucide-react'
 import Link from 'next/link'
 import NavItem from '../components/NavItem'
+import { NAVIGATION } from '../consts/common'
 
 export default function DesktopNav() {
     return (
@@ -15,9 +16,11 @@ export default function DesktopNav() {
                     <span className="sr-only">Acme Inc</span>
                 </Link>
 
-                <NavItem href="#" label="Dashboard">
-                    <Home className="h-5 w-5" />
-                </NavItem>
+                {NAVIGATION.map((item, idx) => (
+                    <NavItem key={idx} href={item.href} label={item.name}>
+                        {item.icon && <item.icon className="h-5 w-5" />}
+                    </NavItem>
+                ))}
             </nav>
             <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
                 <Tooltip>

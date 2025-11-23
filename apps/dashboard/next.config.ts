@@ -3,7 +3,7 @@ import { withContentlayer } from 'next-contentlayer2'
 
 const nextConfig: NextConfig = withContentlayer({
     images: {
-        domains: ['images.unsplash.com'],
+        domains: ['images.unsplash.com', 'utfs.io'],
     },
     async redirects() {
         return [
