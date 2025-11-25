@@ -1,5 +1,5 @@
-import { Button } from '@workspace/ui/src/components/Button'
-import { Sheet, SheetContent, SheetTrigger } from '@workspace/ui/src/components/sheet'
+import { Button } from '@workspace/ui/components/Button'
+import { Sheet, SheetContent, SheetTrigger } from '@workspace/ui/components/sheet'
 import { PanelLeft } from 'lucide-react'
 import Link from 'next/link'
 import { NAVIGATION } from '../consts/common'

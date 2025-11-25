@@ -1,4 +1,4 @@
-import { Button } from '@workspace/ui/src/components/Button'
+import { Button } from '@workspace/ui/components/Button'
 import Link from 'next/link'
 
 export default function NotFound() {

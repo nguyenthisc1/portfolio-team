@@ -1,6 +1,6 @@
 'use client'
 
-import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/src/components/Tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/components/Tooltip'
 import { cn } from '@workspace/ui/lib/utils'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'

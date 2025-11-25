@@ -1,14 +1,14 @@
 'use client'
 
 import { UploadDropzone } from '@/shared/lib/uploadthing'
-import { CardDescription } from '@workspace/ui/src/components/Card'
+import { CardDescription } from '@workspace/ui/components/Card'
 import {
     DialogContent,
     DialogHeader,
     DialogOverlay,
     DialogTitle,
-} from '@workspace/ui/src/components/Dialog'
-import { toast } from '@workspace/ui/src/components/Sonner'
+} from '@workspace/ui/components/Dialog'
+import { toast } from '@workspace/ui/components/Sonner'
 
 interface UploadedFile {
     url: string

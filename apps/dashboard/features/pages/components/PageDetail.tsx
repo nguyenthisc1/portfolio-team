@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@workspace/ui/src/components/Button'
+import { Button } from '@workspace/ui/components/Button'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@workspace/ui/src/components/Card'
-import { FieldGroup } from '@workspace/ui/src/components/Field'
+} from '@workspace/ui/components/Card'
+import { FieldGroup } from '@workspace/ui/components/Field'
 import {
     Form,
     FormControl,
@@ -18,9 +18,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from '@workspace/ui/src/components/Form'
-import { Input } from '@workspace/ui/src/components/Textfield'
-import { toast } from '@workspace/ui/src/components/Sonner'
+} from '@workspace/ui/components/Form'
+import { Input } from '@workspace/ui/components/Textfield'
+import { toast } from '@workspace/ui/components/Sonner'
 import { ArrowLeft, Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'

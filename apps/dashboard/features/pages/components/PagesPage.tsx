@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from '@workspace/ui/src/components/Button'
-import { toast } from '@workspace/ui/src/components/Sonner'
+import { Button } from '@workspace/ui/components/Button'
+import { toast } from '@workspace/ui/components/Sonner'
 import { PlusCircle } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'

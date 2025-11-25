@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@workspace/ui/src/components/Button'
+import { Button } from '@workspace/ui/components/Button'
 import {
     Card,
     CardContent,
@@ -8,7 +8,7 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from '@workspace/ui/src/components/Card'
+} from '@workspace/ui/components/Card'
 import {
     Table,
     TableBody,
@@ -16,7 +16,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@workspace/ui/src/components/Table'
+} from '@workspace/ui/components/Table'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { ImageRow } from './TableRow'

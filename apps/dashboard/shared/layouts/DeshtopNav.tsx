@@ -1,4 +1,4 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/src/components/Tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/components/Tooltip'
 import { Home, Settings } from 'lucide-react'
 import Link from 'next/link'
 import NavItem from '../components/NavItem'

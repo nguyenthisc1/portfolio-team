@@ -1,23 +1,23 @@
 'use client'
 
 import { ImagePicker } from '@/shared/components/ImagePicker'
-import { Button } from '@workspace/ui/src/components/Button'
+import { Button } from '@workspace/ui/components/Button'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@workspace/ui/src/components/Card'
-import { FieldGroup } from '@workspace/ui/src/components/Field'
+} from '@workspace/ui/components/Card'
+import { FieldGroup } from '@workspace/ui/components/Field'
 import {
     FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-} from '@workspace/ui/src/components/Form'
-import { Input, TextArea } from '@workspace/ui/src/components/Textfield'
+} from '@workspace/ui/components/Form'
+import { Input, TextArea } from '@workspace/ui/components/Textfield'
 import { ChevronDown, ChevronRight, PlusIcon, TrashIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'

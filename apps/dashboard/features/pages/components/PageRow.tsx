@@ -1,18 +1,12 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Button } from '@workspace/ui/src/components/Button'
-import { TableCell, TableRow } from '@workspace/ui/src/components/Table'
-import {
-    Menu,
-    MenuItem,
-    MenuTrigger,
-    MenuPopover,
-    MenuHeader,
-} from '@workspace/ui/src/components/Menu'
-import { confirm } from '@workspace/ui/src/components/ConfirmDialog'
-import { Badge } from '@workspace/ui/src/components/Badge'
-import { toast } from '@workspace/ui/src/components/Sonner'
+import { Button } from '@workspace/ui/components/Button'
+import { TableCell, TableRow } from '@workspace/ui/components/Table'
+import { Menu, MenuItem, MenuTrigger, MenuPopover, MenuHeader } from '@workspace/ui/components/Menu'
+import { confirm } from '@workspace/ui/components/ConfirmDialog'
+import { Badge } from '@workspace/ui/components/Badge'
+import { toast } from '@workspace/ui/components/Sonner'
 import { MoreHorizontal, EyeIcon, PencilIcon, TrashIcon, CopyIcon } from 'lucide-react'
 
 interface Page {

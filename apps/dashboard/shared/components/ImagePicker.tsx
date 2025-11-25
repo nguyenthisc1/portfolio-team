@@ -1,13 +1,13 @@
 'use client'
 
-import { Button } from '@workspace/ui/src/components/Button'
-import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui/src/components/Card'
+import { Button } from '@workspace/ui/components/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui/components/Card'
 import {
     DialogContent,
     DialogHeader,
     DialogOverlay,
     DialogTitle,
-} from '@workspace/ui/src/components/Dialog'
+} from '@workspace/ui/components/Dialog'
 import { Check, Image as ImageIcon, PlusCircle, X } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
