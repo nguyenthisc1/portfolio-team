@@ -18,7 +18,7 @@ import {
     TableRow,
 } from '@workspace/ui/components/Table'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ImageRow } from './TableRow'
 
 interface UploadedImage {
@@ -49,21 +49,23 @@ export function ImagesTable({
     onView,
     onCopy,
 }: ImagesTableProps) {
-    const router = useRouter()
     const imagesPerPage = 10
+
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
+    // Calculates the page from current offset (assuming offset starts at imagesPerPage for the first page)
+    const currentPage = Math.floor((offset - 1) / imagesPerPage) + 1
+
+    const handlePageChange = (newPage: number) => {
+        const params = new URLSearchParams(searchParams as any)
+        if (newPage === 1) params.delete('page')
+        else params.set('page', newPage.toString())
+        router.push(`?${params.toString()}`)
+    }
 
     const startIndex = Math.max(1, offset - imagesPerPage + 1)
     const endIndex = offset - imagesPerPage + images.length
-
-    function prevPage() {
-        const newOffset = Math.max(imagesPerPage, offset - imagesPerPage)
-        router.push(`/images?offset=${newOffset}`, { scroll: false })
-    }
-
-    function nextPage() {
-        const newOffset = offset + imagesPerPage
-        router.push(`/images?offset=${newOffset}`, { scroll: false })
-    }
 
     return (
         <Card>
@@ -94,8 +96,7 @@ export function ImagesTable({
                                     className="text-muted-foreground py-8 text-center"
                                 >
                                     Loading...
-                                </TableCell>{' '}
-                                :
+                                </TableCell>
                             </TableRow>
                         ) : images.length === 0 ? (
                             <TableRow>
@@ -134,8 +135,10 @@ export function ImagesTable({
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={prevPage}
-                                isDisabled={offset <= imagesPerPage}
+                                onClick={() => {
+                                    if (currentPage > 1) handlePageChange(currentPage - 1)
+                                }}
+                                isDisabled={currentPage <= 1}
                             >
                                 <ChevronLeft className="mr-2 h-4 w-4" />
                                 Prev
@@ -143,8 +146,10 @@ export function ImagesTable({
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={nextPage}
-                                isDisabled={!hasMore && images.length === 0}
+                                onClick={() => {
+                                    if (hasMore) handlePageChange(currentPage + 1)
+                                }}
+                                isDisabled={!hasMore}
                             >
                                 Next
                                 <ChevronRight className="ml-2 h-4 w-4" />

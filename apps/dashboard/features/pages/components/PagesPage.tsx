@@ -17,17 +17,17 @@ interface Page {
 }
 
 export default function PagesPage() {
-    const searchParams = useSearchParams()
-    const offsetParam = searchParams.get('offset')
-    const initialOffset = offsetParam ? parseInt(offsetParam, 10) : 10
+    // const searchParams = useSearchParams()
+    // const offsetParam = searchParams.get('offset')
+    // const initialOffset = offsetParam ? parseInt(offsetParam, 10) : 10
 
     const [pages, setPages] = useState<Page[]>([])
-    const [offset, setOffset] = useState(initialOffset)
+    // const [offset, setOffset] = useState(initialOffset)
     const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(() => {
-        setOffset(initialOffset)
-    }, [initialOffset])
+    // useEffect(() => {
+    //     setOffset(initialOffset)
+    // }, [initialOffset])
 
     // Fetch pages from API
     const fetchPages = async () => {
@@ -58,9 +58,9 @@ export default function PagesPage() {
         fetchPages()
     }, [])
 
-    const pagesPerPage = 10
-    const paginatedPages = pages.slice(offset - pagesPerPage, offset)
-    const totalPages = pages.length
+    // const pagesPerPage = 10
+    // const paginatedPages = pages.slice(offset - pagesPerPage, offset)
+    // const totalPages = pages.length
 
     const deletePage = async (id: string) => {
         try {
@@ -128,10 +128,10 @@ export default function PagesPage() {
             </div>
 
             <PagesTable
-                pages={paginatedPages}
-                offset={offset}
+                pages={pages}
+                // offset={offset}
+                // totalPages={totalPages}
                 isLoading={isLoading}
-                totalPages={totalPages}
                 onDelete={deletePage}
                 onEdit={handleEdit}
                 onView={handleView}

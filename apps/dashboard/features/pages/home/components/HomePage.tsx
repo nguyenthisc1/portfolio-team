@@ -7,12 +7,12 @@ import { toast } from '@workspace/ui/components/Sonner'
 import { Tab, TabList, TabPanel, Tabs } from '@workspace/ui/components/Tabs'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { homeContentSchema, HomeContentForm } from './types'
 import HeroTab from './HeroTab'
 import PhilosophyTab from './PhilosophyTab'
 import ProjectsTab from './ProjectsTab'
-import SkillsTab from './SkillsTab'
 import SeoSidebar from './SeoSidebar'
+import SkillsTab from './SkillsTab'
+import { HomeContentForm, homeContentSchema } from './types'
 
 export default function HomePage() {
     const [isLoading, setIsLoading] = useState(true)

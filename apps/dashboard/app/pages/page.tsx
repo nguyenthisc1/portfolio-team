@@ -1,6 +1,12 @@
 import PagesPage from 'features/pages/components/PagesPage'
-import React from 'react'
+import { Suspense } from 'react'
 
-export default function page() {
-    return <PagesPage />
+export default async function page(props: {
+    searchParams: Promise<Record<string, string | string[]>>
+}) {
+    return (
+        <Suspense fallback={null}>
+            <PagesPage />
+        </Suspense>
+    )
 }

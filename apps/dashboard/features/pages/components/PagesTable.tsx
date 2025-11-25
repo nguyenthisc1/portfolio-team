@@ -1,11 +1,9 @@
 'use client'
 
-import { Button } from '@workspace/ui/components/Button'
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/Card'
@@ -17,8 +15,6 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/Table'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { PageRow } from './PageRow'
 
 interface Page {
@@ -32,8 +28,8 @@ interface Page {
 
 interface PagesTableProps {
     pages: Page[]
-    offset: number
-    totalPages: number
+    // offset: number
+    // totalPages: number
     isLoading: boolean
     onDelete: (id: string) => void
     onEdit: (page: Page) => void
@@ -41,29 +37,29 @@ interface PagesTableProps {
 }
 
 export function PagesTable({
+    // offset,
+    // totalPages,
     pages,
-    offset,
     isLoading,
-    totalPages,
     onDelete,
     onEdit,
     onView,
 }: PagesTableProps) {
-    const router = useRouter()
-    const pagesPerPage = 10
+    // const router = useRouter()
+    // const pagesPerPage = 10
 
-    const startIndex = Math.max(0, offset - pagesPerPage) + 1
-    const endIndex = Math.min(offset, totalPages)
+    // const startIndex = Math.max(0, offset - pagesPerPage) + 1
+    // const endIndex = Math.min(offset, totalPages)
 
-    function prevPage() {
-        const newOffset = Math.max(pagesPerPage, offset - pagesPerPage)
-        router.push(`/pages?offset=${newOffset}`, { scroll: false })
-    }
+    // function prevPage() {
+    //     const newOffset = Math.max(pagesPerPage, offset - pagesPerPage)
+    //     router.push(`/pages?offset=${newOffset}`, { scroll: false })
+    // }
 
-    function nextPage() {
-        const newOffset = offset + pagesPerPage
-        router.push(`/pages?offset=${newOffset}`, { scroll: false })
-    }
+    // function nextPage() {
+    //     const newOffset = offset + pagesPerPage
+    //     router.push(`/pages?offset=${newOffset}`, { scroll: false })
+    // }
 
     return (
         <Card>
@@ -118,7 +114,7 @@ export function PagesTable({
                     </TableBody>
                 </Table>
             </CardContent>
-            {totalPages > 0 && (
+            {/* {totalPages > 0 && (
                 <CardFooter>
                     <div className="flex w-full items-center justify-between">
                         <div className="text-muted-foreground text-xs">
@@ -150,7 +146,7 @@ export function PagesTable({
                         </div>
                     </div>
                 </CardFooter>
-            )}
+            )} */}
         </Card>
     )
 }

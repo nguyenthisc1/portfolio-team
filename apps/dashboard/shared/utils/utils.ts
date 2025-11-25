@@ -1,3 +1,4 @@
+import { toast } from '@workspace/ui/components/Sonner'
 import { UploadedImage } from './types'
 
 export function resolveBaseUrl() {
@@ -28,4 +29,23 @@ export function normalizeFiles(files: any[] = []): UploadedImage[] {
                 size: file.size || 0,
             }
         })
+}
+
+export function estimateTotal(
+    pageLength: number,
+    offsetValue: number,
+    hasMoreValue: boolean,
+    perPage: number,
+) {
+    const startIndex = Math.max(offsetValue - perPage, 0)
+    const currentCount = startIndex + pageLength
+    return hasMoreValue ? currentCount + perPage : currentCount
+}
+
+export function copyToClipboard(url: string) {
+    navigator.clipboard.writeText(url)
+    toast.success({
+        title: 'Copied to clipboard',
+        description: 'Image URL copied to clipboard',
+    })
 }
