@@ -1,5 +1,7 @@
 'use client'
 
+import { ImagePicker } from '@/shared/components/ImagePicker'
+import { Button } from '@workspace/ui/components/Button'
 import {
     Card,
     CardContent,
@@ -15,13 +17,11 @@ import {
     FormLabel,
     FormMessage,
 } from '@workspace/ui/components/Form'
-import { Button } from '@workspace/ui/components/Button'
 import { Input, TextArea } from '@workspace/ui/components/Textfield'
-import { PlusIcon, TrashIcon } from 'lucide-react'
+import { ChevronDown, ChevronRight, PlusIcon, TrashIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { HomeContentForm } from './types'
-import { ImagePicker } from '@/shared/components/ImagePicker'
-import { useState, useEffect } from 'react'
 
 interface ProjectsTabProps {
     form: UseFormReturn<HomeContentForm>
@@ -105,6 +105,23 @@ function ProjectImageField({ value, onChange }: ProjectImageFieldProps) {
 }
 
 export default function ProjectsTab({ form }: ProjectsTabProps) {
+    // Track expanded/collapsed state for each category (by index)
+    const [expandedCategories, setExpandedCategories] = useState<number[]>([])
+
+    // Reset expand all when list changes (optional: expand all on add)
+    const projectListLength = form.watch('projects.projectList')?.length || 0
+    useEffect(() => {
+        // Collapse categories by default after deletion/addition
+        // Optionally: expand newly added category
+        setExpandedCategories((prev) => prev.filter((idx) => idx < projectListLength))
+    }, [projectListLength])
+
+    const handleToggleCategory = (idx: number) => {
+        setExpandedCategories((prev) =>
+            prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
+        )
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -149,163 +166,236 @@ export default function ProjectsTab({ form }: ProjectsTabProps) {
                                 <FormLabel>Project Categories</FormLabel>
                                 <FormControl>
                                     <div className="space-y-4">
-                                        {field.value?.map((category, categoryIndex) => (
-                                            <Card key={categoryIndex} className="p-4">
-                                                <div className="space-y-4">
-                                                    <div className="flex items-center justify-between">
-                                                        <h3 className="font-semibold">
-                                                            Category {categoryIndex + 1}
-                                                        </h3>
-                                                        <Button
-                                                            type="button"
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => {
-                                                                const newList = field.value.filter(
-                                                                    (_, i) => i !== categoryIndex,
-                                                                )
-                                                                field.onChange(newList)
-                                                            }}
-                                                        >
-                                                            <TrashIcon className="mr-2 h-4 w-4" />
-                                                            Remove
-                                                        </Button>
-                                                    </div>
+                                        {field.value?.map((category, categoryIndex) => {
+                                            const expanded =
+                                                expandedCategories.includes(categoryIndex)
+                                            return (
+                                                <Card key={categoryIndex} className={`p-4`}>
+                                                    <div className="space-y-4">
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center space-x-2">
+                                                                <button
+                                                                    type="button"
+                                                                    aria-label={
+                                                                        expanded
+                                                                            ? 'Collapse category'
+                                                                            : 'Expand category'
+                                                                    }
+                                                                    className="cursor-pointer focus:outline-none"
+                                                                    tabIndex={0}
+                                                                    onClick={() =>
+                                                                        handleToggleCategory(
+                                                                            categoryIndex,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {expanded ? (
+                                                                        <ChevronDown className="h-5 w-5" />
+                                                                    ) : (
+                                                                        <ChevronRight className="h-5 w-5" />
+                                                                    )}
+                                                                </button>
+                                                                <h3 className="font-semibold">
+                                                                    Category {categoryIndex + 1}
+                                                                </h3>
+                                                            </div>
+                                                            <Button
+                                                                type="button"
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={() => {
+                                                                    const newList =
+                                                                        field.value.filter(
+                                                                            (_: any, i: number) =>
+                                                                                i !== categoryIndex,
+                                                                        )
+                                                                    field.onChange(newList)
+                                                                }}
+                                                            >
+                                                                <TrashIcon className="mr-2 h-4 w-4" />
+                                                                Remove
+                                                            </Button>
+                                                        </div>
 
-                                                    <FormField
-                                                        control={form.control}
-                                                        name={`projects.projectList.${categoryIndex}.category`}
-                                                        render={({ field: categoryField }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Category Name</FormLabel>
-                                                                <FormControl>
-                                                                    <Input {...categoryField} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
+                                                        {/* Only show details if expanded */}
+                                                        {expanded && (
+                                                            <>
+                                                                <FormField
+                                                                    control={form.control}
+                                                                    name={`projects.projectList.${categoryIndex}.category`}
+                                                                    render={({
+                                                                        field: categoryField,
+                                                                    }) => (
+                                                                        <FormItem>
+                                                                            <FormLabel>
+                                                                                Category Name
+                                                                            </FormLabel>
+                                                                            <FormControl>
+                                                                                <Input
+                                                                                    {...categoryField}
+                                                                                />
+                                                                            </FormControl>
+                                                                            <FormMessage />
+                                                                        </FormItem>
+                                                                    )}
+                                                                />
 
-                                                    <div className="space-y-2">
-                                                        <label className="text-sm font-medium">
-                                                            Project Items
-                                                        </label>
-                                                        {category.items?.map((item, itemIndex) => (
-                                                            <Card key={itemIndex} className="p-3">
                                                                 <div className="space-y-2">
-                                                                    <div className="flex justify-end">
-                                                                        <Button
-                                                                            type="button"
-                                                                            variant="ghost"
-                                                                            size="sm"
-                                                                            onClick={() => {
-                                                                                const newItems =
-                                                                                    category.items.filter(
-                                                                                        (_, i) =>
-                                                                                            i !==
-                                                                                            itemIndex,
-                                                                                    )
-                                                                                const newList = [
-                                                                                    ...field.value,
-                                                                                ]
+                                                                    <label className="text-sm font-medium">
+                                                                        Project Items
+                                                                    </label>
+                                                                    {category.items?.map(
+                                                                        (
+                                                                            item: any,
+                                                                            itemIndex: number,
+                                                                        ) => (
+                                                                            <Card
+                                                                                key={itemIndex}
+                                                                                className="p-3"
+                                                                            >
+                                                                                <div className="space-y-2">
+                                                                                    <div className="flex justify-end">
+                                                                                        <Button
+                                                                                            type="button"
+                                                                                            variant="ghost"
+                                                                                            size="sm"
+                                                                                            onClick={() => {
+                                                                                                const newItems =
+                                                                                                    category.items.filter(
+                                                                                                        (
+                                                                                                            _: any,
+                                                                                                            i: number,
+                                                                                                        ) =>
+                                                                                                            i !==
+                                                                                                            itemIndex,
+                                                                                                    )
+                                                                                                const newList =
+                                                                                                    [
+                                                                                                        ...field.value,
+                                                                                                    ]
+                                                                                                newList[
+                                                                                                    categoryIndex
+                                                                                                ].items =
+                                                                                                    newItems
+                                                                                                field.onChange(
+                                                                                                    newList,
+                                                                                                )
+                                                                                            }}
+                                                                                        >
+                                                                                            <TrashIcon className="h-4 w-4" />
+                                                                                        </Button>
+                                                                                    </div>
+                                                                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                                                                        <FormField
+                                                                                            control={
+                                                                                                form.control
+                                                                                            }
+                                                                                            name={`projects.projectList.${categoryIndex}.items.${itemIndex}.name`}
+                                                                                            render={({
+                                                                                                field: nameField,
+                                                                                            }) => (
+                                                                                                <FormItem>
+                                                                                                    <FormLabel>
+                                                                                                        Project
+                                                                                                        Name
+                                                                                                    </FormLabel>
+                                                                                                    <FormControl>
+                                                                                                        <Input
+                                                                                                            {...nameField}
+                                                                                                        />
+                                                                                                    </FormControl>
+                                                                                                    <FormMessage />
+                                                                                                </FormItem>
+                                                                                            )}
+                                                                                        />
+
+                                                                                        <FormField
+                                                                                            control={
+                                                                                                form.control
+                                                                                            }
+                                                                                            name={`projects.projectList.${categoryIndex}.items.${itemIndex}.image`}
+                                                                                            render={({
+                                                                                                field: imageField,
+                                                                                            }) => (
+                                                                                                <FormItem>
+                                                                                                    <FormLabel>
+                                                                                                        Project
+                                                                                                        Image
+                                                                                                    </FormLabel>
+                                                                                                    <FormControl>
+                                                                                                        <ProjectImageField
+                                                                                                            value={
+                                                                                                                imageField.value
+                                                                                                            }
+                                                                                                            onChange={
+                                                                                                                imageField.onChange
+                                                                                                            }
+                                                                                                        />
+                                                                                                    </FormControl>
+                                                                                                    <FormMessage />
+                                                                                                </FormItem>
+                                                                                            )}
+                                                                                        />
+                                                                                    </div>
+                                                                                    {/* <FormField
+                                                                                    control={form.control}
+                                                                                    name={`projects.projectList.${categoryIndex}.items.${itemIndex}.link`}
+                                                                                    render={({
+                                                                                        field: linkField,
+                                                                                    }) => (
+                                                                                        <FormItem>
+                                                                                            <FormLabel>Link</FormLabel>
+                                                                                            <FormControl>
+                                                                                                <Input {...linkField} />
+                                                                                            </FormControl>
+                                                                                            <FormMessage />
+                                                                                        </FormItem>
+                                                                                    )}
+                                                                                /> */}
+                                                                                </div>
+                                                                            </Card>
+                                                                        ),
+                                                                    )}
+
+                                                                    <Button
+                                                                        type="button"
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        onClick={() => {
+                                                                            const newList = [
+                                                                                ...field.value,
+                                                                            ]
+                                                                            if (
+                                                                                !Array.isArray(
+                                                                                    newList[
+                                                                                        categoryIndex
+                                                                                    ].items,
+                                                                                )
+                                                                            ) {
                                                                                 newList[
                                                                                     categoryIndex
-                                                                                ].items = newItems
-                                                                                field.onChange(
-                                                                                    newList,
-                                                                                )
-                                                                            }}
-                                                                        >
-                                                                            <TrashIcon className="h-4 w-4" />
-                                                                        </Button>
-                                                                    </div>
-                                                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                                                        <FormField
-                                                                            control={form.control}
-                                                                            name={`projects.projectList.${categoryIndex}.items.${itemIndex}.name`}
-                                                                            render={({
-                                                                                field: nameField,
-                                                                            }) => (
-                                                                                <FormItem>
-                                                                                    <FormLabel>
-                                                                                        Project Name
-                                                                                    </FormLabel>
-                                                                                    <FormControl>
-                                                                                        <Input
-                                                                                            {...nameField}
-                                                                                        />
-                                                                                    </FormControl>
-                                                                                    <FormMessage />
-                                                                                </FormItem>
-                                                                            )}
-                                                                        />
-
-                                                                        <FormField
-                                                                            control={form.control}
-                                                                            name={`projects.projectList.${categoryIndex}.items.${itemIndex}.image`}
-                                                                            render={({
-                                                                                field: imageField,
-                                                                            }) => (
-                                                                                <FormItem>
-                                                                                    <FormLabel>
-                                                                                        Project
-                                                                                        Image
-                                                                                    </FormLabel>
-                                                                                    <FormControl>
-                                                                                        <ProjectImageField
-                                                                                            value={
-                                                                                                imageField.value
-                                                                                            }
-                                                                                            onChange={
-                                                                                                imageField.onChange
-                                                                                            }
-                                                                                        />
-                                                                                    </FormControl>
-                                                                                    <FormMessage />
-                                                                                </FormItem>
-                                                                            )}
-                                                                        />
-                                                                    </div>
-                                                                    {/* <FormField
-                                                                        control={form.control}
-                                                                        name={`projects.projectList.${categoryIndex}.items.${itemIndex}.link`}
-                                                                        render={({
-                                                                            field: linkField,
-                                                                        }) => (
-                                                                            <FormItem>
-                                                                                <FormLabel>Link</FormLabel>
-                                                                                <FormControl>
-                                                                                    <Input {...linkField} />
-                                                                                </FormControl>
-                                                                                <FormMessage />
-                                                                            </FormItem>
-                                                                        )}
-                                                                    /> */}
+                                                                                ].items = []
+                                                                            }
+                                                                            newList[
+                                                                                categoryIndex
+                                                                            ].items.push({
+                                                                                image: '',
+                                                                                name: '',
+                                                                                link: '',
+                                                                            })
+                                                                            field.onChange(newList)
+                                                                        }}
+                                                                    >
+                                                                        <PlusIcon className="mr-2 h-4 w-4" />
+                                                                        Add Project Item
+                                                                    </Button>
                                                                 </div>
-                                                            </Card>
-                                                        ))}
-
-                                                        <Button
-                                                            type="button"
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => {
-                                                                const newList = [...field.value]
-                                                                newList[categoryIndex].items.push({
-                                                                    image: '',
-                                                                    name: '',
-                                                                    link: '',
-                                                                })
-                                                                field.onChange(newList)
-                                                            }}
-                                                        >
-                                                            <PlusIcon className="mr-2 h-4 w-4" />
-                                                            Add Project Item
-                                                        </Button>
+                                                            </>
+                                                        )}
                                                     </div>
-                                                </div>
-                                            </Card>
-                                        ))}
+                                                </Card>
+                                            )
+                                        })}
 
                                         <Button
                                             type="button"
@@ -317,6 +407,11 @@ export default function ProjectsTab({ form }: ProjectsTabProps) {
                                                         category: '',
                                                         items: [],
                                                     },
+                                                ])
+                                                // Optionally, expand the new category
+                                                setExpandedCategories((prev) => [
+                                                    ...prev,
+                                                    field.value.length,
                                                 ])
                                             }}
                                         >

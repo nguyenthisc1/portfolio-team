@@ -42,7 +42,6 @@ export default function HeroTab({ form }: HeroTabProps) {
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
-                                <FormDescription>Main hero title</FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -57,7 +56,6 @@ export default function HeroTab({ form }: HeroTabProps) {
                                 <FormControl>
                                     <TextArea {...field} rows={4} />
                                 </FormControl>
-                                <FormDescription>Hero section description</FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
