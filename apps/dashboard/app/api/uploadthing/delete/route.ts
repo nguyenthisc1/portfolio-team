@@ -1,4 +1,4 @@
-import { utapi } from '@/server/uploadthing'
+import { utapi } from 'server/uploadthing'
 
 export const runtime = 'nodejs'
 

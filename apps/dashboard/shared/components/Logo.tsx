@@ -1,4 +1,4 @@
-import { PROJECT_NAME } from '@/shared/consts/common'
+import { PROJECT_NAME } from 'shared/consts/common'
 import { cn } from '@workspace/ui/lib/utils'
 import Link from 'next/link'
 

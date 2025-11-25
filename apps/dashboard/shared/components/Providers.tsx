@@ -1,5 +1,5 @@
 'use client'
-import { ourFileRouter } from '@/config/uploadthing'
+import { ourFileRouter } from 'config/uploadthing'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
 import { BsProvider } from '@workspace/ui/components/Provider'
 import { SessionProvider } from 'next-auth/react'

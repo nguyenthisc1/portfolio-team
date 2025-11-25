@@ -1,5 +1,5 @@
-import { Providers } from '@/shared/components/Providers'
-import { PROJECT_DESCRIPTION, PROJECT_NAME } from '@/shared/consts/common'
+import { Providers } from 'shared/components/Providers'
+import { PROJECT_DESCRIPTION, PROJECT_NAME } from 'shared/consts/common'
 import '@workspace/ui/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'

@@ -6,7 +6,7 @@ const f = createUploadthing()
 const auth = (req: Request) => ({ id: 'fakeId' }) // Fake auth function
 
 // FileRouter for your app, can contain multiple FileRoutes
-export const ourFileRouter = {
+export const ourFileRouter: FileRouter = {
     // Define as many FileRoutes as you like, each with a unique routeSlug
     imageUploader: f({
         image: {
@@ -38,6 +38,6 @@ export const ourFileRouter = {
             // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
             return { uploadedBy: metadata.userId }
         }),
-} satisfies FileRouter
+}
 
 export type OurFileRouter = typeof ourFileRouter

@@ -174,7 +174,7 @@ export default function SkillsTab({ form }: SkillsTabProps) {
                                                                                             ]
                                                                                         newSkills[
                                                                                             skillIndex
-                                                                                        ].skills[
+                                                                                        ]!.skills[
                                                                                             skillItemIndex
                                                                                         ] =
                                                                                             e.target.value
@@ -194,7 +194,7 @@ export default function SkillsTab({ form }: SkillsTabProps) {
                                                                                             ]
                                                                                         newSkills[
                                                                                             skillIndex
-                                                                                        ].skills =
+                                                                                        ]!.skills =
                                                                                             skill.skills.filter(
                                                                                                 (
                                                                                                     _: any,
@@ -224,7 +224,7 @@ export default function SkillsTab({ form }: SkillsTabProps) {
                                                                             ]
                                                                             newSkills[
                                                                                 skillIndex
-                                                                            ].skills.push('')
+                                                                            ]!.skills.push('')
                                                                             field.onChange(
                                                                                 newSkills,
                                                                             )

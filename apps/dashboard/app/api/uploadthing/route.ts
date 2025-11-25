@@ -1,4 +1,4 @@
-import { ourFileRouter } from '@/config/uploadthing'
+import { ourFileRouter } from 'config/uploadthing'
 import { createRouteHandler } from 'uploadthing/next'
 
 // Export routes for Next App Router

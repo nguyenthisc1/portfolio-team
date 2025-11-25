@@ -1,6 +1,5 @@
 'use client'
 
-import { ImageUploadDialog } from '@/shared/components/ImageUploadDialog'
 import { Button } from '@workspace/ui/components/Button'
 import {
     DialogContent,
@@ -11,104 +10,103 @@ import {
 import { toast } from '@workspace/ui/components/Sonner'
 import { CopyIcon, PlusCircle } from 'lucide-react'
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { ImageUploadDialog } from 'shared/components/ImageUploadDialog'
+import type { UploadedImage } from 'shared/utils/types'
+import { normalizeFiles } from 'shared/utils/utils'
 import { ImagesTable } from './Table'
 
-interface UploadedImage {
-    url: string
-    name: string
-    key: string
-    size: number
+interface ImagesPageProps {
+    initialImages: UploadedImage[]
+    initialHasMore: boolean
+    initialOffset: number
 }
 
-export default function ImagesPage() {
-    const searchParams = useSearchParams()
-    const offsetParam = searchParams.get('offset')
-    const initialOffset = offsetParam ? parseInt(offsetParam, 10) : 10
+function estimateTotal(
+    pageLength: number,
+    offsetValue: number,
+    hasMoreValue: boolean,
+    perPage: number,
+) {
+    const startIndex = Math.max(offsetValue - perPage, 0)
+    const currentCount = startIndex + pageLength
+    return hasMoreValue ? currentCount + perPage : currentCount
+}
 
-    const [images, setImages] = useState<UploadedImage[]>([])
+export default function ImagesPage({
+    initialImages,
+    initialHasMore,
+    initialOffset,
+}: ImagesPageProps) {
+    const imagesPerPage = 10
+    const [images, setImages] = useState<UploadedImage[]>(initialImages)
     const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isUploadOpen, setIsUploadOpen] = useState(false)
     const [offset, setOffset] = useState(initialOffset)
-    const [isLoading, setIsLoading] = useState(true)
-    const [hasMore, setHasMore] = useState(false)
-    const [totalImages, setTotalImages] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
+    const [hasMore, setHasMore] = useState(initialHasMore)
+    const [totalImages, setTotalImages] = useState(
+        estimateTotal(initialImages.length, initialOffset, initialHasMore, imagesPerPage),
+    )
 
     useEffect(() => {
+        setImages(initialImages)
+        setHasMore(initialHasMore)
         setOffset(initialOffset)
-    }, [initialOffset])
+        setTotalImages(
+            estimateTotal(initialImages.length, initialOffset, initialHasMore, imagesPerPage),
+        )
+    }, [initialImages, initialHasMore, initialOffset, imagesPerPage])
 
-    const imagesPerPage = 10
+    // Use server-passed initialImages/hasMore/offset; fetchImages only for CRUD updates
+    const fetchImages = useCallback(
+        async (targetOffset: number) => {
+            const currentOffset = Math.max(targetOffset - imagesPerPage, 0)
+            setIsLoading(true)
+            try {
+                const response = await fetch(
+                    `/api/uploadthing/list?limit=${imagesPerPage}&offset=${currentOffset}`,
+                    { cache: 'no-store' },
+                )
 
-    // Fetch images from API with server-side pagination
-    const fetchImages = async (currentOffset: number) => {
-        setIsLoading(true)
-        try {
-            const response = await fetch(
-                `/api/uploadthing/list?limit=${imagesPerPage}&offset=${currentOffset}`,
-            )
-            if (response.ok) {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch images: ${response.statusText}`)
+                }
+
                 const data = await response.json()
-                // Handle the response structure from our API
                 const files = Array.isArray(data.files) ? data.files : []
-
-                // Transform the response to match our UploadedImage interface
-                // According to UploadThing API, files have: key, name, size, url (or ufsUrl)
-                const formattedImages: UploadedImage[] = files
-                    .filter((file: any) => file && (file.url || file.ufsUrl || file.key)) // Include files with URL or key
-                    .map((file: any) => {
-                        // UploadThing files may have url, ufsUrl, or we construct from key
-                        const url =
-                            file.url ||
-                            file.ufsUrl ||
-                            (file.key ? `https://utfs.io/f/${file.key}` : '')
-                        // Extract filename from key if name is not available
-                        const name =
-                            file.name ||
-                            (file.key
-                                ? file.key.split('_').pop()?.split('/').pop() || 'Untitled'
-                                : 'Untitled')
-                        return {
-                            url,
-                            name,
-                            key: file.key || file.id || '',
-                            size: file.size || 0,
-                        }
-                    })
+                const formattedImages = normalizeFiles(files)
 
                 setImages(formattedImages)
-                setHasMore(data.hasMore || false)
-                // For total, we'll estimate based on hasMore or use a separate count endpoint
-                // Since UploadThing doesn't provide total count directly, we'll track it differently
-                setTotalImages(formattedImages.length + currentOffset)
-            } else {
+                setHasMore(Boolean(data.hasMore))
+                setTotalImages(
+                    estimateTotal(
+                        formattedImages.length,
+                        targetOffset,
+                        Boolean(data.hasMore),
+                        imagesPerPage,
+                    ),
+                )
+            } catch (error) {
+                console.error('Error fetching images:', error)
                 toast.error({
                     title: 'Failed to load images',
                     description: 'Could not fetch images from server',
                 })
+            } finally {
+                setIsLoading(false)
             }
-        } catch (error) {
-            console.error('Error fetching images:', error)
-            toast.error({
-                title: 'Failed to load images',
-                description: 'An error occurred while loading images',
-            })
-        } finally {
-            setIsLoading(false)
-        }
-    }
+        },
+        [imagesPerPage],
+    )
 
-    useEffect(() => {
-        const currentOffset = offset - imagesPerPage
-        fetchImages(currentOffset)
-    }, [offset, imagesPerPage])
-
-    const handleUploadComplete = async (_files: UploadedImage[]) => {
-        // Refresh the images list with current offset
-        await fetchImages(offset - imagesPerPage)
-    }
+    const handleUploadComplete = useCallback(
+        async (_files: UploadedImage[]) => {
+            await fetchImages(offset)
+        },
+        [fetchImages, offset],
+    )
 
     const copyToClipboard = (url: string) => {
         navigator.clipboard.writeText(url)
@@ -135,8 +133,7 @@ export default function ImagesPage() {
                         title: 'Image deleted',
                         description: 'Image has been deleted successfully',
                     })
-                    // Refresh the images list with current offset
-                    await fetchImages(offset - imagesPerPage)
+                    await fetchImages(offset)
                 } else {
                     toast.error({
                         title: 'Delete failed',

@@ -1,6 +1,6 @@
-import { homeContentSchema } from '@/features/pages/home/components/types'
-import { connectDB } from '@/shared/lib/mongodb'
-import { HomeContentModel } from '@/shared/models/HomeContent'
+import { homeContentSchema } from 'features/pages/home/components/types'
+import { connectDB } from 'shared/lib/mongodb'
+import { HomeContentModel } from 'shared/models/HomeContent'
 import { NextRequest, NextResponse } from 'next/server'
 
 function sanitizeHomeDocument(doc: Record<string, unknown>) {

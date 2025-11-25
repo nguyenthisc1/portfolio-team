@@ -1,5 +1,5 @@
-import { connectDB } from '@/shared/lib/mongodb'
-import { GlobalSettingsModel } from '@/shared/models/GlobalSettings'
+import { connectDB } from 'shared/lib/mongodb'
+import { GlobalSettingsModel } from 'shared/models/GlobalSettings'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 

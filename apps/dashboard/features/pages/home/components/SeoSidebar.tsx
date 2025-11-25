@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@workspace/ui/components/Button'
 import {
     Card,
     CardContent,
@@ -16,13 +17,12 @@ import {
     FormLabel,
     FormMessage,
 } from '@workspace/ui/components/Form'
-import { Button } from '@workspace/ui/components/Button'
 import { Input, TextArea } from '@workspace/ui/components/Textfield'
 import { PlusIcon, TrashIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
+import { ImagePicker } from 'shared/components/ImagePicker'
 import { HomeContentForm } from './types'
-import { ImagePicker } from '@/shared/components/ImagePicker'
-import { useState, useEffect } from 'react'
 
 interface SeoSidebarProps {
     form: UseFormReturn<HomeContentForm>
@@ -57,7 +57,7 @@ export default function SeoSidebar({ form }: SeoSidebarProps) {
         images: { url: string; name: string; key: string; size: number }[],
     ) => {
         if (images.length > 0) {
-            const image = images[0]
+            const image = images[0]!
             form.setValue('seo.image', image.url, { shouldValidate: true })
             setSelectedImage(image)
         } else {

@@ -1,24 +1,23 @@
-import type { NextAuthConfig } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
 export const authConfig = {
     providers: [
         Credentials({
             credentials: {
-                username: { label: 'Username' },
+                username: { label: 'Username', type: 'text' },
                 password: { label: 'Password', type: 'password' },
             },
             authorize: async (credentials) => {
-                const username = credentials?.username
-                const password = credentials?.password
+                const username = (credentials?.username as string | undefined)?.trim()
+                const password = credentials?.password as string | undefined
 
                 if (!username || !password) {
                     return null
                 }
 
                 const [{ connectDB }, { UserModel }, { compare }] = await Promise.all([
-                    import('@/shared/lib/mongodb'),
-                    import('@/shared/models/User'),
+                    import('../shared/lib/mongodb'),
+                    import('../shared/models/User'),
                     import('bcryptjs'),
                 ])
 
@@ -47,11 +46,11 @@ export const authConfig = {
     },
 
     session: {
-        strategy: 'jwt',
+        strategy: 'jwt' as const,
     },
 
     callbacks: {
-        authorized({ auth, request }) {
+        authorized({ auth, request }: { auth: any; request: { nextUrl: { pathname: string } } }) {
             const { pathname } = request.nextUrl
             const isLoggedIn = !!auth?.user
 
@@ -67,12 +66,5 @@ export const authConfig = {
 
             return true
         },
-        redirect({ url, baseUrl }) {
-            // Allows relative callback URLs
-            if (url.startsWith('/')) return `${baseUrl}${url}`
-            // Allows callback URLs on the same origin
-            if (new URL(url).origin === baseUrl) return url
-            return baseUrl
-        },
     },
-} satisfies NextAuthConfig
+}
