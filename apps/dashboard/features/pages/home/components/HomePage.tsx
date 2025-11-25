@@ -46,7 +46,7 @@ export default function HomePage() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await fetch('/api/content/update')
+                const response = await fetch('/api/content')
                 if (response.ok) {
                     const data = await response.json()
                     form.reset(data)
@@ -68,7 +68,7 @@ export default function HomePage() {
         console.log('Form submitted with data:', data)
         setIsSaving(true)
         try {
-            const response = await fetch('/api/content/update', {
+            const response = await fetch('/api/content', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

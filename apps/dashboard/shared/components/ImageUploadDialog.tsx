@@ -1,6 +1,6 @@
 'use client'
 
-import { UploadDropzone } from '@/shared/utils/uploadthing'
+import { UploadDropzone } from '@/shared/lib/uploadthing'
 import { CardDescription } from '@workspace/ui/components/Card'
 import {
     DialogContent,

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { signIn } from '@/auth'
+import { signIn } from 'next-auth/react'
 import { Button } from '@workspace/ui/components/Button'
 import {
     Card,

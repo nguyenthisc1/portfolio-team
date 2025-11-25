@@ -1,5 +1,7 @@
 import { utapi } from '@/server/uploadthing'
 
+export const runtime = 'nodejs'
+
 export async function POST(req: Request) {
     const { key } = await req.json()
 

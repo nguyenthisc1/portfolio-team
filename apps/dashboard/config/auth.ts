@@ -1,5 +1,5 @@
-import Credentials from 'next-auth/providers/credentials'
 import type { NextAuthConfig } from 'next-auth'
+import Credentials from 'next-auth/providers/credentials'
 
 export const authConfig = {
     providers: [
@@ -9,20 +9,35 @@ export const authConfig = {
                 password: { label: 'Password', type: 'password' },
             },
             authorize: async (credentials) => {
-                const username = process.env.AUTH_USERNAME
-                const password = process.env.AUTH_PASSWORD
+                const username = credentials?.username
+                const password = credentials?.password
 
                 if (!username || !password) {
-                    console.error(
-                        'AUTH_USERNAME and AUTH_PASSWORD must be set in environment variables',
-                    )
                     return null
                 }
 
-                if (credentials?.username === username && credentials?.password === password) {
-                    return { id: '1', name: 'Admin' }
+                const [{ connectDB }, { UserModel }, { compare }] = await Promise.all([
+                    import('@/shared/lib/mongodb'),
+                    import('@/shared/models/User'),
+                    import('bcryptjs'),
+                ])
+
+                await connectDB()
+                const user = await UserModel.findOne({ username })
+
+                if (!user) {
+                    return null
                 }
-                return null
+
+                const isPasswordValid = await compare(String(password), String(user.passwordHash))
+                if (!isPasswordValid) {
+                    return null
+                }
+
+                return {
+                    id: user._id.toString(),
+                    name: user.name ?? user.username,
+                }
             },
         }),
     ],
