@@ -1,14 +1,14 @@
 'use client'
 
 import { ImageUploadDialog } from '@/shared/components/ImageUploadDialog'
-import { Button } from '@workspace/ui/components/Button'
+import { Button } from '@workspace/ui/src/components/Button'
 import {
     DialogContent,
     DialogHeader,
     DialogOverlay,
     DialogTitle,
-} from '@workspace/ui/components/Dialog'
-import { toast } from '@workspace/ui/components/Sonner'
+} from '@workspace/ui/src/components/Dialog'
+import { toast } from '@workspace/ui/src/components/Sonner'
 import { CopyIcon, PlusCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
