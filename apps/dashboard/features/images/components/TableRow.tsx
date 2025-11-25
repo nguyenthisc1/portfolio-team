@@ -1,10 +1,16 @@
 'use client'
 
 import Image from 'next/image'
-import { Button } from '@workspace/ui/components/Button'
-import { TableCell, TableRow } from '@workspace/ui/components/Table'
-import { Menu, MenuItem, MenuTrigger, MenuPopover, MenuHeader } from '@workspace/ui/components/Menu'
-import { confirm } from '@workspace/ui/components/ConfirmDialog'
+import { Button } from '@workspace/ui/src/components/Button'
+import { TableCell, TableRow } from '@workspace/ui/src/components/Table'
+import {
+    Menu,
+    MenuItem,
+    MenuTrigger,
+    MenuPopover,
+    MenuHeader,
+} from '@workspace/ui/src/components/Menu'
+import { confirm } from '@workspace/ui/src/components/ConfirmDialog'
 import { MoreHorizontal, EyeIcon, CopyIcon, TrashIcon } from 'lucide-react'
 
 interface UploadedImage {

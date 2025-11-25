@@ -1,22 +1,22 @@
 'use client'
 
-import { Button } from '@workspace/ui/components/Button'
+import { Button } from '@workspace/ui/src/components/Button'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@workspace/ui/components/Card'
-import { FieldGroup } from '@workspace/ui/components/Field'
+} from '@workspace/ui/src/components/Card'
+import { FieldGroup } from '@workspace/ui/src/components/Field'
 import {
     FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-} from '@workspace/ui/components/Form'
-import { Input } from '@workspace/ui/components/Textfield'
+} from '@workspace/ui/src/components/Form'
+import { Input } from '@workspace/ui/src/components/Textfield'
 import { ChevronDown, ChevronRight, PlusIcon, TrashIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'

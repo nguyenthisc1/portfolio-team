@@ -6,8 +6,8 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@workspace/ui/components/Card'
-import { FieldGroup } from '@workspace/ui/components/Field'
+} from '@workspace/ui/src/components/Card'
+import { FieldGroup } from '@workspace/ui/src/components/Field'
 import {
     FormControl,
     FormDescription,
@@ -15,9 +15,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from '@workspace/ui/components/Form'
-import { Button } from '@workspace/ui/components/Button'
-import { Input, TextArea } from '@workspace/ui/components/Textfield'
+} from '@workspace/ui/src/components/Form'
+import { Button } from '@workspace/ui/src/components/Button'
+import { Input, TextArea } from '@workspace/ui/src/components/Textfield'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import { UseFormReturn } from 'react-hook-form'
 import { HomeContentForm } from './types'

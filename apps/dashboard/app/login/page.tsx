@@ -3,16 +3,16 @@
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import { Button } from '@workspace/ui/components/Button'
+import { Button } from '@workspace/ui/src/components/Button'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@workspace/ui/components/Card'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '@workspace/ui/components/Field'
-import { Input } from '@workspace/ui/components/Input'
+} from '@workspace/ui/src/components/Card'
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '@workspace/ui/src/components/Field'
+import { Input } from '@workspace/ui/src/components/Input'
 
 export default function LoginPage() {
     const router = useRouter()

@@ -7,7 +7,7 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@workspace/ui/components/Card'
+} from '@workspace/ui/src/components/Card'
 import {
     Users,
     Eye,
