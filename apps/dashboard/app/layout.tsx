@@ -1,8 +1,8 @@
-import { Providers } from 'shared/components/Providers'
-import { PROJECT_DESCRIPTION, PROJECT_NAME } from 'shared/consts/common'
 import '@workspace/ui/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Providers } from 'shared/components/Providers'
+import { PROJECT_DESCRIPTION, PROJECT_NAME } from 'shared/consts/common'
 
 const fontSans = Inter({ subsets: ['latin'] })
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode

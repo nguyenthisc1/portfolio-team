@@ -1,10 +1,17 @@
+'use client'
+
 import { Tooltip, TooltipContent, TooltipTrigger } from '@workspace/ui/components/Tooltip'
-import { Home, Settings } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import NavItem from '../components/NavItem'
 import { NAVIGATION } from '../consts/common'
 
 export default function DesktopNav() {
+    const handleSignOut = async () => {
+        await signOut({})
+    }
+
     return (
         <aside className="bg-background fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r sm:flex">
             <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -21,6 +28,10 @@ export default function DesktopNav() {
                         {item.icon && <item.icon className="h-5 w-5" />}
                     </NavItem>
                 ))}
+
+                <NavItem href="/" label="Logout">
+                    <LogOut className="h-5 w-5" onClick={handleSignOut} />
+                </NavItem>
             </nav>
             <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
                 <Tooltip>

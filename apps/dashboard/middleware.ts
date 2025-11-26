@@ -1,26 +1,20 @@
-import { cookies } from 'next/headers'
+import { auth } from 'config/auth'
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
 
-const protectedPaths = ['/dashboard']
+export default auth((req) => {
+    const isLoggedIn = !!req.auth?.user
+    const path = req.nextUrl.pathname
 
-export async function middleware(request: NextRequest) {
-    const path = request.nextUrl.pathname
+    if (path === '/login') return NextResponse.next()
 
-    const isProtectedPath = protectedPaths.some((prefix) => path.startsWith(prefix))
-
-    if (isProtectedPath) {
-        const token = (await cookies()).get('authjs.session-token')
-        if (!token) {
-            const url = new URL('/', request.url)
-            return NextResponse.redirect(url)
-        }
+    if (!isLoggedIn && path === '/') {
+        return NextResponse.redirect(new URL('/login', req.url))
     }
 
     return NextResponse.next()
-}
+})
 
 export const config = {
-    matcher: ['/((?!api|_next|static|favicon.ico|sitemap.xml).*)'],
+    matcher: ['/((?!_next|api|login|.*\\..*).*)'],
     runtime: 'nodejs',
 }

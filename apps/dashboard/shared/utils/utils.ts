@@ -1,6 +1,8 @@
 import { toast } from '@workspace/ui/components/Sonner'
 import { UploadedImage } from './types'
 
+export const runtime = 'nodejs'
+
 export function resolveBaseUrl() {
     if (process.env.NEXT_PUBLIC_URL) {
         return process.env.NEXT_PUBLIC_URL

@@ -21,9 +21,11 @@ export default function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
+    // Updated to use 'username' instead of 'email'
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
+        // Use username instead of email
         const username = String(formData.get('username') ?? '').trim()
         const password = String(formData.get('password') ?? '')
 
@@ -35,27 +37,34 @@ export default function LoginForm() {
         setIsLoading(true)
         setError(null)
 
-        const result = await signIn('credentials', {
-            redirect: false,
-            username,
-            password,
-            callbackUrl: '/dashboard',
-        })
+        try {
+            const result = await signIn('credentials', {
+                redirect: false,
+                username,
+                password,
+                callbackUrl: '/',
+            })
 
-        if (!result || result.error) {
-            setError(
-                result?.error === 'CredentialsSignin'
-                    ? 'Invalid username or password.'
-                    : (result?.error ?? 'Unable to sign in. Please try again.'),
-            )
+            if (!result || result.error) {
+                setError(
+                    result?.error === 'CredentialsSignin'
+                        ? 'Invalid username or password.'
+                        : (result?.error ?? 'Unable to sign in. Please try again.'),
+                )
+                setIsLoading(false)
+                return
+            }
+
+            router.push(result.url ?? '/')
+            router.refresh()
+        } catch (err: any) {
+            setError('An unexpected error occurred. Please try again.')
             setIsLoading(false)
-            return
         }
-
-        router.push(result.url ?? '/dashboard')
-        router.refresh()
     }
+
     const oauthError = searchParams.get('error')
+
     return (
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-sm">

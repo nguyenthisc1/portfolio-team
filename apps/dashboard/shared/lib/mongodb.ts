@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+export const runtime = 'nodejs'
+
 declare global {
     var mongooseConnection: {
         conn: typeof mongoose | null

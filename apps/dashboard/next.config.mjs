@@ -4,6 +4,7 @@ const nextConfig = {
     images: {
         domains: ['images.unsplash.com', 'utfs.io'],
     },
+    // basePath: '/dashboard'
 }
 
 export default nextConfig
