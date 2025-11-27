@@ -6,9 +6,11 @@ import gsap from 'gsap'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Water } from 'three-stdlib'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 extend({ Water })
 
+gsap.registerPlugin(ScrollTrigger)
 export default function Ocean() {
     const groupRef = useRef<THREE.Group | null>(null)
     const waterRef = useRef<THREE.Mesh | null>(null)
