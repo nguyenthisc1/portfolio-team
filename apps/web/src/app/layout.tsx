@@ -7,8 +7,9 @@ import Scene from '@/features/home/canvas/scene/Scene'
 import Loading from '@/shared/components/Loading'
 import StarGalaxy from '@/features/home/canvas/scene/StarGalaxy'
 import SceneCursor from '@/features/home/canvas/scene/SceneCursor'
+import { getHomeContent } from '@/server/homeContent'
 
-const ibmPlexSansCondensedBoldItalic = localFont({
+const ibmPlexSansCondensed = localFont({
     src: [
         {
             path: '../shared/fonts/IBMPlexSansCondensed-Bold.ttf',
@@ -24,20 +25,20 @@ const ibmPlexSansCondensedBoldItalic = localFont({
     variable: '--font-primary',
 })
 
-const archivoCondensed = localFont({
+const oswald = localFont({
     src: [
         {
-            path: '../shared/fonts/Archivo_Condensed-Black.ttf',
+            path: '../shared/fonts/Oswald-Bold.ttf',
+            weight: '700',
             style: 'normal',
-            weight: '800',
         },
         {
-            path: '../shared/fonts/Archivo_Condensed-ExtraBold.ttf',
+            path: '../shared/fonts/Oswald-SemiBold.ttf',
+            weight: '600',
             style: 'normal',
-            weight: '900',
         },
     ],
-    variable: '--font-secondary',
+    variable: '--font-primary',
 })
 
 export const metadata: Metadata = {
@@ -53,15 +54,15 @@ export const metadata: Metadata = {
     },
 }
 
-export default function RootLayout({
-    children,
-}: Readonly<{ children: React.ReactNode }>): React.JSX.Element {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+    const data = await getHomeContent()
+
     return (
         <html
             lang="en"
             translate="no"
             suppressHydrationWarning
-            className={`${ibmPlexSansCondensedBoldItalic.variable} ${archivoCondensed.variable}`}
+            className={`${ibmPlexSansCondensed.variable} ${oswald.variable}`}
         >
             <head>
                 <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
@@ -71,7 +72,7 @@ export default function RootLayout({
                 <GsapProvider>
                     <Loading>{children}</Loading>
                     {/* {children} */}
-                    <Scene />
+                    <Scene data={data?.projects.projectList} />
                     <SceneCursor />
                     <StarGalaxy />
                 </GsapProvider>

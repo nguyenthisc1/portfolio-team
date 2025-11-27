@@ -1,13 +1,13 @@
 /* eslint-disable react/no-unknown-property */
-import { PROJECTS } from '@/shared/consts/common'
 import { useGlobal } from '@/shared/stores/global'
+import { useHomeStore } from '@/shared/stores/home'
 import { useGSAP } from '@gsap/react'
 import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Project } from 'types'
 
 // Helper: set image UV to cover (center crop) on mesh
 function setTextureCoverUVFull(texture: THREE.Texture, imageAspect: number, meshAspect: number) {
@@ -324,7 +324,7 @@ type ProjectCard = {
     category: string
 }
 
-export default function Projects() {
+export default function Projects({ data }: { data: Project[] }) {
     // Card layout constants
     const CARD_SCALE = 10
     const CARD_OPACITY = 0.05
@@ -334,7 +334,6 @@ export default function Projects() {
         zSpacing: 55,
         xOffset: 50,
     }
-
     // Utility for vh units
     const vh = (coef: number) => window.innerHeight * (coef / 100)
 
@@ -360,14 +359,10 @@ export default function Projects() {
     }
 
     // Initialize all cards once
-    const [cards] = useState<ProjectCard[]>(() =>
-        PROJECTS.flatMap((project, pIdx) =>
-            project.items.map((item, idx) =>
-                createCard(
-                    idx + pIdx * project.items.length,
-                    `images/${item.image}`,
-                    project.category,
-                ),
+    const [cards] = useState(() =>
+        data.flatMap((category, cIdx) =>
+            category.items.map((item, idx) =>
+                createCard(idx + cIdx * category.items.length, item.image, category.category),
             ),
         ),
     )
@@ -618,7 +613,7 @@ export default function Projects() {
         }
 
         let cardIdx = 0
-        PROJECTS.forEach((project) => {
+        data.forEach((project) => {
             const category = project.category
             project.items.forEach(() => {
                 const idx = cardIdx

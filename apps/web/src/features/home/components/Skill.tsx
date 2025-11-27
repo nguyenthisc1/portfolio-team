@@ -2,6 +2,7 @@
 
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
+import { SkillCategory } from 'types'
 import { setupCardSkillAnimation } from '../animations/animation'
 
 type SkillData = {
@@ -80,7 +81,7 @@ function CardSkill({ id, imgSrc, imgAlt, title, items, index = 0 }: SkillData) {
     )
 }
 
-export default function Skill() {
+export default function Skill({ data }: { data: SkillCategory[] }) {
     const ref = useRef<HTMLDivElement>(null)
 
     useGSAP(
