@@ -1,13 +1,14 @@
+import Scene from '@/features/home/canvas/scene/Scene'
+import SceneCursor from '@/features/home/canvas/scene/SceneCursor'
+import StarGalaxy from '@/features/home/canvas/scene/StarGalaxy'
+import { getHomeContent } from '@/server/homeContent'
+import Loading from '@/shared/components/Loading'
 import { PROJECT_DESCRIPTION, PROJECT_NAME } from '@/shared/consts/common'
+import { GsapProvider } from '@/shared/providers/GsapProvider'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import '@workspace/ui/web.css'
 import { Metadata } from 'next'
 import localFont from 'next/font/local'
-import { GsapProvider } from '@/shared/providers/GsapProvider'
-import Scene from '@/features/home/canvas/scene/Scene'
-import Loading from '@/shared/components/Loading'
-import StarGalaxy from '@/features/home/canvas/scene/StarGalaxy'
-import SceneCursor from '@/features/home/canvas/scene/SceneCursor'
-import { getHomeContent } from '@/server/homeContent'
 
 const ibmPlexSansCondensed = localFont({
     src: [
@@ -76,6 +77,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
                     <SceneCursor />
                     <StarGalaxy />
                 </GsapProvider>
+                <SpeedInsights />
             </body>
         </html>
     )

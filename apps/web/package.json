@@ -20,6 +20,7 @@
         "@tsparticles/engine": "^3.9.1",
         "@tsparticles/react": "^3.0.0",
         "@types/three": "^0.180.0",
+        "@vercel/speed-insights": "^1.2.0",
         "@workspace/lib": "workspace:*",
         "@workspace/ui": "workspace:*",
         "gsap": "^3.13.0",
