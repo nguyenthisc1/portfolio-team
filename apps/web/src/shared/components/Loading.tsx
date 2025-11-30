@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useEffect, useRef, useState } from 'react'
 import StarField from '../../features/home/canvas/scene/StarField'
+import SoundBar from './SoundBar'
 
 export default function Loading({ children }: { children: React.ReactNode }) {
     const texts = [
@@ -26,6 +27,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
     const isAccess = useGlobal((state) => state.isAccess)
     const setIsAccess = useGlobal((state) => state.setIsAccess)
     const setIsLoading = useGlobal((state) => state.setIsLoading)
+    // Ref for audio element
 
     useGSAP(() => {
         if (isAccess) return
@@ -75,6 +77,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
         }
     }, [isAccess])
 
+    // Animate volume from small to large when clicking "explore"
     function handleExploreClick() {
         setIsAccess(true)
 
@@ -92,6 +95,10 @@ export default function Loading({ children }: { children: React.ReactNode }) {
     return (
         <>
             <StarField />
+
+            {/* Hidden audio for music playback on explore */}
+
+            <SoundBar />
 
             {!isVisible && !isAccess && (
                 <div
