@@ -279,9 +279,9 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
     })
 
     const cardConfigs = [
-        { yStart: '30%', index: 0, delay: 0, initialDuration: 0, yTo: '-10%' },
-        { yStart: '30%', index: 1, delay: 0.03, initialDuration: 0, yTo: '-10%' },
-        { yStart: '30%', index: 2, delay: 0.06, initialDuration: 0, yTo: '-10%' },
+        { yStart: '30%', index: 0, delay: 0, initialDuration: 0, yTo: '-10%', yTo2: '0' },
+        { yStart: '30%', index: 1, delay: 0.03, initialDuration: 0, yTo: '-10%', yTo2: '0' },
+        { yStart: '30%', index: 2, delay: 0.06, initialDuration: 0, yTo: '-10%', yTo2: '0' },
     ]
 
     cardConfigs.forEach(({ yStart, index, delay, initialDuration = 0.1, yTo }) => {
@@ -295,6 +295,7 @@ export function setupCardSkillAnimation(scopeElement: HTMLElement) {
                 delay,
             )
             .to(cards[index]!, { y: yTo, rotate: 0 }, index === 0 ? '>' : `>+=${delay.toFixed(2)}`)
+            .to(cards[index]!, { y: 'yTo2' }, index === 0 ? '>' : `>+=${delay.toFixed(2)}`)
             .to(
                 cards[index]!,
                 {

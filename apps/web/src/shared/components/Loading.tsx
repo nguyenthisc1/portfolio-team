@@ -36,7 +36,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
             i: texts.length,
             duration: texts.length * 0.3,
             ease: 'none',
-            repeat: 0,
+            repeat: 1,
             modifiers: {
                 i: (i) => Math.floor(Number(i)) % texts.length,
             },

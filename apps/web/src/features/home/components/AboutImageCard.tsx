@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 const config = {
     theme: 'system',
     swatches: 4,
-    threshold: 120,
+    threshold: 100,
     start: 140,
     distance: 70,
     rotation: -5,
@@ -39,7 +39,7 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
         ${data
             .map((item: any, idx: number) => {
                 const color = `hsl(0, 0%, ${Math.round(
-                    (0.25 + (idx / config.swatches) * 0.75) * 100,
+                    (0.25 + (idx / data.length) * 0.75) * 100,
                 )}%)`
                 return `
                 <li style="--color: ${color}; --i: ${idx};">
@@ -86,7 +86,7 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
                                 -1,
                                 1,
                             )(clamped)
-                            return { mapped, active: Math.abs(clamped) <= width * 0.4 }
+                            return { mapped, active: Math.abs(clamped) <= width * 1 }
                         },
                         ({ mapped, active }: any) => {
                             const offset = active ? 0 : 0
@@ -140,6 +140,18 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
             //             console.error('Failed to copy text to clipboard:', err)
             //         })
             // }
+            // const li = event.target.closest('li')
+            // if (li && li.parentElement === list) {
+            //     // Remove "active" from all items
+            //     Array.from(list.children).forEach((child) => child.classList.remove('active'))
+            //     // Add "active" to the clicked item
+            //     li.classList.add('active')
+            //     // Set active index based on clicked <li>
+            //     if (typeof onSelect === 'function') {
+            //         const idx = Array.from(list.children).indexOf(li)
+            //         if (idx !== -1) onSelect(idx)
+            //     }
+            // }
         }
 
         list.addEventListener('click', copyColor)
@@ -149,20 +161,6 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
         list.addEventListener('blur', settleWave, true)
         // Add active class to clicked item and remove from others
         // Fix: Add class "active" to clicked <li> and remove from others on click
-        list.addEventListener('click', (event: any) => {
-            const li = event.target.closest('li')
-            if (li && li.parentElement === list) {
-                // Remove "active" from all items
-                Array.from(list.children).forEach((child) => child.classList.remove('active'))
-                // Add "active" to the clicked item
-                li.classList.add('active')
-                // Set active index based on clicked <li>
-                if (typeof onSelect === 'function') {
-                    const idx = Array.from(list.children).indexOf(li)
-                    if (idx !== -1) onSelect(idx)
-                }
-            }
-        })
         // Tweakpane
         // const ctrl = new Pane({
         //     title: 'Config',
