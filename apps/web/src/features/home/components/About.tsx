@@ -1,7 +1,48 @@
+'use client'
+
+import { useState } from 'react'
 import AboutImageCard from './AboutImageCard'
 import Heading from './Heading'
 
+const aboutList = [
+    {
+        image: '/images/team-vu.png',
+        name: 'Tran Le Hoang Vu',
+        position: 'LEADER OF WEBSITE TEAM',
+        experience: 6,
+        projects: 10,
+        customers: 100,
+    },
+    {
+        image: '/images/team-vu.png',
+
+        name: 'Anna Smith',
+        position: 'FRONTEND DEVELOPER',
+        experience: 4,
+        projects: 8,
+        customers: 75,
+    },
+    {
+        image: '/images/team-vu.png',
+
+        name: 'John Doe',
+        position: 'BACKEND DEVELOPER',
+        experience: 5,
+        projects: 12,
+        customers: 90,
+    },
+    {
+        image: '/images/team-vu.png',
+        name: 'Lisa Nguyen',
+        position: 'UI/UX DESIGNER',
+        experience: 3,
+        projects: 7,
+        customers: 60,
+    },
+]
+
 export default function About() {
+    const [activeIndex, setActiveIndex] = useState(0)
     return (
         <section id="about" aria-labelledby="about-team-heading" className="mb-32">
             <div className="text-primary mb-44 text-center uppercase">
@@ -16,42 +57,54 @@ export default function About() {
             <div className="container">
                 <div className="space-y-16">
                     <article className="grid grid-cols-1 gap-36 lg:grid-cols-2">
-                        <AboutImageCard />
-                        {/* <figure className="relative bg-neutral-800">
-                            <img
-                                className="size-full"
-                                src="/images/team-vu.png"
-                                alt="Tran Le Hoang Vu Portrait"
-                                width={100}
-                                height={100}
-                            />
-                            <div className="absolute right-0 bottom-0 left-0 space-y-5 pb-10 text-center">
-                                <figcaption className="text-primary h4 uppercase">
-                                    Tran Le Hoang Vu
-                                </figcaption>
-                                <p className="text-2xl uppercase">LEADER OF WEBSITE TEAM</p>
-                            </div>
-                        </figure> */}
-                        <ul className="flex flex-wrap gap-y-24">
-                            <li className="flex w-full flex-col space-y-5">
-                                <strong className="text-primary whitespace-nowrap">
-                                    <span className="h2">6</span> <span className="h3">years</span>
-                                </strong>
-
-                                <p className="uppercase">Experience</p>
-                            </li>
-                            <li className="flex w-1/2 flex-col space-y-5">
-                                <strong className="text-primary whitespace-nowrap">
-                                    <span className="h2">50</span> <span className="h3">+</span>
-                                </strong>
-                                <p className="uppercase"> Projects</p>
-                            </li>
-                            <li className="flex w-1/2 flex-col space-y-5">
-                                <strong className="text-primary whitespace-nowrap">
-                                    <span className="h2">100</span> <span className="h3">+</span>
-                                </strong>
-                                <p className="uppercase"> Customer and partners</p>
-                            </li>
+                        <AboutImageCard
+                            data={aboutList}
+                            onSelect={setActiveIndex}
+                            activeIndex={activeIndex}
+                        />
+                        <ul className="relative">
+                            {aboutList.map((item, idx) => {
+                                const stats = [
+                                    {
+                                        label: 'Years Experience',
+                                        value: item.experience,
+                                        unit: '+',
+                                    },
+                                    {
+                                        label: 'Projects',
+                                        value: item.projects,
+                                        unit: '+',
+                                    },
+                                    {
+                                        label: 'Customers',
+                                        value: item.customers,
+                                        unit: '+',
+                                    },
+                                ]
+                                return (
+                                    <ul
+                                        key={item.name}
+                                        className={`flex flex-wrap gap-y-24 opacity-0 transition-opacity duration-500 ${idx != 0 && 'absolute inset-0'} ${idx == activeIndex && '!opacity-100'} `}
+                                    >
+                                        {stats.map((stat, idx) => (
+                                            <li
+                                                key={stat.label}
+                                                className={` ${
+                                                    idx === 0
+                                                        ? 'flex w-full flex-col space-y-5'
+                                                        : 'flex w-1/2 flex-col space-y-5'
+                                                } `}
+                                            >
+                                                <strong className="text-primary whitespace-nowrap">
+                                                    <span className="h2">{stat.value}</span>{' '}
+                                                    <span className="h3">{stat.unit}</span>
+                                                </strong>
+                                                <p className="uppercase">{stat.label}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )
+                            })}
                         </ul>
                     </article>
                 </div>
