@@ -70,7 +70,7 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
             }
             for (let i = 0; i < list.children.length; i++) {
                 if (!setters.current[i]) {
-                    setters.current[i] = gsap.utils.pipe(
+                    const pipeline = gsap.utils.pipe(
                         ({ distance, width }: any) => {
                             const clamped = gsap.utils.clamp(
                                 -config.threshold,
@@ -94,9 +94,24 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
                                 ? 1 - eases.in(mapped) - offset
                                 : 1 - eases.out(Math.abs(mapped)) - offset
                         },
-                        gsap.quickSetter(list.children[i] as HTMLElement, '--power') as any,
                     )
+
+                    const quick = gsap.quickSetter(
+                        list.children[i] as HTMLElement,
+                        '--power',
+                    ) as any
+
+                    setters.current[i] = (input: any) => {
+                        const power = pipeline(input) // 👉 giá trị cuối pipeline
+                        quick(power)
+                        console.log()
+                        // 👉 Kiểm tra giá trị power
+                        if (power > 0.85) {
+                            onSelect(i)
+                        }
+                    }
                 }
+
                 const child = list.children[i] as HTMLElement
                 const { left, width } = child.getBoundingClientRect()
                 setters.current[i]({
