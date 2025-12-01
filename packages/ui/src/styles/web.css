@@ -35,198 +35,7 @@
     --font-primary: var(--font-primary);
     --font-secondary: var(--font-secondary);
 }
-
-@layer components {
-    .container {
-        margin-left: auto;
-        margin-right: auto;
-        @apply xl:!max-w-7xl;
-    }
-
-    .tt-heading-wrapper {
-        @apply relative flex items-center justify-center overflow-hidden;
-    }
-
-    .tt-heading-stroke {
-        width: 100%;
-        -webkit-text-fill-color: transparent;
-        -webkit-text-stroke: 2px var(--color-primary);
-        text-transform: none;
-    }
-
-    .tt-heading-filled {
-        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        -webkit-text-fill-color: var(--color-primary);
-        -webkit-text-stroke: 2px var(--color-primary);
-        @apply absolute top-1/2 left-1/2 w-full -translate-1/2 select-none;
-    }
-
-    .footer-content-filled {
-        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        @apply absolute top-1/2 left-1/2 size-full -translate-1/2 select-none;
-    }
-
-    .about-card {
-        clip-path: inset(-100% -100% 0 -100%);
-        position: relative;
-        touch-action: none;
-    }
-
-    .about-card {
-        ul {
-            grid-template-columns: repeat(calc(var(--swatch-count) + 3), 1fr);
-            translate: 0 calc(var(--offset-y) * 1%);
-            @apply pointer-events-none mx-auto grid list-none;
-        }
-
-        li {
-            position: relative;
-            aspect-ratio: 1 / 4;
-            pointer-events: all;
-            /* --delay: calc(sin(((var(--i)) / var(--swatch-count)) * 45deg) * 1s); */
-            /* animation: enter 0.2s var(--delay) var(--ease) both; */
-
-            &.active {
-                --power: 1 !important;
-                pointer-events: none;
-            }
-        }
-        li button:is(:hover) {
-            translate: 0 calc(clamp(0.2, var(--power), 1) * (var(--distance, 40) * -1%));
-        }
-
-        @keyframes enter {
-            0% {
-                translate: 0 100%;
-            }
-        }
-
-        [data-dark='true'] button {
-            color: #fff;
-        }
-        [data-dark='false'] button {
-            color: #000;
-        }
-
-        li button {
-            container-type: inline-size;
-            background: var(--color);
-            aspect-ratio: 3/4;
-            rotate: calc(var(--power, 0) * (calc(var(--rotate, 0) * 1deg)));
-            translate: 0 calc(clamp(0, var(--power), 1) * (var(--distance, 40) * -1%));
-            /* transition:
-                translate 0.12s,
-                rotate 0.12s; */
-            transition-timing-function: var(--ease);
-            @apply absolute grid w-[400%] cursor-pointer place-items-start rounded-xl border-0 p-2;
-        }
-
-        li button:is(:hover, :focus-visible) span {
-            opacity: 1;
-            translate: 0 0;
-        }
-    }
-
-    #sound-bars {
-        > div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            min-height: 40px;
-            padding-bottom: 12px;
-            border-radius: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            
-            span {
-                background: #fff;
-                margin: auto 1px 0;
-                height: 12px;
-                width: 2px;
-                min-width: 2px;
-                display: block;
-                transform: scaleY(0.99);
-                transform-origin: bottom;
-                box-shadow: 0 4px 0 rgba(255, 255, 255, 0.2);
-                transition: all 0.4s ease-in-out;
-
-                &:nth-child(1) {
-                    transform: scaleY(0.8);
-                }
-                &:nth-child(2) {
-                    transform: scaleY(0.6);
-                }
-                &:nth-child(4) {
-                    transform: scaleY(0.4);
-                }
-            }
-
-            &:not(.paused) > span {
-                animation: sound-bars-animation 2s 2 alternate;
-
-                &:nth-child(1) {
-                    animation-delay: 0.4s;
-                }
-                &:nth-child(2) {
-                    animation-delay: 0.2s;
-                }
-                &:nth-child(3) {
-                    animation-delay: 0.6s;
-                }
-                &:nth-child(4) {
-                    animation-delay: 0.8s;
-                }
-            }
-
-            &:before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                transform-origin: center;
-                background: #fff;
-                border-radius: 100%;
-                transition: all 0.3s ease-in-out;
-                cursor: pointer;
-                transform: scale(0);
-            }
-
-            &:hover {
-                &:before {
-                    transform: scale(1);
-                }
-
-                > span {
-                    background: #000;
-                }
-            }
-
-            &.paused > span {
-                opacity: 0.2;
-                transform: scaleY(0.2);
-            }
-        }
-    }
-    @keyframes sound-bars-animation {
-        50% {
-            opacity: 0.2;
-            transform: scaleY(0.2);
-        }
-        100% {
-            opacity: 1;
-            transform: scaleY(1);
-        }
-    }
-}
-
 @layer base {
-    html:focus-within {
-        scroll-behavior: smooth;
-    }
-
     @media (prefers-reduced-motion: reduce) {
         html:focus-within {
             scroll-behavior: auto;
@@ -496,6 +305,190 @@
                     opacity: 1 !important;
                 }
             }
+        }
+    }
+
+    .container {
+        margin-left: auto;
+        margin-right: auto;
+        @apply xl:!max-w-7xl;
+    }
+
+    .tt-heading-wrapper {
+        @apply relative flex items-center justify-center overflow-hidden;
+    }
+
+    .tt-heading-stroke {
+        width: 100%;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 2px var(--color-primary);
+        text-transform: none;
+    }
+
+    .tt-heading-filled {
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+        -webkit-text-fill-color: var(--color-primary);
+        -webkit-text-stroke: 2px var(--color-primary);
+        @apply absolute top-1/2 left-1/2 w-full -translate-1/2 select-none;
+    }
+
+    .footer-content-filled {
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+        @apply absolute top-1/2 left-1/2 size-full -translate-1/2 select-none;
+    }
+
+    .about-card {
+        clip-path: inset(-100% -100% 0 -100%);
+        position: relative;
+        touch-action: none;
+    }
+
+    .about-card {
+        ul {
+            grid-template-columns: repeat(calc(var(--swatch-count) + 3), 1fr);
+            translate: 0 calc(var(--offset-y) * 1%);
+            @apply pointer-events-none mx-auto grid list-none;
+        }
+
+        li {
+            position: relative;
+            aspect-ratio: 1 / 4;
+            pointer-events: all;
+            /* --delay: calc(sin(((var(--i)) / var(--swatch-count)) * 45deg) * 1s); */
+            /* animation: enter 0.2s var(--delay) var(--ease) both; */
+
+            &.active {
+                --power: 1 !important;
+                pointer-events: none;
+            }
+        }
+        li button:is(:hover) {
+            translate: 0 calc(clamp(0.2, var(--power), 1) * (var(--distance, 40) * -1%));
+        }
+
+        @keyframes enter {
+            0% {
+                translate: 0 100%;
+            }
+        }
+
+        [data-dark='true'] button {
+            color: #fff;
+        }
+        [data-dark='false'] button {
+            color: #000;
+        }
+
+        li button {
+            container-type: inline-size;
+            background: var(--color);
+            aspect-ratio: 3/4;
+            rotate: calc(var(--power, 0) * (calc(var(--rotate, 0) * 1deg)));
+            translate: 0 calc(clamp(0, var(--power), 1) * (var(--distance, 40) * -1%));
+            /* transition:
+                translate 0.12s,
+                rotate 0.12s; */
+            transition-timing-function: var(--ease);
+            @apply absolute grid w-[400%] cursor-pointer place-items-start rounded-xl border-0 p-2;
+        }
+
+        li button:is(:hover, :focus-visible) span {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+
+    #sound-bars {
+        > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            padding-bottom: 12px;
+            border-radius: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+
+            span {
+                background: #fff;
+                margin: auto 1px 0;
+                height: 12px;
+                width: 2px;
+                min-width: 2px;
+                display: block;
+                transform: scaleY(0.99);
+                transform-origin: bottom;
+                box-shadow: 0 4px 0 rgba(255, 255, 255, 0.2);
+                transition: all 0.4s ease-in-out;
+
+                &:nth-child(1) {
+                    transform: scaleY(0.8);
+                }
+                &:nth-child(2) {
+                    transform: scaleY(0.6);
+                }
+                &:nth-child(4) {
+                    transform: scaleY(0.4);
+                }
+            }
+
+            &:not(.paused) > span {
+                animation: sound-bars-animation 2s 2 alternate;
+
+                &:nth-child(1) {
+                    animation-delay: 0.4s;
+                }
+                &:nth-child(2) {
+                    animation-delay: 0.2s;
+                }
+                &:nth-child(3) {
+                    animation-delay: 0.6s;
+                }
+                &:nth-child(4) {
+                    animation-delay: 0.8s;
+                }
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                transform-origin: center;
+                background: #fff;
+                border-radius: 100%;
+                transition: all 0.3s ease-in-out;
+                cursor: pointer;
+                transform: scale(0);
+            }
+
+            &:hover {
+                &:before {
+                    transform: scale(1);
+                }
+
+                > span {
+                    background: #000;
+                }
+            }
+
+            &.paused > span {
+                opacity: 0.2;
+                transform: scaleY(0.2);
+            }
+        }
+    }
+    @keyframes sound-bars-animation {
+        50% {
+            opacity: 0.2;
+            transform: scaleY(0.2);
+        }
+        100% {
+            opacity: 1;
+            transform: scaleY(1);
         }
     }
 }
