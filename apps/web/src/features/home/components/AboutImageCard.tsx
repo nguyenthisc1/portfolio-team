@@ -125,7 +125,7 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
             for (const setter of setters.current) setter(0)
         }
 
-        const copyColor = (event: any) => {
+        const chooseItem = (event: any) => {
             // if (event.target.tagName === 'BUTTON') {
             //     navigator.clipboard
             //         .writeText(event.target.dataset.color)
@@ -140,21 +140,21 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
             //             console.error('Failed to copy text to clipboard:', err)
             //         })
             // }
-            // const li = event.target.closest('li')
-            // if (li && li.parentElement === list) {
-            //     // Remove "active" from all items
-            //     Array.from(list.children).forEach((child) => child.classList.remove('active'))
-            //     // Add "active" to the clicked item
-            //     li.classList.add('active')
-            //     // Set active index based on clicked <li>
-            //     if (typeof onSelect === 'function') {
-            //         const idx = Array.from(list.children).indexOf(li)
-            //         if (idx !== -1) onSelect(idx)
-            //     }
-            // }
+            const li = event.target.closest('li')
+            if (li && li.parentElement === list) {
+                // Remove "active" from all items
+                Array.from(list.children).forEach((child) => child.classList.remove('active'))
+                // Add "active" to the clicked item
+                li.classList.add('active')
+                // Set active index based on clicked <li>
+                if (typeof onSelect === 'function') {
+                    const idx = Array.from(list.children).indexOf(li)
+                    if (idx !== -1) onSelect(idx)
+                }
+            }
         }
 
-        list.addEventListener('click', copyColor)
+        list.addEventListener('click', chooseItem)
         list.addEventListener('pointermove', syncWave)
         list.addEventListener('pointerleave', settleWave)
         list.addEventListener('focus', syncWave, true)
@@ -176,14 +176,14 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
             eases.out = gsap.parseEase(config.out)
         }
 
-        const sync = (event: any) => {
-            if (
-                !(document as any).startViewTransition ||
-                event.target.controller.view.labelElement.innerText !== 'Theme'
-            )
-                return update()
-            ;(document as any).startViewTransition(() => update())
-        }
+        // const sync = (event: any) => {
+        //     if (
+        //         !(document as any).startViewTransition ||
+        //         event.target.controller.view.labelElement.innerText !== 'Theme'
+        //     )
+        //         return update()
+        //     ;(document as any).startViewTransition(() => update())
+        // }
 
         // const easings = {
         //     none: 'none',
@@ -263,14 +263,14 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
 
         // cleanup
         return () => {
-            list.removeEventListener('click', copyColor)
+            list.removeEventListener('click', chooseItem)
             list.removeEventListener('pointermove', syncWave)
             list.removeEventListener('pointerleave', settleWave)
             list.removeEventListener('focus', syncWave, true)
             list.removeEventListener('blur', settleWave, true)
             // ctrl.dispose()
         }
-    }, [data])
+    }, [data, onSelect])
 
     return (
         <div className="about-image relative">

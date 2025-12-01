@@ -338,7 +338,7 @@
     }
 
     .about-card {
-        clip-path: inset(-100% -100% 0 -100%);
+        /* clip-path: inset(-100% -100% -30% -100%); */
         position: relative;
         touch-action: none;
     }
