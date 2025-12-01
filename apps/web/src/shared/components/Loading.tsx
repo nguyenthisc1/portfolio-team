@@ -96,10 +96,6 @@ export default function Loading({ children }: { children: React.ReactNode }) {
         <>
             <StarField />
 
-            {/* Hidden audio for music playback on explore */}
-
-            <SoundBar />
-
             {!isVisible && !isAccess && (
                 <div
                     ref={textIntroRef}

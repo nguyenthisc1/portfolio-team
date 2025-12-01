@@ -3,6 +3,7 @@ import SceneCursor from '@/features/home/canvas/scene/SceneCursor'
 import StarGalaxy from '@/features/home/canvas/scene/StarGalaxy'
 import { getHomeContent } from '@/server/homeContent'
 import Loading from '@/shared/components/Loading'
+import SoundBar from '@/shared/components/SoundBar'
 import { PROJECT_DESCRIPTION, PROJECT_NAME } from '@/shared/consts/common'
 import { GsapProvider } from '@/shared/providers/GsapProvider'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -72,10 +73,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <body className="antialiased">
                 <GsapProvider>
                     <Loading>{children}</Loading>
-                    {/* {children} */}
                     <Scene data={data?.projects.projectList} />
                     <SceneCursor />
                     <StarGalaxy />
+                    <SoundBar />
                 </GsapProvider>
                 <SpeedInsights />
             </body>
