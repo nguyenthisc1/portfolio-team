@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { shaderMaterial } from '@react-three/drei'
 import { extend } from '@react-three/fiber'
-import { useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import { AdditiveBlending, BackSide, Color, DoubleSide, FrontSide } from 'three'
 
 const FakeGlowMat = shaderMaterial(

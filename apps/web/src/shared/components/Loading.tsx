@@ -5,7 +5,6 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useEffect, useRef, useState } from 'react'
 import StarField from '../../features/home/canvas/scene/StarField'
-import SoundBar from './SoundBar'
 
 export default function Loading({ children }: { children: React.ReactNode }) {
     const texts = [

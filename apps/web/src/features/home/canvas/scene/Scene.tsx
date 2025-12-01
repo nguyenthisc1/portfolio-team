@@ -27,7 +27,7 @@ function CameraController({ leva }: { leva: any }) {
     useEffect(() => {
         camera.layers.enable(0)
         camera.layers.enable(10)
-    }, [])
+    }, [camera.layers])
 
     return (
         <>

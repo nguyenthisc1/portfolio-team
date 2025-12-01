@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unknown-property */
 import { useGlobal } from '@/shared/stores/global'
-import { useHomeStore } from '@/shared/stores/home'
 import { useGSAP } from '@gsap/react'
 import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'

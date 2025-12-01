@@ -97,11 +97,11 @@ export default function Ocean() {
     useGSAP(() => {
         if (!groupRef.current || !isAccess) return
 
-        const tl = gsap.timeline({
-            defaults: {
-                ease: 'power2.inOut',
-            },
-        })
+        // const tl = gsap.timeline({
+        //     defaults: {
+        //         ease: 'power2.inOut',
+        //     },
+        // })
 
         gsap.to(leva, {
             rotX: 0,
