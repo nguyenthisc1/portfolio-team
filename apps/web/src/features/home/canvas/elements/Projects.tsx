@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
+import { Text } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useControls } from 'leva'
@@ -321,6 +322,7 @@ type ProjectCard = {
     opacity: number
     imageUrl: string
     category: string
+    name: string
 }
 
 export default function Projects({ data }: { data: Project[] }) {
@@ -328,7 +330,7 @@ export default function Projects({ data }: { data: Project[] }) {
     const CARD_SCALE = 10
     const CARD_OPACITY = 0.05
     const CARD_LAYOUT = {
-        y: 12,
+        y: 16,
         zStart: 30,
         zSpacing: 55,
         xOffset: 50,
@@ -345,7 +347,12 @@ export default function Projects({ data }: { data: Project[] }) {
     }
 
     // Create a ProjectCard instance
-    const createCard = (idx: number, imageUrl: string, category: string): ProjectCard => {
+    const createCard = (
+        idx: number,
+        imageUrl: string,
+        category: string,
+        name: string,
+    ): ProjectCard => {
         const isEven = idx % 2 === 0
         return {
             position: computeCardPosition(idx, isEven),
@@ -354,6 +361,7 @@ export default function Projects({ data }: { data: Project[] }) {
             opacity: CARD_OPACITY,
             category: category,
             imageUrl: imageUrl,
+            name: name,
         }
     }
 
@@ -361,7 +369,12 @@ export default function Projects({ data }: { data: Project[] }) {
     const [cards] = useState(() =>
         data.flatMap((category, cIdx) =>
             category.items.map((item, idx) =>
-                createCard(idx + cIdx * category.items.length, item.image, category.category),
+                createCard(
+                    idx + cIdx * category.items.length,
+                    item.image,
+                    category.category,
+                    item.name,
+                ),
             ),
         ),
     )
@@ -375,6 +388,14 @@ export default function Projects({ data }: { data: Project[] }) {
             opacityRef: { current: card.opacity },
         })),
     ).current
+
+    // Stateful card name refs for opacity and rotation
+    const [cardNameRefs] = useState(() =>
+        cards.map((card) => ({
+            opacityRef: { current: card.opacity },
+            rotationRef: { current: [0, 0.65, 0] as [number, number, number] },
+        })),
+    )
 
     // Mutable refs for animated group position/scale
     const groupSecondPosRef = useRef<[number, number, number]>([36, 0, 0])
@@ -504,6 +525,7 @@ export default function Projects({ data }: { data: Project[] }) {
             state,
             infoEl,
             cardRef,
+            cardNameRef,
             startMesh,
             endMesh,
         }: {
@@ -512,6 +534,7 @@ export default function Projects({ data }: { data: Project[] }) {
             state: any
             infoEl: Element
             cardRef: any
+            cardNameRef: any
             startMesh: number
             endMesh: number
         }) => {
@@ -579,6 +602,8 @@ export default function Projects({ data }: { data: Project[] }) {
                     duration: 2,
                     onUpdate: () => {
                         cardRef.opacityRef.current = state.op
+                        // Name follows the same opacity
+                        cardNameRef.opacityRef.current = state.op
                     },
                 },
                 0,
@@ -591,6 +616,8 @@ export default function Projects({ data }: { data: Project[] }) {
                     duration: 5,
                     onUpdate: () => {
                         cardRef.rotationRef.current = [state.rx, state.ry, state.rz]
+                        // Sync name card rotation with card's rotation
+                        cardNameRef.rotationRef.current = [state.rx, state.ry, state.rz]
                     },
                 },
                 0,
@@ -603,6 +630,8 @@ export default function Projects({ data }: { data: Project[] }) {
                     duration: 2,
                     onUpdate: () => {
                         cardRef.opacityRef.current = state.op
+                        // Name follows the same opacity
+                        cardNameRef.opacityRef.current = state.op
                     },
                 },
                 4,
@@ -618,6 +647,7 @@ export default function Projects({ data }: { data: Project[] }) {
                 const idx = cardIdx
                 const card = cards[idx]!
                 const cardRef = cardRefs[idx]!
+                const cardNameRef = cardNameRefs[idx]!
                 const state = {
                     px: card.position[0],
                     py: card.position[1],
@@ -638,6 +668,7 @@ export default function Projects({ data }: { data: Project[] }) {
                     state,
                     infoEl: cardsInfo[idx]!,
                     cardRef,
+                    cardNameRef,
                     startMesh,
                     endMesh,
                 })
@@ -658,6 +689,18 @@ export default function Projects({ data }: { data: Project[] }) {
         }
     })
 
+    // Animated opacity and rotation for project names (Text) following cardNameRefs
+    // Store refs per text to update material opacity
+    const textMaterialRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([])
+    // Update materials' opacity and Text rotation on every frame
+    useFrame(() => {
+        cards.forEach((_, idx) => {
+            if (textMaterialRefs.current[idx]) {
+                textMaterialRefs.current[idx]!.opacity = cardNameRefs[idx]!.opacityRef.current ?? 0
+            }
+        })
+    })
+
     return (
         <group
             ref={groupRefFirst}
@@ -667,18 +710,36 @@ export default function Projects({ data }: { data: Project[] }) {
         >
             <group ref={groupRefSecond} position={groupSecondPosRef.current} rotation={[0, 0, 0]}>
                 {cards.map((item, idx) => (
-                    // Suspense boundary here is not useful for low-level texture: it's handled in useLazyTexture
-                    <ImageCard
-                        key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}
-                        position={item.position}
-                        rotation={item.rotation}
-                        scale={item.scale}
-                        opacity={item.opacity}
-                        textureUrl={item.imageUrl}
-                        animated={true}
-                        cardIdx={idx}
-                        gsapDataRefs={cardRefs[idx]}
-                    />
+                    <group key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}>
+                        <ImageCard
+                            position={item.position}
+                            rotation={item.rotation}
+                            scale={item.scale}
+                            opacity={item.opacity}
+                            textureUrl={item.imageUrl}
+                            animated={true}
+                            cardIdx={idx}
+                            gsapDataRefs={cardRefs[idx]}
+                        />
+                        <Text
+                            ref={(ref) => {
+                                // Extract material ref from Text
+                                textMaterialRefs.current[idx] =
+                                    ref && ref.material ? ref.material : null
+                            }}
+                            position={[item.position[0], 2.5, item.position[2]]}
+                            rotation={cardNameRefs[idx]!.rotationRef.current}
+                            fontSize={1}
+                            color="white"
+                            anchorX="center"
+                            anchorY="top"
+                            font="/fonts/Oswald-Bold.ttf"
+                            material-transparent
+                            material-opacity={cardNameRefs[idx]!.opacityRef.current}
+                        >
+                            {item.name}
+                        </Text>
+                    </group>
                 ))}
             </group>
         </group>
