@@ -28,11 +28,11 @@ export default function StarGalaxy() {
                     interactivity: {
                         detectsOn: 'window',
                         events: {
-                            onClick: { enable: true, mode: 'repulse' },
+                            // onClick: { enable: true, mode: 'repulse' },
                             onDiv: [],
                             onHover: {
                                 enable: true,
-                                mode: 'bubble',
+                                mode: 'repulse',
                                 parallax: { enable: false, force: 2, smooth: 10 },
                             },
                             resize: { enable: true, delay: 0.5 },
@@ -67,7 +67,7 @@ export default function StarGalaxy() {
                             push: { default: true, quantity: 4 },
                             remove: { quantity: 2 },
                             repulse: {
-                                distance: 400,
+                                distance: 150,
                                 duration: 0.4,
                                 factor: 100,
                                 speed: 1,
@@ -98,7 +98,7 @@ export default function StarGalaxy() {
                     },
                     particles: {
                         number: {
-                            value: 250,
+                            value: 350,
                             density: { enable: true, width: 1920, height: 1080 },
                         },
                         color: {
