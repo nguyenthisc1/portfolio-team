@@ -58,7 +58,7 @@ void main(){
     float radius = min(uRadius, min(w, h));
 
     // Distance field for rounded box
-    float sdf = roundedBoxSDF(p, vec2(w, h) - vec2(radius), radius);
+    float sdf = roundedBoxSDF(p, vec2(w, h) - vec2(radius) + 0.1, radius);
 
     // Antialiased edges
     float antiAlias = fwidth(sdf) * 2.0;
@@ -176,8 +176,8 @@ interface ImageCardProps {
 
 // Main component for single 'card'
 function ImageCard({
-    width = 3.6,
-    height = 2.2,
+    width = 5,
+    height = 2.5,
     radius = 0.1,
     textureUrl = 'images/img_project_1.jpg',
     position = [5, 30, 40],
