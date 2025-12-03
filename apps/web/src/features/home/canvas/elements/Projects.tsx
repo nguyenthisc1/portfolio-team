@@ -323,6 +323,7 @@ type ProjectCard = {
     imageUrl: string
     category: string
     name: string
+    url: string
 }
 
 export default function Projects({ data }: { data: Project[] }) {
@@ -352,6 +353,7 @@ export default function Projects({ data }: { data: Project[] }) {
         imageUrl: string,
         category: string,
         name: string,
+        url: string,
     ): ProjectCard => {
         const isEven = idx % 2 === 0
         return {
@@ -362,6 +364,7 @@ export default function Projects({ data }: { data: Project[] }) {
             category: category,
             imageUrl: imageUrl,
             name: name,
+            url: url,
         }
     }
 
@@ -374,6 +377,7 @@ export default function Projects({ data }: { data: Project[] }) {
                     item.image,
                     category.category,
                     item.name,
+                    item.link,
                 ),
             ),
         ),
@@ -472,6 +476,30 @@ export default function Projects({ data }: { data: Project[] }) {
             }
         }
 
+        const setBodyAndCanvasStyle = ({
+            bodyPointerEvents,
+            canvasPointerEvents,
+            canvasStyleReset = false,
+        }: {
+            bodyPointerEvents?: string
+            canvasPointerEvents?: string
+            canvasStyleReset?: boolean
+        }) => {
+            // Set body pointer-events
+            if (typeof bodyPointerEvents === 'string') {
+                document.body.style.pointerEvents = bodyPointerEvents
+            }
+            // Set canvas pointer-events or reset style
+            const canvas = document.querySelector('canvas')
+            if (canvas instanceof HTMLElement) {
+                if (canvasStyleReset) {
+                    canvas.style.pointerEvents = ''
+                } else if (typeof canvasPointerEvents === 'string') {
+                    canvas.style.pointerEvents = canvasPointerEvents
+                }
+            }
+        }
+
         const totalSpacing = CARD_LAYOUT.zSpacing * cards.length
 
         gsap.to(groupPosState, {
@@ -484,10 +512,29 @@ export default function Projects({ data }: { data: Project[] }) {
                 end: () => `${vh(100 * cardRefs.length - 1)} bottom`,
                 pin: false,
                 scrub: true,
-                onEnter: () => updateProjectsMenuOpacity('1'),
-                onLeave: () => updateProjectsMenuOpacity('0'),
-                onEnterBack: () => updateProjectsMenuOpacity('1'),
-                onLeaveBack: () => updateProjectsMenuOpacity('0'),
+                onEnter: () => {
+                    setBodyAndCanvasStyle({
+                        bodyPointerEvents: 'none',
+                        canvasPointerEvents: 'auto',
+                    })
+                    updateProjectsMenuOpacity('1')
+                },
+                onLeave: () => {
+                    setBodyAndCanvasStyle({ bodyPointerEvents: 'auto', canvasPointerEvents: '' })
+
+                    updateProjectsMenuOpacity('0')
+                },
+                onEnterBack: () => {
+                    setBodyAndCanvasStyle({
+                        bodyPointerEvents: 'none',
+                        canvasPointerEvents: 'auto',
+                    })
+                    updateProjectsMenuOpacity('1')
+                },
+                onLeaveBack: () => {
+                    setBodyAndCanvasStyle({ bodyPointerEvents: 'auto', canvasPointerEvents: '' })
+                    updateProjectsMenuOpacity('0')
+                },
                 onUpdate: (self) => {
                     const el = document.querySelector('.projects-menu-dots') as HTMLElement
                     if (el) {
@@ -710,7 +757,19 @@ export default function Projects({ data }: { data: Project[] }) {
         >
             <group ref={groupRefSecond} position={groupSecondPosRef.current} rotation={[0, 0, 0]}>
                 {cards.map((item, idx) => (
-                    <group key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}>
+                    <group
+                        onPointerDown={() => {
+                            window.open(item.url, '_blank')
+                            console.log(123)
+                        }}
+                        onPointerOver={() => {
+                            document.body.style.cursor = 'pointer'
+                        }}
+                        onPointerOut={() => {
+                            document.body.style.cursor = 'default'
+                        }}
+                        key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}
+                    >
                         <ImageCard
                             position={item.position}
                             rotation={item.rotation}

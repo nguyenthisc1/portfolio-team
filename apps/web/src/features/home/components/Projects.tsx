@@ -20,6 +20,23 @@ export default function Projects({ data }: { data: ProjectsSection }) {
                 id="gsap-projects-trigger"
                 className="pointer-events-none relative"
             >
+                {/* <div className="fixed inset-0">
+                    {data.projectList.map((project, projectIdx) =>
+                        project.items.map((item, itemIdx) => (
+                            <div
+                                className="gsap-project-info absolute inset-0 flex items-end opacity-0"
+                                key={`${projectIdx}-${itemIdx}`}
+                            >
+                                <div className="w-full space-y-10 text-center lg:py-40">
+                                    <a href={item.link}>
+                                        <h4>{item.name}</h4>
+                                    </a>
+                                </div>
+                            </div>
+                        )),
+                    )}
+                </div> */}
+
                 <div className="projects-menu fixed top-1/2 left-5 -translate-y-1/2 opacity-0 transition-opacity duration-500">
                     <ul className="projects-menu-dots relative whitespace-nowrap before:absolute before:left-0 before:h-full before:w-px before:bg-white/10 after:absolute after:top-0 after:left-0 after:z-10 after:h-[var(--progress-percent)] after:w-px after:origin-top after:bg-white">
                         {data.projectList.map((p, idx) => (

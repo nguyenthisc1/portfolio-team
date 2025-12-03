@@ -437,7 +437,7 @@
             }
 
             &:not(.paused) > span {
-                animation: sound-bars-animation 2s 2 alternate;
+                animation: sound-bars-animation 2s 2 alternate infinite;
 
                 &:nth-child(1) {
                     animation-delay: 0.4s;
