@@ -4,7 +4,7 @@ import Typography from './Typography'
 
 export default function Projects({ data }: { data: ProjectsSection }) {
     return (
-        <section aria-labelledby="projects-heading" className="mb-44 space-y-10">
+        <section aria-labelledby="projects-heading" className="relative mb-44 space-y-10">
             <div className="mx-auto max-w-5xl">
                 <Heading as={2} text={data.title} className={'h2 uppercase'} />
             </div>

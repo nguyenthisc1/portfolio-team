@@ -7,6 +7,7 @@ import gsap from 'gsap'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Project } from 'types'
 
 // Helper: set image UV to cover (center crop) on mesh
@@ -414,6 +415,16 @@ export default function Projects({ data }: { data: Project[] }) {
     const [, setRenderTick] = useState(0)
     const isAccess = useGlobal((state) => state.isAccess)
 
+    useEffect(() => {
+        if (data) {
+            setTimeout(() => {
+                if (ScrollTrigger) {
+                    ScrollTrigger.refresh()
+                }
+            }, 50)
+        }
+    }, [data])
+
     // Animate group scaling in (first group) on scroll
     useGSAP(() => {
         if (!isAccess) return
@@ -620,26 +631,26 @@ export default function Projects({ data }: { data: Project[] }) {
                 },
             })
 
-            // Info fade in
-            tl.to(
-                infoEl,
-                {
-                    autoAlpha: 1,
-                    duration: 2,
-                    pointerEvents: 'auto',
-                },
-                0,
-            )
-            // Info fade out
-            tl.to(
-                infoEl,
-                {
-                    autoAlpha: 0,
-                    duration: 2,
-                    pointerEvents: 'none',
-                },
-                4,
-            )
+            // // Info fade in
+            // tl.to(
+            //     infoEl,
+            //     {
+            //         autoAlpha: 1,
+            //         duration: 2,
+            //         pointerEvents: 'auto',
+            //     },
+            //     0,
+            // )
+            // // Info fade out
+            // tl.to(
+            //     infoEl,
+            //     {
+            //         autoAlpha: 0,
+            //         duration: 2,
+            //         pointerEvents: 'none',
+            //     },
+            //     4,
+            // )
 
             // Card fade in
             tl.to(

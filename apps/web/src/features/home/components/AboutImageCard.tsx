@@ -1,14 +1,15 @@
 'use client'
 
+import { useGlobal } from '@/shared/stores/global'
+import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 const config = {
     theme: 'system',
-    swatches: 4,
     threshold: 100,
-    start: 140,
-    distance: 70,
+    start: 30,
+    distance: 16,
     rotation: -5,
     out: 'power2.out',
     in: 'power4.in',
@@ -23,6 +24,7 @@ interface Props {
 export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
     const listRef = useRef<HTMLUListElement>(null)
     const setters = useRef<any[]>([])
+    const isAccess = useGlobal((state) => state.isAccess)
 
     useEffect(() => {
         const list = listRef.current
@@ -41,26 +43,23 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
                 const color = `hsl(0, 0%, ${Math.round(
                     (0.25 + (idx / data.length) * 0.75) * 100,
                 )}%)`
+                // Add "active" class to the <li> if it's the activeIndex
                 return `
-                <li style="--color: ${color}; --i: ${idx};">
-                  <button data-color="${color}">
-                    <figure class="relative bg-neutral-800 mb-6">
-                      <img
-                        class="size-full"
-                        src="${item.image}"
-                        alt="${item.name}"
-                        width="100"
-                        height="100"
-                      />
+                <li style="--color: ${color}; --i: ${idx};" class="${idx === activeIndex ? 'active' : ''}">
+                  <button>
+                    <figure class="relative w-full space-y-2 pt-4 text-center">
+                        <p class="text-primary h5 uppercase">
+                            Tran Le Hoang Vu
+                        </p>
+                        <p class="text-xs font-thin uppercase">LEADER OF WEBSITE TEAM</p>
                     </figure>
                   </button>
                 </li>
-
               `
             })
             .join('')}
       `
-            list.style.setProperty('--swatch-count', config.swatches.toString())
+            list.style.setProperty('--swatch-count', data.length.toString())
         }
 
         const syncWave = (event: any) => {
@@ -102,12 +101,10 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
                     ) as any
 
                     setters.current[i] = (input: any) => {
-                        const power = pipeline(input) // 👉 giá trị cuối pipeline
+                        const power = pipeline(input)
                         quick(power)
-                        console.log()
-                        // 👉 Kiểm tra giá trị power
                         if (power > 0.85) {
-                            onSelect(i)
+                            // onSelect(i)
                         }
                     }
                 }
@@ -261,6 +258,15 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
         update()
         generateSwatches()
 
+        // Ensure the correct <li> is "active" on subsequent renders if activeIndex changes
+        // (e.g. if parent changes activeIndex)
+        if (list.children.length > 0 && typeof activeIndex === 'number') {
+            Array.from(list.children).forEach((child) => child.classList.remove('active'))
+            if (list.children[activeIndex]) {
+                list.children[activeIndex].classList.add('active')
+            }
+        }
+
         // cleanup
         return () => {
             list.removeEventListener('click', chooseItem)
@@ -270,11 +276,15 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
             list.removeEventListener('blur', settleWave, true)
             // ctrl.dispose()
         }
-    }, [data, onSelect])
+    }, [data, onSelect, activeIndex])
+
+    useGSAP(() => {
+        if (!isAccess) return
+    }, [isAccess])
 
     return (
         <div className="about-image relative">
-            <ul className="about-info">
+            {/* <ul className="about-info">
                 {data.map((item: any, idx: number) => (
                     <li
                         key={item.name}
@@ -288,7 +298,7 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
                         </div>
                     </li>
                 ))}
-            </ul>
+            </ul> */}
             <div className="about-card min-h-full" style={{ cursor: 'pointer' }}>
                 <ul className="swatches" ref={listRef}></ul>
             </div>
