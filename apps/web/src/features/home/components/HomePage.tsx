@@ -1,10 +1,10 @@
 import { HomePageData } from 'types'
 import About from './About'
+import Footer from './Footer'
 import Intro from './Intro'
-import Typography from './Typography'
 import Projects from './Projects'
 import Skill from './Skill'
-import Footer from './Footer'
+import Typography from './Typography'
 
 export default function HomePage({ data }: { data: HomePageData }) {
     return (
@@ -22,11 +22,11 @@ export default function HomePage({ data }: { data: HomePageData }) {
                 <Typography className="mr-20 ml-auto max-w-xs" text={data.philosophy.text} />
             </section>
 
-            {/* <Projects data={data.projects} /> */}
+            <Projects data={data.projects} />
 
             <About />
 
-            {/* <Skill data={data.skills} /> */}
+            <Skill data={data.skills} />
 
             <Footer />
         </>
