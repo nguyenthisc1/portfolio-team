@@ -319,6 +319,15 @@
         @apply xl:!max-w-7xl;
     }
 
+    .tt-image {
+        @apply relative h-auto w-full overflow-hidden pb-[65%];
+        > div,
+        amp-img,
+        img {
+            @apply absolute top-0 left-0 h-full w-full object-cover object-center;
+        }
+    }
+
     .tt-heading-wrapper {
         @apply relative flex items-center justify-center overflow-hidden;
     }
@@ -394,7 +403,7 @@
                 translate 0.12s,
                 rotate 0.12s; */
             transition-timing-function: var(--ease);
-            @apply absolute grid w-[250%] cursor-pointer place-items-start rounded-xl border-0 bg-neutral-800/50 p-2;
+            @apply absolute w-[250%];
         }
 
         li button:is(:hover, :focus-visible) span {
@@ -407,6 +416,37 @@
                 @apply ml-40;
                 /* button {
                 } */
+            }
+        }
+    }
+
+    .about-wrapper {
+        .swatches {
+            li {
+
+              >  button > div {
+                    @apply grid translate-y-full cursor-pointer place-items-start rounded-xl border-0 bg-neutral-800/50 p-2 transition-transform duration-500;
+                }
+
+                &:nth-of-type(1) button > div { transition-delay: 0ms; }
+                &:nth-of-type(2) button > div { transition-delay: 60ms; }
+                &:nth-of-type(3) button > div { transition-delay: 120ms; }
+                &:nth-of-type(4) button > div { transition-delay: 180ms; }
+                &:nth-of-type(5) button > div { transition-delay: 240ms; }
+                &:nth-of-type(6) button > div { transition-delay: 300ms; }
+                &:nth-of-type(7) button > div { transition-delay: 360ms; }
+                &:nth-of-type(8) button > div { transition-delay: 420ms; }
+                &:nth-of-type(9) button > div { transition-delay: 480ms; }
+                &:nth-of-type(10) button > div { transition-delay: 540ms; }
+                &:nth-of-type(11) button > div { transition-delay: 600ms; }
+            } 
+        }
+
+        &.active-scroll {
+            .swatches {
+                li > button > div {
+                    @apply translate-y-0;
+                }
             }
         }
     }

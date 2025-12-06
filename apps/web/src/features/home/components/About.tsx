@@ -2,6 +2,7 @@
 
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 import { useRef, useState } from 'react'
 import AboutImageCard from './AboutImageCard'
 import Heading from './Heading'
@@ -40,9 +41,25 @@ export default function About() {
     const [activeIndex, setActiveIndex] = useState(0)
 
     useGSAP(() => {
-        if (!ref.current) return
+        if (!isAccess && !ref.current) return
 
-        // const timeline = setupAboutAnimation();
+        const container = ref.current?.querySelector('.about-wrapper')
+
+        gsap.to(container!, {
+            scrollTrigger: {
+                trigger: container,
+                start: 'top top',
+                end: '+=200',
+                pin: true,
+                pinSpacing: true,
+                scrub: false,
+                anticipatePin: 1.2,
+                onEnter: () => container?.classList.add('active-scroll'),
+                onLeave: () => container?.classList.remove('active-scroll'),
+                onEnterBack: () => container?.classList.add('active-scroll'),
+                onLeaveBack: () => container?.classList.remove('active-scroll'),
+            },
+        })
     }, [isAccess])
 
     return (
@@ -57,22 +74,22 @@ export default function About() {
             </div>
 
             <div className="container">
-                <div className="relative flex h-screen items-center">
+                <div className="about-wrapper relative flex h-screen items-center lg:min-h-[850px]">
                     <div className="space-y-16">
                         <article className="grid grid-cols-1 gap-36 lg:grid-cols-2">
                             {aboutList.map((item, idx) => (
                                 <figure
                                     key={item.name}
-                                    className={`relative mb-6 rounded-4xl bg-neutral-800 pt-10 ${
+                                    className={`tt-image relative mb-6 rounded-4xl bg-neutral-800 pt-10 ${
                                         idx !== activeIndex ? 'hidden' : ''
                                     }`}
                                 >
                                     <img
-                                        className="size-full"
                                         src={item.image}
                                         alt={`${item.name} Portrait`}
                                         width={100}
                                         height={100}
+                                        className="mt-20"
                                     />
                                     <div className="absolute top-0 right-0 left-0 space-y-5 pt-6 text-center">
                                         <figcaption className="text-primary h4 uppercase">

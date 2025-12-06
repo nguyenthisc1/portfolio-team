@@ -47,12 +47,14 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
                 return `
                 <li style="--color: ${color}; --i: ${idx};" class="${idx === activeIndex ? 'active' : ''}">
                   <button>
-                    <figure class="relative w-full space-y-2 pt-4 text-center">
+                    <div class="size-full">
+                      <figure class="relative w-full space-y-2 pt-4 text-center">
                         <p class="text-primary h5 uppercase">
                             Tran Le Hoang Vu
                         </p>
                         <p class="text-xs font-thin uppercase">LEADER OF WEBSITE TEAM</p>
                     </figure>
+                    </div>
                   </button>
                 </li>
               `
@@ -277,10 +279,6 @@ export default function AboutImageCard({ data, activeIndex, onSelect }: Props) {
             // ctrl.dispose()
         }
     }, [data, onSelect, activeIndex])
-
-    useGSAP(() => {
-        if (!isAccess) return
-    }, [isAccess])
 
     return (
         <div className="about-image relative">
