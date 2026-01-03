@@ -93,11 +93,7 @@ export default function Skill({ data }: { data: SkillCategory[] }) {
     )
 
     return (
-        <section
-            ref={ref}
-            aria-labelledby="skills-heading"
-            className="mb-44 flex h-screen items-center"
-        >
+        <section ref={ref} aria-labelledby="skills-heading" className="flex h-screen items-center">
             <h2 id="skills-heading" className="hidden">
                 Skills
             </h2>

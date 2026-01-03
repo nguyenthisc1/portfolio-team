@@ -100,6 +100,11 @@
         @apply text-[28px] leading-[0.95] lg:text-[40px];
     }
 
+    h5,
+    .h5 {
+        @apply text-[20px] leading-[0.95] lg:text-[24px];
+    }
+
     ::selection {
         background: oklch(0.85 0.05 262);
         color: oklch(0.2 0 0);
@@ -314,6 +319,15 @@
         @apply xl:!max-w-7xl;
     }
 
+    .tt-image {
+        @apply relative h-auto w-full overflow-hidden pb-[65%];
+        > div,
+        amp-img,
+        img {
+            @apply absolute top-0 left-0 h-full w-full object-cover object-center;
+        }
+    }
+
     .tt-heading-wrapper {
         @apply relative flex items-center justify-center overflow-hidden;
     }
@@ -338,31 +352,31 @@
     }
 
     .about-card {
-        /* clip-path: inset(-100% -100% -30% -100%); */
+        clip-path: inset(-100% -100% 0 -100%);
         position: relative;
         touch-action: none;
     }
 
     .about-card {
         ul {
-            grid-template-columns: repeat(calc(var(--swatch-count) + 3), 1fr);
+            grid-template-columns: repeat(calc(var(--swatch-count) + 4), 1fr);
             translate: 0 calc(var(--offset-y) * 1%);
             @apply pointer-events-none mx-auto grid list-none;
         }
 
         li {
             position: relative;
-            aspect-ratio: 1 / 4;
+            aspect-ratio: 1;
             pointer-events: all;
             /* --delay: calc(sin(((var(--i)) / var(--swatch-count)) * 45deg) * 1s); */
             /* animation: enter 0.2s var(--delay) var(--ease) both; */
-
             &.active {
                 --power: 1 !important;
                 pointer-events: none;
             }
         }
         li button:is(:hover) {
+            /* rotate: calc(var(--power, 2) * (calc(var(--rotate, 0) * 1deg))); */
             translate: 0 calc(clamp(0.2, var(--power), 1) * (var(--distance, 40) * -1%));
         }
 
@@ -372,29 +386,68 @@
             }
         }
 
-        [data-dark='true'] button {
+        /* [data-dark='true'] button {
             color: #fff;
         }
         [data-dark='false'] button {
             color: #000;
-        }
+        } */
 
         li button {
             container-type: inline-size;
-            background: var(--color);
             aspect-ratio: 3/4;
-            rotate: calc(var(--power, 0) * (calc(var(--rotate, 0) * 1deg)));
+            /* rotate: calc(var(--power, 2) * (calc(var(--rotate, 0) * 1deg))); */
+            rotate: -5deg;
             translate: 0 calc(clamp(0, var(--power), 1) * (var(--distance, 40) * -1%));
             /* transition:
                 translate 0.12s,
                 rotate 0.12s; */
             transition-timing-function: var(--ease);
-            @apply absolute grid w-[400%] cursor-pointer place-items-start rounded-xl border-0 p-2;
+            @apply absolute w-[250%];
         }
 
         li button:is(:hover, :focus-visible) span {
             opacity: 1;
             translate: 0 0;
+        }
+
+        li {
+            &:not(:first-of-type) {
+                @apply ml-40;
+                /* button {
+                } */
+            }
+        }
+    }
+
+    .about-wrapper {
+        .swatches {
+            li {
+
+              >  button > div {
+                    @apply grid translate-y-full cursor-pointer place-items-start rounded-xl border-0 bg-neutral-800/50 p-2 transition-transform duration-500;
+                }
+
+                &:nth-of-type(1) button > div { transition-delay: 0ms; }
+                &:nth-of-type(2) button > div { transition-delay: 60ms; }
+                &:nth-of-type(3) button > div { transition-delay: 120ms; }
+                &:nth-of-type(4) button > div { transition-delay: 180ms; }
+                &:nth-of-type(5) button > div { transition-delay: 240ms; }
+                &:nth-of-type(6) button > div { transition-delay: 300ms; }
+                &:nth-of-type(7) button > div { transition-delay: 360ms; }
+                &:nth-of-type(8) button > div { transition-delay: 420ms; }
+                &:nth-of-type(9) button > div { transition-delay: 480ms; }
+                &:nth-of-type(10) button > div { transition-delay: 540ms; }
+                &:nth-of-type(11) button > div { transition-delay: 600ms; }
+            } 
+        }
+
+        &.active-scroll {
+            .swatches {
+                li > button > div {
+                    @apply translate-y-0;
+                }
+            }
         }
     }
 
@@ -437,7 +490,7 @@
             }
 
             &:not(.paused) > span {
-                animation: sound-bars-animation 2s 2 alternate;
+                animation: sound-bars-animation 2s 2 alternate infinite;
 
                 &:nth-child(1) {
                     animation-delay: 0.4s;
@@ -452,7 +505,7 @@
                     animation-delay: 0.8s;
                 }
             }
-
+            /* 
             &:before {
                 content: '';
                 position: absolute;
@@ -473,7 +526,7 @@
                 > span {
                     background: #000;
                 }
-            }
+            } */
 
             &.paused > span {
                 opacity: 0.2;

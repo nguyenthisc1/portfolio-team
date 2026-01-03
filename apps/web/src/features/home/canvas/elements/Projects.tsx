@@ -1,11 +1,13 @@
 /* eslint-disable react/no-unknown-property */
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
+import { Text } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Project } from 'types'
 
 // Helper: set image UV to cover (center crop) on mesh
@@ -58,7 +60,7 @@ void main(){
     float radius = min(uRadius, min(w, h));
 
     // Distance field for rounded box
-    float sdf = roundedBoxSDF(p, vec2(w, h) - vec2(radius), radius);
+    float sdf = roundedBoxSDF(p, vec2(w, h) - vec2(radius) + 0.1, radius);
 
     // Antialiased edges
     float antiAlias = fwidth(sdf) * 2.0;
@@ -176,8 +178,8 @@ interface ImageCardProps {
 
 // Main component for single 'card'
 function ImageCard({
-    width = 3.6,
-    height = 2.2,
+    width = 5,
+    height = 2.5,
     radius = 0.1,
     textureUrl = 'images/img_project_1.jpg',
     position = [5, 30, 40],
@@ -321,6 +323,8 @@ type ProjectCard = {
     opacity: number
     imageUrl: string
     category: string
+    name: string
+    url: string
 }
 
 export default function Projects({ data }: { data: Project[] }) {
@@ -328,7 +332,7 @@ export default function Projects({ data }: { data: Project[] }) {
     const CARD_SCALE = 10
     const CARD_OPACITY = 0.05
     const CARD_LAYOUT = {
-        y: 12,
+        y: 16,
         zStart: 30,
         zSpacing: 55,
         xOffset: 50,
@@ -345,7 +349,13 @@ export default function Projects({ data }: { data: Project[] }) {
     }
 
     // Create a ProjectCard instance
-    const createCard = (idx: number, imageUrl: string, category: string): ProjectCard => {
+    const createCard = (
+        idx: number,
+        imageUrl: string,
+        category: string,
+        name: string,
+        url: string,
+    ): ProjectCard => {
         const isEven = idx % 2 === 0
         return {
             position: computeCardPosition(idx, isEven),
@@ -354,6 +364,8 @@ export default function Projects({ data }: { data: Project[] }) {
             opacity: CARD_OPACITY,
             category: category,
             imageUrl: imageUrl,
+            name: name,
+            url: url,
         }
     }
 
@@ -361,7 +373,13 @@ export default function Projects({ data }: { data: Project[] }) {
     const [cards] = useState(() =>
         data.flatMap((category, cIdx) =>
             category.items.map((item, idx) =>
-                createCard(idx + cIdx * category.items.length, item.image, category.category),
+                createCard(
+                    idx + cIdx * category.items.length,
+                    item.image,
+                    category.category,
+                    item.name,
+                    item.link,
+                ),
             ),
         ),
     )
@@ -376,6 +394,14 @@ export default function Projects({ data }: { data: Project[] }) {
         })),
     ).current
 
+    // Stateful card name refs for opacity and rotation
+    const [cardNameRefs] = useState(() =>
+        cards.map((card) => ({
+            opacityRef: { current: card.opacity },
+            rotationRef: { current: [0, 0.65, 0] as [number, number, number] },
+        })),
+    )
+
     // Mutable refs for animated group position/scale
     const groupSecondPosRef = useRef<[number, number, number]>([36, 0, 0])
     const groupFirstPosRef = useRef<[number, number, number]>([-292, 0, -285])
@@ -388,6 +414,16 @@ export default function Projects({ data }: { data: Project[] }) {
     // To trigger rerender on GSAP update
     const [, setRenderTick] = useState(0)
     const isAccess = useGlobal((state) => state.isAccess)
+
+    useEffect(() => {
+        if (data) {
+            setTimeout(() => {
+                if (ScrollTrigger) {
+                    ScrollTrigger.refresh()
+                }
+            }, 50)
+        }
+    }, [data])
 
     // Animate group scaling in (first group) on scroll
     useGSAP(() => {
@@ -451,6 +487,30 @@ export default function Projects({ data }: { data: Project[] }) {
             }
         }
 
+        const setBodyAndCanvasStyle = ({
+            bodyPointerEvents,
+            canvasPointerEvents,
+            canvasStyleReset = false,
+        }: {
+            bodyPointerEvents?: string
+            canvasPointerEvents?: string
+            canvasStyleReset?: boolean
+        }) => {
+            // Set body pointer-events
+            if (typeof bodyPointerEvents === 'string') {
+                document.body.style.pointerEvents = bodyPointerEvents
+            }
+            // Set canvas pointer-events or reset style
+            const canvas = document.querySelector('canvas')
+            if (canvas instanceof HTMLElement) {
+                if (canvasStyleReset) {
+                    canvas.style.pointerEvents = ''
+                } else if (typeof canvasPointerEvents === 'string') {
+                    canvas.style.pointerEvents = canvasPointerEvents
+                }
+            }
+        }
+
         const totalSpacing = CARD_LAYOUT.zSpacing * cards.length
 
         gsap.to(groupPosState, {
@@ -463,10 +523,29 @@ export default function Projects({ data }: { data: Project[] }) {
                 end: () => `${vh(100 * cardRefs.length - 1)} bottom`,
                 pin: false,
                 scrub: true,
-                onEnter: () => updateProjectsMenuOpacity('1'),
-                onLeave: () => updateProjectsMenuOpacity('0'),
-                onEnterBack: () => updateProjectsMenuOpacity('1'),
-                onLeaveBack: () => updateProjectsMenuOpacity('0'),
+                onEnter: () => {
+                    setBodyAndCanvasStyle({
+                        bodyPointerEvents: 'none',
+                        canvasPointerEvents: 'auto',
+                    })
+                    updateProjectsMenuOpacity('1')
+                },
+                onLeave: () => {
+                    setBodyAndCanvasStyle({ bodyPointerEvents: 'auto', canvasPointerEvents: '' })
+
+                    updateProjectsMenuOpacity('0')
+                },
+                onEnterBack: () => {
+                    setBodyAndCanvasStyle({
+                        bodyPointerEvents: 'none',
+                        canvasPointerEvents: 'auto',
+                    })
+                    updateProjectsMenuOpacity('1')
+                },
+                onLeaveBack: () => {
+                    setBodyAndCanvasStyle({ bodyPointerEvents: 'auto', canvasPointerEvents: '' })
+                    updateProjectsMenuOpacity('0')
+                },
                 onUpdate: (self) => {
                     const el = document.querySelector('.projects-menu-dots') as HTMLElement
                     if (el) {
@@ -504,6 +583,7 @@ export default function Projects({ data }: { data: Project[] }) {
             state,
             infoEl,
             cardRef,
+            cardNameRef,
             startMesh,
             endMesh,
         }: {
@@ -512,6 +592,7 @@ export default function Projects({ data }: { data: Project[] }) {
             state: any
             infoEl: Element
             cardRef: any
+            cardNameRef: any
             startMesh: number
             endMesh: number
         }) => {
@@ -550,26 +631,26 @@ export default function Projects({ data }: { data: Project[] }) {
                 },
             })
 
-            // Info fade in
-            tl.to(
-                infoEl,
-                {
-                    autoAlpha: 1,
-                    duration: 2,
-                    pointerEvents: 'auto',
-                },
-                0,
-            )
-            // Info fade out
-            tl.to(
-                infoEl,
-                {
-                    autoAlpha: 0,
-                    duration: 2,
-                    pointerEvents: 'none',
-                },
-                4,
-            )
+            // // Info fade in
+            // tl.to(
+            //     infoEl,
+            //     {
+            //         autoAlpha: 1,
+            //         duration: 2,
+            //         pointerEvents: 'auto',
+            //     },
+            //     0,
+            // )
+            // // Info fade out
+            // tl.to(
+            //     infoEl,
+            //     {
+            //         autoAlpha: 0,
+            //         duration: 2,
+            //         pointerEvents: 'none',
+            //     },
+            //     4,
+            // )
 
             // Card fade in
             tl.to(
@@ -579,6 +660,8 @@ export default function Projects({ data }: { data: Project[] }) {
                     duration: 2,
                     onUpdate: () => {
                         cardRef.opacityRef.current = state.op
+                        // Name follows the same opacity
+                        cardNameRef.opacityRef.current = state.op
                     },
                 },
                 0,
@@ -591,6 +674,8 @@ export default function Projects({ data }: { data: Project[] }) {
                     duration: 5,
                     onUpdate: () => {
                         cardRef.rotationRef.current = [state.rx, state.ry, state.rz]
+                        // Sync name card rotation with card's rotation
+                        cardNameRef.rotationRef.current = [state.rx, state.ry, state.rz]
                     },
                 },
                 0,
@@ -603,6 +688,8 @@ export default function Projects({ data }: { data: Project[] }) {
                     duration: 2,
                     onUpdate: () => {
                         cardRef.opacityRef.current = state.op
+                        // Name follows the same opacity
+                        cardNameRef.opacityRef.current = state.op
                     },
                 },
                 4,
@@ -618,6 +705,7 @@ export default function Projects({ data }: { data: Project[] }) {
                 const idx = cardIdx
                 const card = cards[idx]!
                 const cardRef = cardRefs[idx]!
+                const cardNameRef = cardNameRefs[idx]!
                 const state = {
                     px: card.position[0],
                     py: card.position[1],
@@ -638,6 +726,7 @@ export default function Projects({ data }: { data: Project[] }) {
                     state,
                     infoEl: cardsInfo[idx]!,
                     cardRef,
+                    cardNameRef,
                     startMesh,
                     endMesh,
                 })
@@ -658,6 +747,18 @@ export default function Projects({ data }: { data: Project[] }) {
         }
     })
 
+    // Animated opacity and rotation for project names (Text) following cardNameRefs
+    // Store refs per text to update material opacity
+    const textMaterialRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([])
+    // Update materials' opacity and Text rotation on every frame
+    useFrame(() => {
+        cards.forEach((_, idx) => {
+            if (textMaterialRefs.current[idx]) {
+                textMaterialRefs.current[idx]!.opacity = cardNameRefs[idx]!.opacityRef.current ?? 0
+            }
+        })
+    })
+
     return (
         <group
             ref={groupRefFirst}
@@ -667,18 +768,48 @@ export default function Projects({ data }: { data: Project[] }) {
         >
             <group ref={groupRefSecond} position={groupSecondPosRef.current} rotation={[0, 0, 0]}>
                 {cards.map((item, idx) => (
-                    // Suspense boundary here is not useful for low-level texture: it's handled in useLazyTexture
-                    <ImageCard
+                    <group
+                        onPointerDown={() => {
+                            window.open(item.url, '_blank')
+                            console.log(123)
+                        }}
+                        onPointerOver={() => {
+                            document.body.style.cursor = 'pointer'
+                        }}
+                        onPointerOut={() => {
+                            document.body.style.cursor = 'default'
+                        }}
                         key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}
-                        position={item.position}
-                        rotation={item.rotation}
-                        scale={item.scale}
-                        opacity={item.opacity}
-                        textureUrl={item.imageUrl}
-                        animated={true}
-                        cardIdx={idx}
-                        gsapDataRefs={cardRefs[idx]}
-                    />
+                    >
+                        <ImageCard
+                            position={item.position}
+                            rotation={item.rotation}
+                            scale={item.scale}
+                            opacity={item.opacity}
+                            textureUrl={item.imageUrl}
+                            animated={true}
+                            cardIdx={idx}
+                            gsapDataRefs={cardRefs[idx]}
+                        />
+                        <Text
+                            ref={(ref) => {
+                                // Extract material ref from Text
+                                textMaterialRefs.current[idx] =
+                                    ref && ref.material ? ref.material : null
+                            }}
+                            position={[item.position[0], 2.5, item.position[2]]}
+                            rotation={cardNameRefs[idx]!.rotationRef.current}
+                            fontSize={1}
+                            color="white"
+                            anchorX="center"
+                            anchorY="top"
+                            font="/fonts/Oswald-Bold.ttf"
+                            material-transparent
+                            material-opacity={cardNameRefs[idx]!.opacityRef.current}
+                        >
+                            {item.name}
+                        </Text>
+                    </group>
                 ))}
             </group>
         </group>

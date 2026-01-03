@@ -4,7 +4,7 @@ import Typography from './Typography'
 
 export default function Projects({ data }: { data: ProjectsSection }) {
     return (
-        <section aria-labelledby="projects-heading" className="mb-44 space-y-10">
+        <section aria-labelledby="projects-heading" className="relative mb-44 space-y-10">
             <div className="mx-auto max-w-5xl">
                 <Heading as={2} text={data.title} className={'h2 uppercase'} />
             </div>
@@ -20,7 +20,7 @@ export default function Projects({ data }: { data: ProjectsSection }) {
                 id="gsap-projects-trigger"
                 className="pointer-events-none relative"
             >
-                <div className="fixed inset-0">
+                {/* <div className="fixed inset-0">
                     {data.projectList.map((project, projectIdx) =>
                         project.items.map((item, itemIdx) => (
                             <div
@@ -35,7 +35,7 @@ export default function Projects({ data }: { data: ProjectsSection }) {
                             </div>
                         )),
                     )}
-                </div>
+                </div> */}
 
                 <div className="projects-menu fixed top-1/2 left-5 -translate-y-1/2 opacity-0 transition-opacity duration-500">
                     <ul className="projects-menu-dots relative whitespace-nowrap before:absolute before:left-0 before:h-full before:w-px before:bg-white/10 after:absolute after:top-0 after:left-0 after:z-10 after:h-[var(--progress-percent)] after:w-px after:origin-top after:bg-white">

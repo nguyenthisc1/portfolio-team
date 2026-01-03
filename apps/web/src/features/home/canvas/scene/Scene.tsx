@@ -14,6 +14,7 @@ import CameraGroup from '../elements/CameraGroup'
 import Logo from '../elements/Logo'
 import Ocean from '../elements/Ocean'
 import Projects from '../elements/Projects'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 // Camera controller to set camera from leva panel
 function CameraController({ leva }: { leva: any }) {
@@ -81,15 +82,15 @@ export default function Scene({ data }: { data?: Project[] }) {
         }
     }, [isAccess])
 
-    // useEffect(() => {
-    //     if (data) {
-    //         setTimeout(() => {
-    //             if (ScrollTrigger) {
-    //                 ScrollTrigger.refresh();
-    //             }
-    //         }, 50);
-    //     }
-    // }, [data]);
+    useEffect(() => {
+        if (data) {
+            setTimeout(() => {
+                if (ScrollTrigger) {
+                    ScrollTrigger.refresh()
+                }
+            }, 50)
+        }
+    }, [data])
 
     return (
         <>

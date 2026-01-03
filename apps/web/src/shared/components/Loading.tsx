@@ -107,7 +107,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
                         alignItems: 'flex-end',
                         justifyContent: 'center',
                         paddingTop: 0,
-                        paddingBottom: '10rem',
+                        paddingBottom: '10vh',
                         color: 'black',
                         textTransform: 'uppercase',
                         fontWeight: 700,
