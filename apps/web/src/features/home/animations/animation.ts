@@ -1,5 +1,6 @@
 'use client'
 
+import { useIsMobile } from '@/shared/hooks/useMobile'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
@@ -65,15 +66,18 @@ export function setupIntroHomeAnimation(scopeElement: HTMLElement) {
 
 export function setupFooterAnimation(scopeElement: HTMLElement) {
     const footerContent = scopeElement.querySelector('.footer-content')
+
     if (!footerContent) return
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1023
 
     const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: scopeElement,
-            start: 'top top',
-            end: 'bottom top',
-            pin: true,
-            scrub: true,
+            start: isMobile ? 'center 90%' : 'top top',
+            end: isMobile ? 'bottom top' : 'bottom top',
+            pin: isMobile ? false : true,
+            scrub: isMobile ? false : true,
+            // markers: true,
         },
     })
 
@@ -90,12 +94,15 @@ export function setupFooterAnimation(scopeElement: HTMLElement) {
 }
 
 export function setupHeadingAnimation(scopeElement: HTMLElement) {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1023
+
     const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: scopeElement,
-            start: 'top 70%',
-            // end: 'bottom top',
+            start: isMobile ? 'top 65%' : 'top 90%',
+            end: '80% 40%',
             scrub: true,
+            // markers: true,
         },
     })
 
@@ -178,18 +185,19 @@ export function setupSpinningText(scopeElement: HTMLElement, delay?: number) {
 
 export function setupSplitLinesAnimation(scopeElement: HTMLElement) {
     // Create SplitText instance on the provided scope element
-    const split = new SplitText(scopeElement, { type: 'lines' }) as unknown as {
+    const split = new SplitText(scopeElement, { type: 'lines' }) as {
         lines: Element[]
         revert: () => void
     }
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1023
 
     const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: scopeElement,
-            start: 'top 90%',
+            start: isMobile ? 'top 65%' : 'top 90%',
             end: 'bottom center',
-            scrub: true,
-            // markers: true,
+            scrub: 1,
+            // markers: false,
         },
     })
 

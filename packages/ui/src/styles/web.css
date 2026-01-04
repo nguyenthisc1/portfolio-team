@@ -56,7 +56,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
 
-        @apply font-primary text-base text-white md:text-lg xl:text-xl;
+        @apply font-primary text-sm text-white md:text-lg xl:text-xl;
         background-color: #1a1a1a;
         /* background-color: #090909; */
         /* bg-[#090909] */
@@ -87,7 +87,7 @@
 
     h2,
     .h2 {
-        @apply text-[64px] leading-[0.95] md:text-[80px] lg:text-[180px] 2xl:text-[210px];
+        @apply text-[64px] leading-[0.95] md:text-[100px] lg:text-[180px] 2xl:text-[210px];
     }
 
     h3,
@@ -344,10 +344,8 @@
     }
 
     .footer-content-filled {
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
         @apply lg:absolute lg:top-1/2 lg:left-1/2 size-full select-none lg:-translate-1/2;
-        @media (min-width: 1024px) {
-            clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        }
     }
 
     .about-card {

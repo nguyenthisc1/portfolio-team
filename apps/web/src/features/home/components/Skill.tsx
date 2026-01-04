@@ -101,7 +101,7 @@ export default function Skill({ data }: { data: SkillCategory[] }) {
             aria-labelledby="skills-heading"
             className="lg:flex lg:h-screen lg:items-center"
         >
-            <div className="mx-auto mb-10 max-w-5xl text-center lg:hidden">
+            <div className="mx-auto mb-20 max-w-5xl text-center lg:hidden">
                 <Heading as={2} text="Skills" className="h2 uppercase" />
             </div>
 

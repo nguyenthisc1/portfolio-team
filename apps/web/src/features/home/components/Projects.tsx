@@ -23,7 +23,7 @@ export default function Projects({ data }: { data: ProjectsSection }) {
                 </div>
 
                 {isMobile && (
-                    <div className="mx-auto mt-16 max-w-xl space-y-16">
+                    <div className="mx-auto mt-20 max-w-xl space-y-16">
                         {data.projectList.map((project, projectIdx) => (
                             <div key={projectIdx} className="space-y-10">
                                 <div className="mb-4 font-semibold tracking-wider uppercase">

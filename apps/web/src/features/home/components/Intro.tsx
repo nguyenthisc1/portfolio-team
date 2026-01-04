@@ -26,14 +26,18 @@ export default function Intro({ data }: { data: HeroSection }) {
                     <p className="intro-description uppercase">{data.description}</p>
                 </header>
 
-                <section id="profile" aria-labelledby="profile-heading" className="mt-36 mb-[50%]">
+                <section
+                    id="profile"
+                    aria-labelledby="profile-heading"
+                    className="mt-36 mb-[80%] md:mb-[50%]"
+                >
                     <h2 id="profile-heading" className="sr-only">
                         Profile
                     </h2>
                     <div className="space-y-5 text-center">
                         {/* <h2 className="font-primary text-xl uppercase">Hoang Vu</h2> */}
                         <div className="mx-auto max-w-7xl text-center">
-                            <h2 className="text-primary spinning-text intro-heading uppercase">
+                            <h2 className="text-primary spinning-text intro-heading uppercase max-sm:text-[80px]">
                                 <span>{data.title}</span>
                             </h2>
                         </div>
