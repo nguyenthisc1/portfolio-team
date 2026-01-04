@@ -1,9 +1,11 @@
 'use client'
 
+import { useIsMobile } from '@/shared/hooks/useMobile'
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
 import { SkillCategory } from 'types'
 import { setupCardSkillAnimation } from '../animations/animation'
+import Heading from './Heading'
 
 type SkillData = {
     id: string
@@ -46,7 +48,7 @@ function CardSkill({ id, imgSrc, imgAlt, title, items, index = 0 }: SkillData) {
                 aria-labelledby={id}
                 className="glint-card h-[500px]"
             >
-                <div className="glint-card-front">
+                <div className="glint-card-front max-lg:hidden">
                     <div className="glint-card-wrapper">
                         <div className="glint-card-content">
                             <header>
@@ -65,7 +67,7 @@ function CardSkill({ id, imgSrc, imgAlt, title, items, index = 0 }: SkillData) {
                     </div>
                 </div>
 
-                <div className="glint-card-back">
+                <div className="glint-card-back max-lg:!rotate-y-0">
                     <div className="glint-card-wrapper">
                         <div className="glint-card-content">
                             <ul className="skill-card">
@@ -83,6 +85,7 @@ function CardSkill({ id, imgSrc, imgAlt, title, items, index = 0 }: SkillData) {
 
 export default function Skill({ data }: { data: SkillCategory[] }) {
     const ref = useRef<HTMLDivElement>(null)
+    const isMobile = useIsMobile({ breakpoint: 1023 })
 
     useGSAP(
         () => {
@@ -93,16 +96,31 @@ export default function Skill({ data }: { data: SkillCategory[] }) {
     )
 
     return (
-        <section ref={ref} aria-labelledby="skills-heading" className="flex h-screen items-center">
-            <h2 id="skills-heading" className="hidden">
-                Skills
-            </h2>
+        <section
+            ref={ref}
+            aria-labelledby="skills-heading"
+            className="lg:flex lg:h-screen lg:items-center"
+        >
+            <div className="mx-auto mb-10 max-w-5xl text-center lg:hidden">
+                <Heading as={2} text="Skills" className="h2 uppercase" />
+            </div>
+
             <div className="container">
-                <div className="grid grid-cols-1 gap-x-20 gap-y-10 lg:grid-cols-3">
-                    {skillData.map((skill, idx) => (
-                        <CardSkill key={skill.id} index={skillData.length - idx} {...skill} />
-                    ))}
-                </div>
+                {!isMobile && (
+                    <div className="glint-card-desktop grid grid-cols-1 gap-x-20 gap-y-10 lg:grid-cols-3">
+                        {skillData.map((skill, idx) => (
+                            <CardSkill key={skill.id} index={skillData.length - idx} {...skill} />
+                        ))}
+                    </div>
+                )}
+
+                {isMobile && (
+                    <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-10">
+                        {skillData.map((skill, idx) => (
+                            <CardSkill key={skill.id} index={skillData.length - idx} {...skill} />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     )

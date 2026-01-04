@@ -6,15 +6,16 @@ import { useGSAP } from '@gsap/react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Leva, useControls } from 'leva'
-import { Suspense, useEffect, useRef } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { Project } from 'types'
 import CameraGroup from '../elements/CameraGroup'
 import Logo from '../elements/Logo'
 import Ocean from '../elements/Ocean'
 import Projects from '../elements/Projects'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useIsMobile } from '@/shared/hooks/useMobile'
 
 // Camera controller to set camera from leva panel
 function CameraController({ leva }: { leva: any }) {
@@ -48,6 +49,7 @@ function CameraController({ leva }: { leva: any }) {
 export default function Scene({ data }: { data?: Project[] }) {
     const canvasRef = useRef<any | null>(null)
     const isAccess = useGlobal((state) => state.isAccess)
+    const isMobile = useIsMobile({ breakpoint: 1023 })
 
     // Leva camera state (target values)
     const leva = useControls('Camera', {
@@ -129,14 +131,16 @@ export default function Scene({ data }: { data?: Project[] }) {
                     <Suspense fallback={null}>
                         <Logo />
 
-                        <group name="projects">
-                            <Ocean />
-                            {data && (
-                                <CameraGroup>
-                                    <Projects data={data} />
-                                </CameraGroup>
-                            )}
-                        </group>
+                        {!isMobile && (
+                            <group name="projects">
+                                <Ocean />
+                                {data && (
+                                    <CameraGroup>
+                                        <Projects data={data} />
+                                    </CameraGroup>
+                                )}
+                            </group>
+                        )}
                     </Suspense>
                 </Canvas>
                 <Leva hidden={true} />

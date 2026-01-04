@@ -11,20 +11,21 @@ export default function HomePage({ data }: { data: HomePageData }) {
         <>
             <Intro data={data.hero} />
 
-            <section
-                id="philosophy"
-                aria-labelledby="philosophy-heading"
-                className="mx-auto mb-[50%] max-w-4xl space-y-10"
-            >
-                <h2 id="philosophy-heading" className="sr-only">
-                    Philosophy
-                </h2>
-                <Typography className="mr-20 ml-auto max-w-xs" text={data.philosophy.text} />
+            <section id="philosophy" aria-labelledby="philosophy-heading">
+                <div className="container mx-auto mb-20 max-w-4xl space-y-10 md:mb-[50%]">
+                    <h2 id="philosophy-heading" className="sr-only">
+                        Philosophy
+                    </h2>
+                    <Typography
+                        className="ml-auto max-md:text-center md:mr-20 md:max-w-xs"
+                        text={data.philosophy.text}
+                    />
+                </div>
             </section>
 
             <Projects data={data.projects} />
 
-            <About />
+            {/* <About /> */}
 
             <Skill data={data.skills} />
 

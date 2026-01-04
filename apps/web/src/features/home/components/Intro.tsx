@@ -20,24 +20,26 @@ export default function Intro({ data }: { data: HeroSection }) {
 
     return (
         <div ref={ref} className="relative -z-20">
-            <header className="mx-auto mt-20 max-w-xl text-center">
-                {/* <h1 className="hidden">Hoang Vu - </h1> */}
-                <p className="intro-description uppercase">{data.description}</p>
-            </header>
+            <div className="max-md:container">
+                <header className="mx-auto mt-20 max-w-xl text-center">
+                    {/* <h1 className="hidden">Hoang Vu - </h1> */}
+                    <p className="intro-description uppercase">{data.description}</p>
+                </header>
 
-            <section id="profile" aria-labelledby="profile-heading" className="mt-36 mb-[50%]">
-                <h2 id="profile-heading" className="sr-only">
-                    Profile
-                </h2>
-                <div className="space-y-5 text-center">
-                    {/* <h2 className="font-primary text-xl uppercase">Hoang Vu</h2> */}
-                    <div className="mx-auto max-w-7xl text-center">
-                        <h2 className="text-primary spinning-text intro-heading uppercase">
-                            <span>{data.title}</span>
-                        </h2>
+                <section id="profile" aria-labelledby="profile-heading" className="mt-36 mb-[50%]">
+                    <h2 id="profile-heading" className="sr-only">
+                        Profile
+                    </h2>
+                    <div className="space-y-5 text-center">
+                        {/* <h2 className="font-primary text-xl uppercase">Hoang Vu</h2> */}
+                        <div className="mx-auto max-w-7xl text-center">
+                            <h2 className="text-primary spinning-text intro-heading uppercase">
+                                <span>{data.title}</span>
+                            </h2>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     )
 }

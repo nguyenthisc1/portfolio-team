@@ -74,7 +74,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
                 <GsapProvider>
                     <Loading>{children}</Loading>
                     <Scene data={data?.projects.projectList} />
-                    <SceneCursor />
+                    {/* <SceneCursor /> */}
                     <StarGalaxy />
                     <SoundBar />
                 </GsapProvider>

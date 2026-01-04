@@ -87,7 +87,7 @@
 
     h2,
     .h2 {
-        @apply text-[80px] leading-[0.95] lg:text-[180px] 2xl:text-[210px];
+        @apply text-[64px] leading-[0.95] md:text-[80px] lg:text-[180px] 2xl:text-[210px];
     }
 
     h3,
@@ -160,6 +160,10 @@
                 background: rgba(0, 0, 0, 0.2);
             }
         } */
+    }
+
+    .container {
+        @apply mx-auto px-4 md:max-w-none xl:!max-w-7xl;
     }
 }
 
@@ -312,13 +316,6 @@
             }
         }
     }
-
-    .container {
-        margin-left: auto;
-        margin-right: auto;
-        @apply xl:!max-w-7xl;
-    }
-
     .tt-image {
         @apply relative h-auto w-full overflow-hidden pb-[65%];
         > div,
@@ -347,8 +344,10 @@
     }
 
     .footer-content-filled {
-        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        @apply absolute top-1/2 left-1/2 size-full -translate-1/2 select-none;
+        @apply lg:absolute lg:top-1/2 lg:left-1/2 size-full select-none lg:-translate-1/2;
+        @media (min-width: 1024px) {
+            clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+        }
     }
 
     .about-card {
@@ -423,23 +422,44 @@
     .about-wrapper {
         .swatches {
             li {
-
-              >  button > div {
+                > button > div {
                     @apply grid translate-y-full cursor-pointer place-items-start rounded-xl border-0 bg-neutral-800/50 p-2 transition-transform duration-500;
                 }
 
-                &:nth-of-type(1) button > div { transition-delay: 0ms; }
-                &:nth-of-type(2) button > div { transition-delay: 60ms; }
-                &:nth-of-type(3) button > div { transition-delay: 120ms; }
-                &:nth-of-type(4) button > div { transition-delay: 180ms; }
-                &:nth-of-type(5) button > div { transition-delay: 240ms; }
-                &:nth-of-type(6) button > div { transition-delay: 300ms; }
-                &:nth-of-type(7) button > div { transition-delay: 360ms; }
-                &:nth-of-type(8) button > div { transition-delay: 420ms; }
-                &:nth-of-type(9) button > div { transition-delay: 480ms; }
-                &:nth-of-type(10) button > div { transition-delay: 540ms; }
-                &:nth-of-type(11) button > div { transition-delay: 600ms; }
-            } 
+                &:nth-of-type(1) button > div {
+                    transition-delay: 0ms;
+                }
+                &:nth-of-type(2) button > div {
+                    transition-delay: 60ms;
+                }
+                &:nth-of-type(3) button > div {
+                    transition-delay: 120ms;
+                }
+                &:nth-of-type(4) button > div {
+                    transition-delay: 180ms;
+                }
+                &:nth-of-type(5) button > div {
+                    transition-delay: 240ms;
+                }
+                &:nth-of-type(6) button > div {
+                    transition-delay: 300ms;
+                }
+                &:nth-of-type(7) button > div {
+                    transition-delay: 360ms;
+                }
+                &:nth-of-type(8) button > div {
+                    transition-delay: 420ms;
+                }
+                &:nth-of-type(9) button > div {
+                    transition-delay: 480ms;
+                }
+                &:nth-of-type(10) button > div {
+                    transition-delay: 540ms;
+                }
+                &:nth-of-type(11) button > div {
+                    transition-delay: 600ms;
+                }
+            }
         }
 
         &.active-scroll {
