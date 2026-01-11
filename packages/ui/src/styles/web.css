@@ -345,7 +345,7 @@
 
     .footer-content-filled {
         clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        @apply lg:absolute lg:top-1/2 lg:left-1/2 size-full select-none lg:-translate-1/2;
+        @apply size-full select-none lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-1/2;
     }
 
     .about-card {
@@ -356,9 +356,24 @@
 
     .about-card {
         ul {
-            grid-template-columns: repeat(calc(var(--swatch-count) + 4), 1fr);
+            --offset-y: 5;
+            --distance: 16;
+            --rotate: -10deg;
             translate: 0 calc(var(--offset-y) * 1%);
-            @apply pointer-events-none mx-auto grid list-none;
+            @apply pointer-events-none mx-auto flex list-none grid-cols-2 md:grid-cols-3 lg:grid lg:grid-cols-4;
+
+            @media (min-width: 768px) {
+                --offset-y: 25;
+            }
+
+            @media (min-width: 1024px) {
+                --offset-y: 10;
+                grid-template-columns: repeat(calc(var(--swatch-count) + 4), 1fr);
+            }
+
+            @media (min-width: 1280px) {
+                --offset-y: 30;
+            }
         }
 
         li {
@@ -367,14 +382,37 @@
             pointer-events: all;
             /* --delay: calc(sin(((var(--i)) / var(--swatch-count)) * 45deg) * 1s); */
             /* animation: enter 0.2s var(--delay) var(--ease) both; */
+            transition: 0.5s opacity;
             &.active {
-                --power: 1 !important;
+                /* --power: 1 !important; */
                 pointer-events: none;
+                translate: 0 -50%;
+            }
+            &[data-active='true'] {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            @media (max-width: 1023px) {
+                @apply w-[50%] shrink-0 md:w-[33%];
+            }
+
+            @media (max-width: 767px) {
+                &:nth-of-type(n + 3) {
+                    @apply pointer-events-none opacity-0;
+                }
+            }
+
+            @media (min-width: 768px) and (max-width: 1023px) {
+                &:nth-of-type(n + 4) {
+                    @apply pointer-events-none opacity-0;
+                }
             }
         }
         li button:is(:hover) {
             /* rotate: calc(var(--power, 2) * (calc(var(--rotate, 0) * 1deg))); */
-            translate: 0 calc(clamp(0.2, var(--power), 1) * (var(--distance, 40) * -1%));
+            /* translate: 0 calc(clamp(0.2, var(--power), 1) * (var(--distance, 40) * -1%)); */
+            translate: 0 calc(-4% * var(--i));
         }
 
         @keyframes enter {
@@ -395,12 +433,13 @@
             aspect-ratio: 3/4;
             /* rotate: calc(var(--power, 2) * (calc(var(--rotate, 0) * 1deg))); */
             rotate: -5deg;
-            translate: 0 calc(clamp(0, var(--power), 1) * (var(--distance, 40) * -1%));
-            /* transition:
-                translate 0.12s,
-                rotate 0.12s; */
+            /* translate: 0 calc(clamp(0, var(--power), 1) * (var(--distance, 40) * -1%)); */
+            translate: 0 0;
+            transition:
+                translate 0.3s,
+                rotate 0.3s;
             transition-timing-function: var(--ease);
-            @apply absolute w-[250%];
+            @apply absolute w-[115%] md:w-[150%] lg:w-[250%];
         }
 
         li button:is(:hover, :focus-visible) span {
@@ -410,7 +449,7 @@
 
         li {
             &:not(:first-of-type) {
-                @apply ml-40;
+                @apply lg:ml-40;
                 /* button {
                 } */
             }

@@ -137,7 +137,7 @@ export default function Logo() {
     return (
         <>
             <group ref={groupFirstRef} scale={1}>
-                <group ref={groupRef} position={[0, isMobile ? 10 : 0, 0]} scale={0}>
+                <group ref={groupRef} position={[-3, isMobile ? 6 : 0, 0]} scale={0}>
                     <mesh position={[0, 0, 0]} scale={2}>
                         <sphereGeometry args={[0.65, 64, 64]} />
                         <FakeGlowMaterial {...shaderControls} />

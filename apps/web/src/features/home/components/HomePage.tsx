@@ -11,9 +11,9 @@ export default function HomePage({ data }: { data: HomePageData }) {
         <>
             <Intro data={data.hero} />
 
-            {/* <Philosophy data={data.philosophy} /> */}
+            <Philosophy data={data.philosophy} />
 
-            {/* <Projects data={data.projects} /> */}
+            <Projects data={data.projects} />
 
             <About />
 
