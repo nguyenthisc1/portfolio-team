@@ -1,5 +1,6 @@
 'use client'
 
+import { ImagePicker } from 'shared/components/ImagePicker'
 import { Button } from '@workspace/ui/components/Button'
 import {
     Card,
@@ -19,11 +20,94 @@ import {
 } from '@workspace/ui/components/Form'
 import { Input, TextArea } from '@workspace/ui/components/Textfield'
 import { MinusCircle, PlusCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { FieldArrayWithId, UseFormReturn, useFieldArray } from 'react-hook-form'
 import { HomeContentForm } from './types'
 
 interface AboutTabProps {
     form: UseFormReturn<HomeContentForm>
+}
+
+interface TeamMemberImageFieldProps {
+    value: string
+    onChange: (value: string) => void
+}
+
+// Helper to check if string is a valid absolute or root-relative URL
+function isValidImageUrl(url: string): boolean {
+    if (!url) return false
+    try {
+        // Allow absolute URLs (http://, https://) and root-relative URLs (/...)
+        return url.startsWith('/') || Boolean(new URL(url))
+    } catch {
+        return false
+    }
+}
+
+function normalizeImageUrl(url: string): string {
+    // Accept absolute URLs and root-relative; treat other kinds as invalid (return empty string)
+    if (!url) return ''
+    // Absolute
+    if (url.startsWith('http://') || url.startsWith('https://')) return url
+    // Root-relative
+    if (url.startsWith('/')) return url
+    // Return empty if not valid
+    return ''
+}
+
+function TeamMemberImageField({ value, onChange }: TeamMemberImageFieldProps) {
+    const [selectedImage, setSelectedImage] = useState<{
+        url: string
+        name: string
+        key: string
+        size: number
+    } | null>(null)
+
+    // Initialize selected image from form value
+    useEffect(() => {
+        if (value && isValidImageUrl(value)) {
+            setSelectedImage({
+                url: normalizeImageUrl(value),
+                name: value.split('/').pop() || 'Selected Image',
+                key: value,
+                size: 0,
+            })
+        } else {
+            setSelectedImage(null)
+        }
+    }, [value])
+
+    const handleImageSelection = (
+        images: { url: string; name?: string; key?: string; size?: number }[],
+    ) => {
+        if (images.length > 0) {
+            const image = images[0]!
+            // Normalize URL before storing to avoid invalid URLs
+            const safeUrl = normalizeImageUrl(image.url)
+            onChange(safeUrl)
+            // Defensive: fill in all props, fallback to '' or 0 if not available
+            setSelectedImage({
+                url: safeUrl,
+                name: image.name ?? '',
+                key: image.key ?? '',
+                size: image.size ?? 0,
+            })
+        } else {
+            onChange('')
+            setSelectedImage(null)
+        }
+    }
+
+    return (
+        <ImagePicker
+            selectedImages={selectedImage && selectedImage.url ? [selectedImage] : []}
+            onSelectionChange={handleImageSelection}
+            multiple={false}
+            maxSelection={1}
+            title="Select Team Member Image"
+            description="Choose an image for this team member"
+        />
+    )
 }
 
 export default function AboutTab({ form }: AboutTabProps) {
@@ -102,7 +186,10 @@ export default function AboutTab({ form }: AboutTabProps) {
 
                     {fields.length === 0 && (
                         <div className="text-muted-foreground rounded-lg border-2 border-dashed p-8 text-center">
-                            <p>No team members yet. Click "Add Team Member" to get started.</p>
+                            <p>
+                                No team members yet. Click &ldquo;Add Team Member&rdquo; to get
+                                started.
+                            </p>
                         </div>
                     )}
 
@@ -136,11 +223,11 @@ export default function AboutTab({ form }: AboutTabProps) {
                                             name={`about.teamMembers.${index}.image`}
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Image URL</FormLabel>
+                                                    <FormLabel>Team Member Image</FormLabel>
                                                     <FormControl>
-                                                        <Input
-                                                            {...field}
-                                                            placeholder="/images/team-member.png"
+                                                        <TeamMemberImageField
+                                                            value={field.value}
+                                                            onChange={field.onChange}
                                                         />
                                                     </FormControl>
                                                     <FormMessage />

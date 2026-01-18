@@ -20,6 +20,36 @@
     "philosophy": {
         "text": "I value simplicity without sacrificing originality. Every solution is effective, purposeful, and ready for real use."
     },
+    "about": {
+        "title": "About Us",
+        "description": "We are a passionate team focused on smart web, backend and UX solutions, delivering purposeful results for our clients.",
+        "teamMembers": [
+            {
+                "image": "https://utfs.io/f/cuH9KLr6qOUNmfKrPYcnbR7zo8vPZ5AJawjN6lFeCTH0sdKt",
+                "name": "Tran Le Hoang Vu",
+                "position": "LEADER OF WEBSITE TEAM",
+                "experience": 6,
+                "projects": 10,
+                "customers": 100
+            },
+            {
+                "image": "https://utfs.io/f/cuH9KLr6qOUNhxsmAlj5Dec2uzYX81Aaio7RqH3GESQt9wry",
+                "name": "John Doe",
+                "position": "BACKEND DEVELOPER",
+                "experience": 5,
+                "projects": 12,
+                "customers": 90
+            },
+            {
+                "image": "https://utfs.io/f/cuH9KLr6qOUNDavvj3BLWxFcPRGoIYwn59T2fgMyJQEiUS7O",
+                "name": "Lisa Nguyen",
+                "position": "UI/UX DESIGNER",
+                "experience": 3,
+                "projects": 7,
+                "customers": 60
+            }
+        ]
+    },
     "projects": {
         "title": "Projects",
         "description": "Come along and discover a selection of my recent works, from websites to digital products, all crafted with a focus on clarity, purpose, and meaningful design.",
