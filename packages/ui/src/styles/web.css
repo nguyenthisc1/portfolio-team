@@ -56,7 +56,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
 
-        @apply font-primary text-base text-white md:text-lg xl:text-xl;
+        @apply font-primary text-sm text-white md:text-lg xl:text-xl;
         background-color: #1a1a1a;
         /* background-color: #090909; */
         /* bg-[#090909] */
@@ -87,7 +87,7 @@
 
     h2,
     .h2 {
-        @apply text-[80px] leading-[0.95] lg:text-[180px] 2xl:text-[210px];
+        @apply text-[64px] leading-[0.95] md:text-[100px] lg:text-[180px] 2xl:text-[210px];
     }
 
     h3,
@@ -160,6 +160,10 @@
                 background: rgba(0, 0, 0, 0.2);
             }
         } */
+    }
+
+    .container {
+        @apply mx-auto px-4 md:max-w-none xl:!max-w-7xl;
     }
 }
 
@@ -312,13 +316,6 @@
             }
         }
     }
-
-    .container {
-        margin-left: auto;
-        margin-right: auto;
-        @apply xl:!max-w-7xl;
-    }
-
     .tt-image {
         @apply relative h-auto w-full overflow-hidden pb-[65%];
         > div,
@@ -348,7 +345,7 @@
 
     .footer-content-filled {
         clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        @apply absolute top-1/2 left-1/2 size-full -translate-1/2 select-none;
+        @apply size-full select-none lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-1/2;
     }
 
     .about-card {
@@ -359,9 +356,24 @@
 
     .about-card {
         ul {
-            grid-template-columns: repeat(calc(var(--swatch-count) + 4), 1fr);
+            --offset-y: 5;
+            --distance: 16;
+            --rotate: -10deg;
             translate: 0 calc(var(--offset-y) * 1%);
-            @apply pointer-events-none mx-auto grid list-none;
+            @apply pointer-events-none mx-auto flex list-none grid-cols-2 md:grid-cols-3 lg:grid lg:grid-cols-4;
+
+            @media (min-width: 768px) {
+                --offset-y: 25;
+            }
+
+            @media (min-width: 1024px) {
+                --offset-y: 10;
+                grid-template-columns: repeat(calc(var(--swatch-count) + 4), 1fr);
+            }
+
+            @media (min-width: 1280px) {
+                --offset-y: 30;
+            }
         }
 
         li {
@@ -370,14 +382,37 @@
             pointer-events: all;
             /* --delay: calc(sin(((var(--i)) / var(--swatch-count)) * 45deg) * 1s); */
             /* animation: enter 0.2s var(--delay) var(--ease) both; */
+            transition: 0.5s opacity;
             &.active {
-                --power: 1 !important;
+                /* --power: 1 !important; */
                 pointer-events: none;
+                translate: 0 -50%;
+            }
+            &[data-active='true'] {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            @media (max-width: 1023px) {
+                @apply w-[50%] shrink-0 md:w-[33%];
+            }
+
+            @media (max-width: 767px) {
+                &:nth-of-type(n + 3) {
+                    @apply pointer-events-none opacity-0;
+                }
+            }
+
+            @media (min-width: 768px) and (max-width: 1023px) {
+                &:nth-of-type(n + 4) {
+                    @apply pointer-events-none opacity-0;
+                }
             }
         }
         li button:is(:hover) {
             /* rotate: calc(var(--power, 2) * (calc(var(--rotate, 0) * 1deg))); */
-            translate: 0 calc(clamp(0.2, var(--power), 1) * (var(--distance, 40) * -1%));
+            /* translate: 0 calc(clamp(0.2, var(--power), 1) * (var(--distance, 40) * -1%)); */
+            translate: 0 calc(-4% * var(--i));
         }
 
         @keyframes enter {
@@ -398,12 +433,13 @@
             aspect-ratio: 3/4;
             /* rotate: calc(var(--power, 2) * (calc(var(--rotate, 0) * 1deg))); */
             rotate: -5deg;
-            translate: 0 calc(clamp(0, var(--power), 1) * (var(--distance, 40) * -1%));
-            /* transition:
-                translate 0.12s,
-                rotate 0.12s; */
+            /* translate: 0 calc(clamp(0, var(--power), 1) * (var(--distance, 40) * -1%)); */
+            translate: 0 0;
+            transition:
+                translate 0.3s,
+                rotate 0.3s;
             transition-timing-function: var(--ease);
-            @apply absolute w-[250%];
+            @apply absolute w-[115%] md:w-[150%] lg:w-[250%];
         }
 
         li button:is(:hover, :focus-visible) span {
@@ -413,7 +449,7 @@
 
         li {
             &:not(:first-of-type) {
-                @apply ml-40;
+                @apply lg:ml-40;
                 /* button {
                 } */
             }
@@ -423,23 +459,44 @@
     .about-wrapper {
         .swatches {
             li {
-
-              >  button > div {
+                > button > div {
                     @apply grid translate-y-full cursor-pointer place-items-start rounded-xl border-0 bg-neutral-800/50 p-2 transition-transform duration-500;
                 }
 
-                &:nth-of-type(1) button > div { transition-delay: 0ms; }
-                &:nth-of-type(2) button > div { transition-delay: 60ms; }
-                &:nth-of-type(3) button > div { transition-delay: 120ms; }
-                &:nth-of-type(4) button > div { transition-delay: 180ms; }
-                &:nth-of-type(5) button > div { transition-delay: 240ms; }
-                &:nth-of-type(6) button > div { transition-delay: 300ms; }
-                &:nth-of-type(7) button > div { transition-delay: 360ms; }
-                &:nth-of-type(8) button > div { transition-delay: 420ms; }
-                &:nth-of-type(9) button > div { transition-delay: 480ms; }
-                &:nth-of-type(10) button > div { transition-delay: 540ms; }
-                &:nth-of-type(11) button > div { transition-delay: 600ms; }
-            } 
+                &:nth-of-type(1) button > div {
+                    transition-delay: 0ms;
+                }
+                &:nth-of-type(2) button > div {
+                    transition-delay: 60ms;
+                }
+                &:nth-of-type(3) button > div {
+                    transition-delay: 120ms;
+                }
+                &:nth-of-type(4) button > div {
+                    transition-delay: 180ms;
+                }
+                &:nth-of-type(5) button > div {
+                    transition-delay: 240ms;
+                }
+                &:nth-of-type(6) button > div {
+                    transition-delay: 300ms;
+                }
+                &:nth-of-type(7) button > div {
+                    transition-delay: 360ms;
+                }
+                &:nth-of-type(8) button > div {
+                    transition-delay: 420ms;
+                }
+                &:nth-of-type(9) button > div {
+                    transition-delay: 480ms;
+                }
+                &:nth-of-type(10) button > div {
+                    transition-delay: 540ms;
+                }
+                &:nth-of-type(11) button > div {
+                    transition-delay: 600ms;
+                }
+            }
         }
 
         &.active-scroll {
@@ -534,20 +591,35 @@
             }
         }
     }
-    @keyframes sound-bars-animation {
-        50% {
-            opacity: 0.2;
-            transform: scaleY(0.2);
-        }
-        100% {
-            opacity: 1;
-            transform: scaleY(1);
-        }
+    .gradient {
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .gradient::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(180deg, transparent 0%, #fff 100%);
+        background-size: 200% 280%;
+        pointer-events: none;
+        transform: translateY(-100%);
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .gradient:hover::before,
+    .gradient:focus-visible::before {
+        transform: translateY(0);
     }
 }
 
 @layer utilities {
     .smooth-scroll {
         scroll-behavior: smooth;
+    }
+
+    .font-style-normal {
+        font-style: normal;
     }
 }

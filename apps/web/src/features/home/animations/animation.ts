@@ -1,5 +1,6 @@
 'use client'
 
+import { useIsMobile } from '@/shared/hooks/useMobile'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
@@ -64,13 +65,19 @@ export function setupIntroHomeAnimation(scopeElement: HTMLElement) {
 }
 
 export function setupFooterAnimation(scopeElement: HTMLElement) {
+    const footerContent = scopeElement.querySelector('.footer-content')
+
+    if (!footerContent) return
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1023
+
     const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: scopeElement,
-            start: 'top top',
-            end: 'bottom top',
-            pin: true,
-            scrub: true,
+            start: isMobile ? 'center 90%' : 'top top',
+            end: isMobile ? 'bottom top' : 'bottom top',
+            pin: isMobile ? false : true,
+            scrub: isMobile ? false : true,
+            // markers: true,
         },
     })
 
@@ -87,12 +94,15 @@ export function setupFooterAnimation(scopeElement: HTMLElement) {
 }
 
 export function setupHeadingAnimation(scopeElement: HTMLElement) {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1023
+
     const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: scopeElement,
-            start: 'top 70%',
-            // end: 'bottom top',
-            // scrub: true,
+            start: isMobile ? 'top 65%' : 'top 90%',
+            end: '80% 40%',
+            scrub: true,
+            // markers: true,
         },
     })
 
@@ -175,18 +185,19 @@ export function setupSpinningText(scopeElement: HTMLElement, delay?: number) {
 
 export function setupSplitLinesAnimation(scopeElement: HTMLElement) {
     // Create SplitText instance on the provided scope element
-    const split = new SplitText(scopeElement, { type: 'lines' }) as unknown as {
+    const split = new SplitText(scopeElement, { type: 'lines' }) as {
         lines: Element[]
         revert: () => void
     }
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1023
 
     const timeline = gsap.timeline({
         scrollTrigger: {
             trigger: scopeElement,
-            start: 'top 90%',
+            start: isMobile ? 'top 65%' : 'top 90%',
             end: 'bottom center',
-            scrub: true,
-            // markers: true,
+            scrub: 1,
+            // markers: false,
         },
     })
 
@@ -204,113 +215,119 @@ export function setupSplitLinesAnimation(scopeElement: HTMLElement) {
 }
 
 export function setupCardSkillAnimation(scopeElement: HTMLElement) {
-    const cards = Array.from(scopeElement.querySelectorAll('.glint-card'))
+    if (scopeElement.querySelector('.glint-card-desktop')) {
+        const cards = Array.from(scopeElement.querySelectorAll('.glint-card-desktop .glint-card'))
 
-    const floatingAnim = gsap.to(cards, {
-        yPercent: -5,
-        duration: 1.5,
-        repeat: -1,
-        ease: 'sine.inOut',
-        stagger: {
-            each: 0.15,
-            amount: 0.5,
-            from: 'random',
-        },
-        yoyo: true,
-        paused: true,
-    })
+        const floatingAnim = gsap.to(cards, {
+            yPercent: -5,
+            duration: 1.5,
+            repeat: -1,
+            ease: 'sine.inOut',
+            stagger: {
+                each: 0.15,
+                amount: 0.5,
+                from: 'random',
+            },
+            yoyo: true,
+            paused: true,
+        })
 
-    const timelineDefaults = {
-        // ease: 'sine.inOut',
-    }
-
-    const showCardTl = gsap.timeline({
-        defaults: {
-            ease: 'power1.inOut',
-        },
-        scrollTrigger: {
-            trigger: scopeElement,
-            id: 'skill-pin',
-            start: '10% 10%',
-            end: '200% top',
-            pin: true,
-            scrub: true,
-            // markers: true,
-            onEnterBack: () => floatingAnim.play(),
-        },
-    })
-
-    const introTl = gsap.timeline({
-        defaults: { ease: 'power1.inOut' },
-        scrollTrigger: {
-            trigger: scopeElement,
-            id: 'intro',
-            start: '-50% 30%',
-            end: '-10% -20%',
-            scrub: true,
-            // markers: true,
-            onEnter: () => floatingAnim.play(),
-            onLeaveBack: () => floatingAnim.pause(),
-        },
-    })
-
-    const introCardConfigs = [
-        {
-            from: { y: '-200%', x: '130%', rotate: '-10deg', scale: 0.4, opacity: 0 },
-            to: { y: '30%', rotate: '-5deg', scale: 1, opacity: 1 },
-            delay: 0,
-        },
-        {
-            from: { y: '-210%', x: '20%', rotate: '2deg', scale: 0.4, opacity: 0 },
-            to: { y: '20%', rotate: '0deg', scale: 1, opacity: 1 },
-            delay: 0.03,
-        },
-        {
-            from: { y: '-220%', x: '-90%', rotate: '6deg', scale: 0.4, opacity: 0 },
-            to: { y: '10%', rotate: '3deg', scale: 1, opacity: 1 },
-            delay: 0.06,
-        },
-    ]
-
-    introCardConfigs.forEach(({ from, to, delay }, idx) => {
-        if (cards[idx]) {
-            introTl.fromTo(cards[idx]!, from, to, delay)
+        const timelineDefaults = {
+            // ease: 'sine.inOut',
         }
-    })
 
-    const cardConfigs = [
-        { yStart: '30%', index: 0, delay: 0, initialDuration: 0, yTo: '-10%', yTo2: '0' },
-        { yStart: '30%', index: 1, delay: 0.03, initialDuration: 0, yTo: '-10%', yTo2: '0' },
-        { yStart: '30%', index: 2, delay: 0.06, initialDuration: 0, yTo: '-10%', yTo2: '0' },
-    ]
+        const showCardTl = gsap.timeline({
+            defaults: {
+                ease: 'power1.inOut',
+            },
+            scrollTrigger: {
+                trigger: scopeElement,
+                id: 'skill-pin',
+                start: '10% 10%',
+                end: '200% top',
+                pin: true,
+                scrub: true,
+                // markers: true,
+                onEnterBack: () => floatingAnim.play(),
+            },
+        })
 
-    cardConfigs.forEach(({ yStart, index, delay, initialDuration = 0.1, yTo }) => {
-        showCardTl
-            .to(
-                cards[index]!,
-                {
-                    y: yStart,
-                    duration: initialDuration,
-                },
-                delay,
-            )
-            .to(cards[index]!, { y: yTo, rotate: 0 }, index === 0 ? '>' : `>+=${delay.toFixed(2)}`)
-            .to(cards[index]!, { y: 'yTo2' }, index === 0 ? '>' : `>+=${delay.toFixed(2)}`)
-            .to(
-                cards[index]!,
-                {
-                    transformOrigin: 'center',
-                    rotateY: -190,
-                    x: 0,
-                },
-                index === 0 ? '>' : `>+=${delay.toFixed(2)}`,
-            )
-            .to(
-                cards[index]!,
-                { transformOrigin: 'center', rotateY: -180 },
-                index === 0 ? '>' : `>+=${delay.toFixed(2)}`,
-            )
-    })
+        const introTl = gsap.timeline({
+            defaults: { ease: 'power1.inOut' },
+            scrollTrigger: {
+                trigger: scopeElement,
+                id: 'intro',
+                start: '-50% 30%',
+                end: '-10% -20%',
+                scrub: true,
+                // markers: true,
+                onEnter: () => floatingAnim.play(),
+                onLeaveBack: () => floatingAnim.pause(),
+            },
+        })
+
+        const introCardConfigs = [
+            {
+                from: { y: '-200%', x: '130%', rotate: '-10deg', scale: 0.4, opacity: 0 },
+                to: { y: '30%', rotate: '-5deg', scale: 1, opacity: 1 },
+                delay: 0,
+            },
+            {
+                from: { y: '-210%', x: '20%', rotate: '2deg', scale: 0.4, opacity: 0 },
+                to: { y: '20%', rotate: '0deg', scale: 1, opacity: 1 },
+                delay: 0.03,
+            },
+            {
+                from: { y: '-220%', x: '-90%', rotate: '6deg', scale: 0.4, opacity: 0 },
+                to: { y: '10%', rotate: '3deg', scale: 1, opacity: 1 },
+                delay: 0.06,
+            },
+        ]
+
+        introCardConfigs.forEach(({ from, to, delay }, idx) => {
+            if (cards[idx]) {
+                introTl.fromTo(cards[idx]!, from, to, delay)
+            }
+        })
+
+        const cardConfigs = [
+            { yStart: '30%', index: 0, delay: 0, initialDuration: 0, yTo: '-10%', yTo2: '0' },
+            { yStart: '30%', index: 1, delay: 0.03, initialDuration: 0, yTo: '-10%', yTo2: '0' },
+            { yStart: '30%', index: 2, delay: 0.06, initialDuration: 0, yTo: '-10%', yTo2: '0' },
+        ]
+
+        cardConfigs.forEach(({ yStart, index, delay, initialDuration = 0.1, yTo }) => {
+            showCardTl
+                .to(
+                    cards[index]!,
+                    {
+                        y: yStart,
+                        duration: initialDuration,
+                    },
+                    delay,
+                )
+                .to(
+                    cards[index]!,
+                    { y: yTo, rotate: 0 },
+                    index === 0 ? '>' : `>+=${delay.toFixed(2)}`,
+                )
+                .to(cards[index]!, { y: 'yTo2' }, index === 0 ? '>' : `>+=${delay.toFixed(2)}`)
+                .to(
+                    cards[index]!,
+                    {
+                        transformOrigin: 'center',
+                        rotateY: -190,
+                        x: 0,
+                    },
+                    index === 0 ? '>' : `>+=${delay.toFixed(2)}`,
+                )
+                .to(
+                    cards[index]!,
+                    { transformOrigin: 'center', rotateY: -180 },
+                    index === 0 ? '>' : `>+=${delay.toFixed(2)}`,
+                )
+        })
+    }
 }
 
 export function setupLoadingPage(

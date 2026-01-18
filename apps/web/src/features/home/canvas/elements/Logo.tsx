@@ -1,7 +1,8 @@
 'use client'
 
-import { useGlobal } from '@/shared/stores/global'
 /* eslint-disable react/no-unknown-property */
+import { useIsMobile } from '@/shared/hooks/useMobile'
+import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
@@ -15,6 +16,7 @@ import GradientSphere from './GradientSphere'
 export default function Logo() {
     const isAccess = useGlobal((state) => state.isAccess)
     const isLoading = useGlobal((state) => state.isLoading)
+    const isMobile = useIsMobile()
     const [isAddBox, setisAddBox] = useState(false)
     const boxRef = useRef<THREE.Mesh>(null)
     const groupFirstRef = useRef<THREE.Group>(null)
@@ -41,7 +43,7 @@ export default function Logo() {
 
     useGSAP(() => {
         if (!isLoading && groupRef.current) {
-            const SCALE = 24
+            const SCALE = isMobile ? 18 : 24
 
             gsap.to(groupRef.current.scale, {
                 delay: 0.3,
@@ -135,7 +137,7 @@ export default function Logo() {
     return (
         <>
             <group ref={groupFirstRef} scale={1}>
-                <group ref={groupRef} scale={0}>
+                <group ref={groupRef} position={[-3, isMobile ? 6 : 0, 0]} scale={0}>
                     <mesh position={[0, 0, 0]} scale={2}>
                         <sphereGeometry args={[0.65, 64, 64]} />
                         <FakeGlowMaterial {...shaderControls} />

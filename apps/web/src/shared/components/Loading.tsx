@@ -128,7 +128,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
                 </div>
             )}
 
-            {(isAccess || isVisible) && children}
+            {isAccess && children}
         </>
     )
 }

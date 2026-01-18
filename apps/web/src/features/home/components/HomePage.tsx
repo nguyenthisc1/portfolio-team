@@ -1,30 +1,21 @@
 import { HomePageData } from 'types'
-import About from './About'
 import Footer from './Footer'
 import Intro from './Intro'
+import Philosophy from './Philosophy'
 import Projects from './Projects'
 import Skill from './Skill'
-import Typography from './Typography'
+import About from './About'
 
 export default function HomePage({ data }: { data: HomePageData }) {
     return (
         <>
             <Intro data={data.hero} />
 
-            <section
-                id="philosophy"
-                aria-labelledby="philosophy-heading"
-                className="mx-auto mb-[50%] max-w-4xl space-y-10"
-            >
-                <h2 id="philosophy-heading" className="sr-only">
-                    Philosophy
-                </h2>
-                <Typography className="mr-20 ml-auto max-w-xs" text={data.philosophy.text} />
-            </section>
+            <Philosophy data={data.philosophy} />
 
             <Projects data={data.projects} />
 
-            <About />
+            <About data={data.about} />
 
             <Skill data={data.skills} />
 

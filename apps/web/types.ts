@@ -37,6 +37,19 @@ export type SkillCategory = {
     skills: string[]
 }
 
+export type AboutSection = {
+    title: string
+    description: string
+    teamMembers: {
+        image: string
+        name: string
+        position: string
+        experience: number
+        projects: number
+        customer: number
+    }[]
+}
+
 export type HomePageData = {
     _id: string
     __v: number
@@ -45,6 +58,7 @@ export type HomePageData = {
     hero: HeroSection
     philosophy: PhilosophySection
     projects: ProjectsSection
+    about: AboutSection
     seo: SEOSection
     skills: SkillCategory[]
 }

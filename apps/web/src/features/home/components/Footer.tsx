@@ -1,11 +1,13 @@
 'use client'
 
-import { useGSAP } from '@gsap/react'
-import React, { useRef } from 'react'
 import { setupFooterAnimation } from '@/features/home/animations/animation'
+import { useIsMobile } from '@/shared/hooks/useMobile'
+import { useGSAP } from '@gsap/react'
+import { useRef } from 'react'
 
 export default function Footer() {
     const ref = useRef<HTMLElement>(null)
+    const isMobile = useIsMobile()
 
     useGSAP(
         () => {
@@ -16,14 +18,17 @@ export default function Footer() {
     )
 
     return (
-        <footer ref={ref} className="footer mb-40 flex h-screen items-center">
-            <div className="container flex h-full flex-col justify-center">
+        <footer
+            ref={ref}
+            className="footer max-lg:mt-44 max-lg:mb-10 lg:flex lg:h-screen lg:items-center"
+        >
+            <div className="container lg:flex lg:h-full lg:flex-col lg:justify-center">
                 <div className="footer-wrapper relative">
                     <section
                         aria-labelledby="contact-heading"
-                        className="footer-content absolute inset-0 size-full text-white"
+                        className="footer-content absolute inset-0 size-full text-white max-lg:overflow-hidden"
                     >
-                        <div className="absolute inset-0 -z-10 size-full">
+                        <div className="absolute inset-0 -z-10 size-full translate-y-[-19%] max-lg:origin-top max-lg:scale-y-[1.6] md:translate-y-[-14%] lg:translate-y-0">
                             <svg
                                 className="size-full"
                                 fill="none"
@@ -35,10 +40,10 @@ export default function Footer() {
                                 />
                             </svg>
                         </div>
-                        <div className="grid h-32 grid-cols-1 lg:mb-36 lg:grid-cols-2 lg:items-end">
+                        <div className="grid grid-cols-1 gap-y-6 md:gap-y-20 lg:mb-36 lg:h-32 lg:grid-cols-2 lg:items-end xl:gap-y-6">
                             <div className="relative size-full bg-transparent">
                                 <svg
-                                    className="[&_*]:fill-secondary absolute inset-0 h-[calc(100%+60px)] w-fit origin-left scale-x-[0.826]"
+                                    className="[&_*]:fill-secondary w-full origin-top-left scale-y-[1.15] sm:scale-x-[0.925] sm:scale-y-110 lg:absolute lg:inset-0 lg:h-[calc(100%+60px)] lg:w-fit lg:scale-x-[0.826] lg:scale-y-100"
                                     width="701"
                                     height="164"
                                     viewBox="0 0 701 164"
@@ -75,16 +80,18 @@ export default function Footer() {
                                     />
                                 </svg>
                             </div>
-                            <p className="ml-40 max-w-xs text-xl">
+                            <p className="max-w-xs text-xl max-lg:pl-10 lg:ml-40">
                                 Whether you need creativity or simply reliable standards, I’ve got
                                 you covered. Let’s work together to create real value.
                             </p>
                         </div>
-                        <div className="grid grid-cols-1 gap-x-40 gap-y-10 lg:grid-cols-2 lg:px-24 lg:pb-32">
+                        <div className="font-style-normal grid grid-cols-1 gap-x-40 gap-y-10 max-lg:p-10 lg:grid-cols-2 lg:px-24 lg:pb-10 xl:pb-28">
                             <address className="space-y-7">
-                                <h3 className="text-4xl uppercase">Information</h3>
-                                <ul className="w-fit">
-                                    <li className="grid grid-cols-3 gap-5">
+                                <h3 className="font-style-normal text-4xl uppercase">
+                                    Information
+                                </h3>
+                                <ul className="font-style-normal w-fit">
+                                    <li className="grid grid-cols-3">
                                         <span>Location:</span>
                                         <span className="col-span-2 uppercase">
                                             Ho Chi Minh City, Viet Nam
@@ -107,17 +114,112 @@ export default function Footer() {
                                     </li>
                                 </ul>
                             </address>
-                            <div>
+                            <div className="space-y-8">
                                 <h3 className="text-4xl uppercase">Want to see more showcase?</h3>
+
+                                <ul className="flex flex-wrap gap-5">
+                                    <li className="gradient">
+                                        <a
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            href="https://dribbble.com/hoangvu97"
+                                            className="group"
+                                            aria-label="Dribbble (opens in a new tab)"
+                                        >
+                                            <svg
+                                                width="122"
+                                                height="119"
+                                                viewBox="0 0 122 119"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                aria-hidden="true"
+                                            >
+                                                <rect
+                                                    x="1"
+                                                    y="1"
+                                                    width="119.564"
+                                                    height="116.865"
+                                                    rx="1"
+                                                    fill="url(#paint0_linear_1390_238)"
+                                                    fillOpacity="0.2"
+                                                />
+                                                <rect
+                                                    x="0.5"
+                                                    y="0.5"
+                                                    width="120.564"
+                                                    height="117.865"
+                                                    rx="1.5"
+                                                    stroke="white"
+                                                    strokeOpacity="0.1"
+                                                />
+                                                <path
+                                                    d="M60.6857 22.791C39.8603 22.791 22.9844 39.6641 22.9844 60.4924C22.9844 81.3206 39.8575 98.1937 60.6857 98.1937C81.5139 98.1937 98.387 81.3206 98.387 60.4924C98.387 39.6641 81.5139 22.791 60.6857 22.791ZM93.1743 59.7639C86.6356 57.8917 78.4978 56.7877 70.0328 58.6599C69.1365 56.6454 68.2118 54.7077 67.2756 52.8497C75.8175 49.1563 82.0176 44.2708 86.1007 40.2645C90.4029 45.6451 93.0178 52.3944 93.1715 59.7639H93.1743ZM60.6857 27.9924C69.0967 27.9924 76.7678 31.1906 82.5383 36.4545C78.7681 40.1592 72.9322 44.8001 64.8457 48.2316C59.9459 39.3796 54.9779 32.7356 52.0784 29.1618C54.8214 28.3936 57.7066 27.9924 60.6857 27.9924ZM46.8913 31.0739C49.179 33.8027 54.5084 40.6031 59.8406 50.1067C47.8929 53.9821 35.1655 54.3179 28.8089 54.1898C30.8234 43.9322 37.6751 35.4046 46.8913 31.0768V31.0739ZM28.1829 60.4924C28.1829 60.1281 28.1829 59.7526 28.2085 59.3883C29.0934 59.414 30.1064 59.4282 31.2246 59.4282C38.6084 59.4282 50.7382 58.6998 62.3218 54.7617C63.2067 56.4775 64.0632 58.273 64.8969 60.131C48.516 65.6823 39.8063 76.785 36.426 82.1002C31.3043 76.3554 28.1829 68.7895 28.1829 60.4952V60.4924ZM60.6829 92.9923C52.9605 92.9923 45.8641 90.2892 40.2872 85.7764V85.7622C42.7712 81.6279 50.8293 70.2662 66.937 64.9112C70.0043 72.6194 72.4628 81.238 73.4245 90.3774C69.5121 92.0676 65.207 92.9895 60.6857 92.9895L60.6829 92.9923ZM78.3641 87.754C77.2458 79.0556 74.9183 70.9065 72.0473 63.5483C79.6274 62.0915 87.0112 63.3264 92.8471 65.1332C91.4955 74.5969 86.0495 82.7489 78.3641 87.754Z"
+                                                    fill="white"
+                                                />
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li className="gradient">
+                                        <a
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            href="https://www.behance.net/vuhoang4"
+                                            className="group"
+                                            aria-label="Behance (opens in a new tab)"
+                                        >
+                                            <svg
+                                                width="122"
+                                                height="120"
+                                                viewBox="0 0 122 120"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                aria-hidden="true"
+                                            >
+                                                <rect
+                                                    x="1"
+                                                    y="1"
+                                                    width="120"
+                                                    height="117.29"
+                                                    rx="1"
+                                                    fill="url(#paint0_linear_1390_244)"
+                                                    fillOpacity="0.2"
+                                                />
+                                                <rect
+                                                    x="0.5"
+                                                    y="0.5"
+                                                    width="121"
+                                                    height="118.29"
+                                                    rx="1.5"
+                                                    stroke="white"
+                                                    strokeOpacity="0.1"
+                                                />
+                                                <g clipPath="url(#clip0_1390_244)">
+                                                    <path
+                                                        d="M61.1539 70.9989C61.1539 72.7507 60.7981 74.3108 60.0864 75.652C59.3748 76.9932 58.4168 78.0881 57.1851 78.9913C55.9534 79.8946 54.5301 80.5789 52.8878 81.0442C51.2729 81.5095 49.5211 81.7558 47.6873 81.7558H27.542V40.042H49.877C51.3276 40.042 52.6415 40.3431 53.8184 40.9726C54.9954 41.6022 55.9808 42.4233 56.8019 43.4087C57.623 44.4214 58.2526 45.5436 58.7179 46.8301C59.1558 48.1165 59.4022 49.3756 59.4022 50.6894C59.4022 52.7149 58.8821 54.6309 57.8694 56.41C56.8566 58.1892 55.3512 59.503 53.4079 60.3789C55.7892 61.0905 57.6778 62.3496 59.0737 64.1561C60.4696 65.99 61.1539 68.2618 61.1539 70.9989ZM35.6439 46.9669V57.4775H46.4555C47.8241 57.4775 49.0011 57.0122 49.9591 56.0542C50.9171 55.1236 51.4097 53.8097 51.4097 52.1675C51.4097 50.5252 50.9718 49.2935 50.0959 48.3355C49.22 47.4049 48.1252 46.9122 46.8387 46.9122H35.6713L35.6439 46.9669ZM52.9699 69.4661C52.9699 68.7271 52.8331 68.0154 52.5867 67.3312C52.3404 66.6469 51.9845 66.0447 51.5466 65.552C51.1087 65.032 50.616 64.6488 50.0138 64.3477C49.439 64.0466 48.7821 63.9098 48.0704 63.9098H35.6165V74.8856H47.6599C48.3989 74.8856 49.1106 74.7488 49.7401 74.4751C50.397 74.2014 50.9444 73.8182 51.4097 73.3255C51.8751 72.8328 52.2583 72.258 52.532 71.6011C52.8057 70.9442 52.9425 70.2325 52.9425 69.4935L52.9699 69.4661Z"
+                                                        fill="white"
+                                                    />
+                                                    <path
+                                                        d="M78.6984 81.7547C76.3171 81.7547 74.1548 81.3442 72.2114 80.523C68.3794 78.8808 65.6697 76.1436 64.1095 72.2843C63.3705 70.423 62.9873 68.4797 62.9873 66.4268C62.9873 64.374 63.3431 62.2938 64.0822 60.4325C65.6149 56.5184 68.3247 53.7539 72.1841 52.0843C74.1274 51.2631 76.3445 50.8252 78.7532 50.8252C81.1618 50.8252 83.3515 51.2358 85.2675 52.0843C91.5629 54.8214 94.5464 60.9252 94.2727 67.5764C94.2727 68.0417 94.2179 68.4249 94.1358 68.726H71.0618C71.1713 69.903 71.4724 70.9431 71.9103 71.8463C72.3757 72.7496 72.9504 73.5434 73.6621 74.1729C74.3738 74.8298 75.1949 75.3225 76.0981 75.6509C77.0014 75.9794 77.9594 76.171 78.9448 76.171C80.4502 76.171 81.9009 75.7878 83.2421 75.0488C84.5832 74.3098 85.5139 73.3244 86.0066 72.1201L92.5483 73.9539C91.4534 76.2257 89.7017 78.1144 87.293 79.565C84.8843 81.0157 82.0103 81.7547 78.671 81.7547H78.6984ZM86.4445 63.7718C86.2529 61.5274 85.4318 59.7482 83.9537 58.3797C82.503 57.0385 80.7239 56.3542 78.6163 56.3542C77.6036 56.3542 76.6456 56.5458 75.7423 56.9016C74.8391 57.2574 74.0727 57.7775 73.3884 58.407C72.7041 59.064 72.1567 59.8303 71.7187 60.7336C71.2808 61.6369 71.0345 62.6496 70.9523 63.7444H86.4445V63.7718Z"
+                                                        fill="white"
+                                                    />
+                                                    <path
+                                                        d="M68.6533 42.0117H88.607V46.9659H68.6533V42.0117Z"
+                                                        fill="white"
+                                                    />
+                                                </g>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </section>
 
                     <section
                         aria-labelledby="contact-heading"
-                        className="footer-content-filled relative text-black"
+                        className="footer-content-filled relative text-black max-lg:overflow-hidden"
                     >
-                        <div className="absolute inset-0 -z-10 size-full">
+                        <div className="absolute inset-0 -z-10 size-full translate-y-[-19%] max-lg:origin-top max-lg:scale-y-[1.6] md:translate-y-[-14%] lg:translate-y-0">
                             <svg
                                 className="size-full"
                                 fill="none"
@@ -129,10 +231,10 @@ export default function Footer() {
                                 />
                             </svg>
                         </div>
-                        <div className="grid h-32 grid-cols-1 lg:mb-36 lg:grid-cols-2 lg:items-end">
+                        <div className="grid grid-cols-1 gap-y-6 md:gap-y-20 lg:mb-36 lg:h-32 lg:grid-cols-2 lg:items-end xl:gap-y-6">
                             <div className="relative size-full bg-transparent">
                                 <svg
-                                    className="[&_*]:fill-primary absolute inset-0 h-[calc(100%+60px)] w-fit origin-left scale-x-[0.826]"
+                                    className="[&_*]:fill-primary w-full origin-top-left scale-y-[1.15] sm:scale-x-[0.925] sm:scale-y-110 lg:absolute lg:inset-0 lg:h-[calc(100%+60px)] lg:w-fit lg:scale-x-[0.826] lg:scale-y-100"
                                     width="701"
                                     height="164"
                                     viewBox="0 0 701 164"
@@ -169,15 +271,17 @@ export default function Footer() {
                                     />
                                 </svg>
                             </div>
-                            <p className="ml-40 max-w-xs text-xl">
+                            <p className="max-w-xs text-xl max-lg:pl-10 lg:ml-40">
                                 Whether you need creativity or simply reliable standards, I’ve got
                                 you covered. Let’s work together to create real value.
                             </p>
                         </div>
-                        <div className="grid grid-cols-1 gap-x-40 gap-y-10 lg:grid-cols-2 lg:px-24 lg:pb-32">
+                        <div className="grid grid-cols-1 gap-x-40 gap-y-10 max-lg:p-10 lg:grid-cols-2 lg:px-24 lg:pb-10 xl:pb-28">
                             <address className="space-y-7">
-                                <h3 className="text-4xl uppercase">Information</h3>
-                                <ul className="w-fit">
+                                <h3 className="font-style-normal text-4xl uppercase">
+                                    Information
+                                </h3>
+                                <ul className="font-style-normal w-fit">
                                     <li className="grid grid-cols-3 gap-5">
                                         <span>Location:</span>
                                         <span className="col-span-2 uppercase">
@@ -201,8 +305,103 @@ export default function Footer() {
                                     </li>
                                 </ul>
                             </address>
-                            <div>
+                            <div className="space-y-8">
                                 <h3 className="text-4xl uppercase">Want to see more showcase?</h3>
+
+                                <ul className="flex flex-wrap gap-5">
+                                    <li className="gradient">
+                                        <a
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            href="https://dribbble.com/hoangvu97"
+                                            className="group"
+                                            aria-label="Dribbble (opens in a new tab)"
+                                        >
+                                            <svg
+                                                width="122"
+                                                height="119"
+                                                viewBox="0 0 122 119"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                aria-hidden="true"
+                                            >
+                                                <rect
+                                                    x="1"
+                                                    y="1"
+                                                    width="119.564"
+                                                    height="116.865"
+                                                    rx="1"
+                                                    fill="url(#paint0_linear_1390_238)"
+                                                    fillOpacity="0.2"
+                                                />
+                                                <rect
+                                                    x="0.5"
+                                                    y="0.5"
+                                                    width="120.564"
+                                                    height="117.865"
+                                                    rx="1.5"
+                                                    stroke="white"
+                                                    strokeOpacity="0.1"
+                                                />
+                                                <path
+                                                    d="M60.6857 22.791C39.8603 22.791 22.9844 39.6641 22.9844 60.4924C22.9844 81.3206 39.8575 98.1937 60.6857 98.1937C81.5139 98.1937 98.387 81.3206 98.387 60.4924C98.387 39.6641 81.5139 22.791 60.6857 22.791ZM93.1743 59.7639C86.6356 57.8917 78.4978 56.7877 70.0328 58.6599C69.1365 56.6454 68.2118 54.7077 67.2756 52.8497C75.8175 49.1563 82.0176 44.2708 86.1007 40.2645C90.4029 45.6451 93.0178 52.3944 93.1715 59.7639H93.1743ZM60.6857 27.9924C69.0967 27.9924 76.7678 31.1906 82.5383 36.4545C78.7681 40.1592 72.9322 44.8001 64.8457 48.2316C59.9459 39.3796 54.9779 32.7356 52.0784 29.1618C54.8214 28.3936 57.7066 27.9924 60.6857 27.9924ZM46.8913 31.0739C49.179 33.8027 54.5084 40.6031 59.8406 50.1067C47.8929 53.9821 35.1655 54.3179 28.8089 54.1898C30.8234 43.9322 37.6751 35.4046 46.8913 31.0768V31.0739ZM28.1829 60.4924C28.1829 60.1281 28.1829 59.7526 28.2085 59.3883C29.0934 59.414 30.1064 59.4282 31.2246 59.4282C38.6084 59.4282 50.7382 58.6998 62.3218 54.7617C63.2067 56.4775 64.0632 58.273 64.8969 60.131C48.516 65.6823 39.8063 76.785 36.426 82.1002C31.3043 76.3554 28.1829 68.7895 28.1829 60.4952V60.4924ZM60.6829 92.9923C52.9605 92.9923 45.8641 90.2892 40.2872 85.7764V85.7622C42.7712 81.6279 50.8293 70.2662 66.937 64.9112C70.0043 72.6194 72.4628 81.238 73.4245 90.3774C69.5121 92.0676 65.207 92.9895 60.6857 92.9895L60.6829 92.9923ZM78.3641 87.754C77.2458 79.0556 74.9183 70.9065 72.0473 63.5483C79.6274 62.0915 87.0112 63.3264 92.8471 65.1332C91.4955 74.5969 86.0495 82.7489 78.3641 87.754Z"
+                                                    fill="white"
+                                                />
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li className="gradient">
+                                        <a
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            href="https://www.behance.net/vuhoang4"
+                                            className="group"
+                                            aria-label="Behance (opens in a new tab)"
+                                        >
+                                            <svg
+                                                width="122"
+                                                height="120"
+                                                viewBox="0 0 122 120"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                aria-hidden="true"
+                                            >
+                                                <rect
+                                                    x="1"
+                                                    y="1"
+                                                    width="120"
+                                                    height="117.29"
+                                                    rx="1"
+                                                    fill="url(#paint0_linear_1390_244)"
+                                                    fillOpacity="0.2"
+                                                />
+                                                <rect
+                                                    x="0.5"
+                                                    y="0.5"
+                                                    width="121"
+                                                    height="118.29"
+                                                    rx="1.5"
+                                                    stroke="white"
+                                                    strokeOpacity="0.1"
+                                                />
+                                                <g clipPath="url(#clip0_1390_244)">
+                                                    <path
+                                                        d="M61.1539 70.9989C61.1539 72.7507 60.7981 74.3108 60.0864 75.652C59.3748 76.9932 58.4168 78.0881 57.1851 78.9913C55.9534 79.8946 54.5301 80.5789 52.8878 81.0442C51.2729 81.5095 49.5211 81.7558 47.6873 81.7558H27.542V40.042H49.877C51.3276 40.042 52.6415 40.3431 53.8184 40.9726C54.9954 41.6022 55.9808 42.4233 56.8019 43.4087C57.623 44.4214 58.2526 45.5436 58.7179 46.8301C59.1558 48.1165 59.4022 49.3756 59.4022 50.6894C59.4022 52.7149 58.8821 54.6309 57.8694 56.41C56.8566 58.1892 55.3512 59.503 53.4079 60.3789C55.7892 61.0905 57.6778 62.3496 59.0737 64.1561C60.4696 65.99 61.1539 68.2618 61.1539 70.9989ZM35.6439 46.9669V57.4775H46.4555C47.8241 57.4775 49.0011 57.0122 49.9591 56.0542C50.9171 55.1236 51.4097 53.8097 51.4097 52.1675C51.4097 50.5252 50.9718 49.2935 50.0959 48.3355C49.22 47.4049 48.1252 46.9122 46.8387 46.9122H35.6713L35.6439 46.9669ZM52.9699 69.4661C52.9699 68.7271 52.8331 68.0154 52.5867 67.3312C52.3404 66.6469 51.9845 66.0447 51.5466 65.552C51.1087 65.032 50.616 64.6488 50.0138 64.3477C49.439 64.0466 48.7821 63.9098 48.0704 63.9098H35.6165V74.8856H47.6599C48.3989 74.8856 49.1106 74.7488 49.7401 74.4751C50.397 74.2014 50.9444 73.8182 51.4097 73.3255C51.8751 72.8328 52.2583 72.258 52.532 71.6011C52.8057 70.9442 52.9425 70.2325 52.9425 69.4935L52.9699 69.4661Z"
+                                                        fill="white"
+                                                    />
+                                                    <path
+                                                        d="M78.6984 81.7547C76.3171 81.7547 74.1548 81.3442 72.2114 80.523C68.3794 78.8808 65.6697 76.1436 64.1095 72.2843C63.3705 70.423 62.9873 68.4797 62.9873 66.4268C62.9873 64.374 63.3431 62.2938 64.0822 60.4325C65.6149 56.5184 68.3247 53.7539 72.1841 52.0843C74.1274 51.2631 76.3445 50.8252 78.7532 50.8252C81.1618 50.8252 83.3515 51.2358 85.2675 52.0843C91.5629 54.8214 94.5464 60.9252 94.2727 67.5764C94.2727 68.0417 94.2179 68.4249 94.1358 68.726H71.0618C71.1713 69.903 71.4724 70.9431 71.9103 71.8463C72.3757 72.7496 72.9504 73.5434 73.6621 74.1729C74.3738 74.8298 75.1949 75.3225 76.0981 75.6509C77.0014 75.9794 77.9594 76.171 78.9448 76.171C80.4502 76.171 81.9009 75.7878 83.2421 75.0488C84.5832 74.3098 85.5139 73.3244 86.0066 72.1201L92.5483 73.9539C91.4534 76.2257 89.7017 78.1144 87.293 79.565C84.8843 81.0157 82.0103 81.7547 78.671 81.7547H78.6984ZM86.4445 63.7718C86.2529 61.5274 85.4318 59.7482 83.9537 58.3797C82.503 57.0385 80.7239 56.3542 78.6163 56.3542C77.6036 56.3542 76.6456 56.5458 75.7423 56.9016C74.8391 57.2574 74.0727 57.7775 73.3884 58.407C72.7041 59.064 72.1567 59.8303 71.7187 60.7336C71.2808 61.6369 71.0345 62.6496 70.9523 63.7444H86.4445V63.7718Z"
+                                                        fill="white"
+                                                    />
+                                                    <path
+                                                        d="M68.6533 42.0117H88.607V46.9659H68.6533V42.0117Z"
+                                                        fill="white"
+                                                    />
+                                                </g>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </section>
