@@ -33,26 +33,39 @@ interface DisplayItem {
 const MemberFigure = memo(function MemberFigure({
     item,
     isActive,
+    isFirst,
 }: {
     item: Person
     isActive: boolean
+    isFirst: boolean
 }) {
     return (
-        <figure
-            className={`tt-image relative mb-6 rounded-4xl bg-neutral-800 pt-10 pb-[100%] md:pb-[55%] lg:pb-[80%] xl:pb-[100%] ${!isActive ? 'hidden' : ''}`}
+        <div
+            style={{
+                position: !isFirst ? 'absolute' : undefined,
+                inset: !isFirst ? 0 : undefined,
+                opacity: isActive ? 1 : 0,
+                zIndex: isActive ? 10 : 0,
+                transition: 'opacity 0.5s ease',
+            }}
         >
-            <img
-                src={item.image}
-                alt={`${item.name} Portrait`}
-                width={100}
-                height={100}
-                className="mt-20 object-top"
-            />
-            <div className="absolute top-0 right-0 left-0 space-y-5 pt-6 text-center">
-                <figcaption className="text-primary h4 uppercase">{item.name}</figcaption>
-                <p className="uppercase">{item.position}</p>
-            </div>
-        </figure>
+            <figure
+                className={`tt-image relative mb-6 rounded-4xl bg-neutral-800 pt-10 pb-[100%] transition-opacity duration-500 md:pb-[55%] lg:pb-[80%] xl:pb-[100%]`}
+                style={{}}
+            >
+                <img
+                    src={item.image}
+                    alt={`${item.name} Portrait`}
+                    width={100}
+                    height={100}
+                    className="mt-20 object-top"
+                />
+                <div className="absolute top-0 right-0 left-0 space-y-5 pt-6 text-center">
+                    <figcaption className="text-primary h4 uppercase">{item.name}</figcaption>
+                    <p className="uppercase">{item.position}</p>
+                </div>
+            </figure>
+        </div>
     )
 })
 
@@ -78,14 +91,14 @@ const MemberStats = memo(function MemberStats({
         },
         {
             label: 'Customers',
-            value: item.customer, // Note: AboutSection uses 'customer', not 'customers'
+            value: item.customers,
             unit: '+',
         },
     ]
 
     return (
         <ul
-            className={`grid grid-cols-3 gap-y-24 opacity-0 transition-opacity duration-500 lg:flex lg:flex-wrap lg:justify-center ${!isFirst && 'absolute inset-0'} ${isActive && '!opacity-100'} `}
+            className={`grid h-full grid-cols-3 gap-y-24 opacity-0 transition-opacity duration-500 lg:flex lg:flex-wrap lg:justify-center ${!isFirst && 'absolute inset-0'} ${isActive && '!opacity-100'} `}
         >
             {stats.map((stat, statIdx) => (
                 <li
@@ -257,13 +270,17 @@ export default function About({ data }: { data: AboutSection }) {
                 <div className="about-wrapper relative flex h-screen lg:items-center xl:min-h-[850px]">
                     <div className="w-full space-y-16 max-lg:pt-4">
                         <article className="grid grid-cols-1 max-xl:h-[70vh] lg:grid-cols-2 lg:gap-36">
-                            {aboutList.map((item, idx) => (
-                                <MemberFigure
-                                    key={item.name}
-                                    item={item}
-                                    isActive={idx === activeIndex}
-                                />
-                            ))}
+                            <div className="relative">
+                                {aboutList.map((item, idx) => (
+                                    <MemberFigure
+                                        key={item.name}
+                                        item={item}
+                                        isActive={idx === activeIndex}
+                                        isFirst={idx === 0}
+                                    />
+                                ))}
+                            </div>
+
                             <ul className="relative lg:flex lg:items-center">
                                 {aboutList.map((item, idx) => (
                                     <MemberStats
