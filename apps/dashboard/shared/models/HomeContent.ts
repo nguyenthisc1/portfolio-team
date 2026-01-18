@@ -60,7 +60,28 @@ const skillSectionSchema = new Schema(
     { _id: false },
 )
 
-const HomeContentSchema = new Schema(
+const teamMemberSchema = new Schema(
+    {
+        image: { type: String, required: true },
+        name: { type: String, required: true },
+        position: { type: String, required: true },
+        experience: { type: Number, required: true, default: 0 },
+        projects: { type: Number, required: true, default: 0 },
+        customers: { type: Number, required: true, default: 0 },
+    },
+    { _id: false },
+)
+
+const aboutSchema = new Schema(
+    {
+        title: { type: String, required: true },
+        description: { type: String, required: true },
+        teamMembers: { type: [teamMemberSchema], default: [] },
+    },
+    { _id: false },
+)
+
+const HomeContentSchema: Schema = new Schema(
     {
         _id: { type: String, default: 'home' },
         seo: { type: seoSchema, required: true },
@@ -68,6 +89,7 @@ const HomeContentSchema = new Schema(
         philosophy: { type: philosophySchema, required: true },
         projects: { type: projectsSchema, required: true },
         skills: { type: [skillSectionSchema], default: [] },
+        about: { type: aboutSchema, required: true },
     },
     {
         collection: 'home_content',
