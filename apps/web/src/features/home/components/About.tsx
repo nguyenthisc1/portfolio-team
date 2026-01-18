@@ -7,12 +7,18 @@ import Heading from './Heading'
 import gsap from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { memo, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { AboutSection } from 'types'
 
 gsap.registerPlugin(Flip)
 
+// Sync Person interface with AboutSection's teamMembers structure
 interface Person {
+    image: string
     name: string
-    position?: string
+    position: string
+    experience: number
+    projects: number
+    customer: number
     color?: string
     [key: string]: any
 }
@@ -21,41 +27,6 @@ interface DisplayItem {
     item: Person
     originalIdx: number
 }
-
-const aboutList: Person[] = [
-    {
-        image: '/images/team-vu.png',
-        name: 'Tran Le Hoang Vu',
-        position: 'LEADER OF WEBSITE TEAM',
-        experience: 6,
-        projects: 10,
-        customers: 100,
-    },
-    {
-        image: '/images/team-vu.png',
-        name: 'John Doe',
-        position: 'BACKEND DEVELOPER',
-        experience: 5,
-        projects: 12,
-        customers: 90,
-    },
-    {
-        image: '/images/team-vu.png',
-        name: 'Lisa Nguyen',
-        position: 'UI/UX DESIGNER',
-        experience: 3,
-        projects: 7,
-        customers: 60,
-    },
-    {
-        image: '/images/team-vu.png',
-        name: 'Lisa Nguyen 2 3',
-        position: 'UI/UX DESIGNER',
-        experience: 3,
-        projects: 7,
-        customers: 60,
-    },
-]
 
 // Memoized sub-components for presentational clarity
 
@@ -107,7 +78,7 @@ const MemberStats = memo(function MemberStats({
         },
         {
             label: 'Customers',
-            value: item.customers,
+            value: item.customer, // Note: AboutSection uses 'customer', not 'customers'
             unit: '+',
         },
     ]
@@ -184,13 +155,15 @@ const SwatchList = memo(function SwatchList({
     )
 })
 
-export default function About() {
+export default function About({ data }: { data: AboutSection }) {
+    const aboutList: Person[] = Array.isArray(data?.teamMembers) ? data.teamMembers : []
+
     const ref = useRef<HTMLDivElement>(null)
     const listRef = useRef<HTMLUListElement | null>(null)
     const flipState = useRef<Flip.FlipState | null>(null)
     const displayRef = useRef<DisplayItem[]>([])
     const isAccess = useGlobal((state) => state.isAccess)
-    const [activeIndex, setActiveIndex] = useState(aboutList.length - 1)
+    const [activeIndex, setActiveIndex] = useState(aboutList.length > 0 ? aboutList.length - 1 : 0)
 
     // Pin section on scroll
     useGSAP(() => {
@@ -248,7 +221,7 @@ export default function About() {
 
         displayRef.current = current
         return current
-    }, [activeIndex])
+    }, [activeIndex, aboutList])
 
     // FLIP animation after state changes
     useLayoutEffect(() => {
@@ -275,7 +248,7 @@ export default function About() {
                 <Heading
                     id="about-team-heading"
                     as={2}
-                    text={' About Team'}
+                    text={data?.title ?? 'About Team'}
                     className={'h2 uppercase'}
                 />
             </div>

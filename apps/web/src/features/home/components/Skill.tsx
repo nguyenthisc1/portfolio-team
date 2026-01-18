@@ -7,7 +7,7 @@ import { SkillCategory } from 'types'
 import { setupCardSkillAnimation } from '../animations/animation'
 import Heading from './Heading'
 
-type SkillData = {
+type SkillCardProps = {
     id: string
     imgSrc: string
     imgAlt: string
@@ -16,31 +16,7 @@ type SkillData = {
     index?: number
 }
 
-const skillData: SkillData[] = [
-    {
-        id: 'strategy-skill',
-        imgSrc: '/images/img_skill_1.svg',
-        imgAlt: 'Strategy',
-        title: 'Strategy',
-        items: ['Visual Research', 'Wireframes', 'Content Mapping', 'User Flows', 'Sitemap'],
-    },
-    {
-        id: 'design-skill',
-        imgSrc: '/images/img_skill_2.svg',
-        imgAlt: 'Design',
-        title: 'Design',
-        items: ['UI Design', 'UX Design', 'Design System', 'Prototype', 'Animation'],
-    },
-    {
-        id: 'build-skill',
-        imgSrc: '/images/img_skill_3.svg',
-        imgAlt: 'Build',
-        title: 'Build',
-        items: ['Framer / Figma', 'Frontend / Backend', 'Shopify', 'WordPress', 'Haravan'],
-    },
-]
-
-function CardSkill({ id, imgSrc, imgAlt, title, items, index = 0 }: SkillData) {
+function CardSkill({ id, imgSrc, imgAlt, title, items, index = 0 }: SkillCardProps) {
     return (
         <div className="glint-card-hover">
             <article
@@ -94,6 +70,15 @@ export default function Skill({ data }: { data: SkillCategory[] }) {
         },
         { scope: ref },
     )
+
+    // For each skill category, get img from local (based on title) and get title from data
+    const skillData = (data || []).map((cat, idx) => ({
+        id: `skill-${idx}`,
+        imgSrc: `/images/img_skill_${idx + 1}.svg`,
+        imgAlt: cat.title,
+        title: cat.title,
+        items: cat.skills,
+    }))
 
     return (
         <section

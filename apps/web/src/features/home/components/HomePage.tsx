@@ -15,7 +15,7 @@ export default function HomePage({ data }: { data: HomePageData }) {
 
             <Projects data={data.projects} />
 
-            <About />
+            <About data={data.about} />
 
             <Skill data={data.skills} />
 

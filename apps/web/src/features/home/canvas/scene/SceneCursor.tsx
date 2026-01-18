@@ -1,10 +1,15 @@
 'use client'
 
+import { useIsMobile } from '@/shared/hooks/useMobile'
 import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
 import LogoCursor from '../elements/LogoCursor'
 
 export default function SceneCursor() {
+    const isMobile = useIsMobile()
+
+    if (isMobile) return null
+
     return (
         <Canvas
             style={{
