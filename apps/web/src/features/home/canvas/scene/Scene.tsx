@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 'use client'
 
+import { useIsMobile } from '@/shared/hooks/useMobile'
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
@@ -8,14 +9,13 @@ import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Leva, useControls } from 'leva'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { Project } from 'types'
 import CameraGroup from '../elements/CameraGroup'
 import Logo from '../elements/Logo'
 import Ocean from '../elements/Ocean'
 import Projects from '../elements/Projects'
-import { useIsMobile } from '@/shared/hooks/useMobile'
 
 // Camera controller to set camera from leva panel
 function CameraController({ leva }: { leva: any }) {

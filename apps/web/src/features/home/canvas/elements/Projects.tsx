@@ -428,49 +428,50 @@ export default function Projects({ data }: { data: Project[] }) {
     // Animate group scaling in (first group) on scroll
     useGSAP(() => {
         if (!isAccess) return
-        const groupState = {
-            px: groupFirstPosRef.current[0],
-            py: groupFirstPosRef.current[1],
-            pz: groupFirstPosRef.current[2],
+
+        const state = {
             sx: groupFirstScaleRef.current[0],
             sy: groupFirstScaleRef.current[1],
             sz: groupFirstScaleRef.current[2],
+            px: groupFirstPosRef.current[0],
+            py: groupFirstPosRef.current[1],
+            pz: groupFirstPosRef.current[2],
         }
 
-        gsap.to(groupState, {
-            sx: 1,
-            sy: 1,
-            sz: 1,
-            scrollTrigger: {
-                trigger: '.tt-heading-wrapper',
-                start: 'top 70%',
-                end: 'top top',
-                onUpdate: () => {
-                    groupFirstScaleRef.current[0] = groupState.sx
-                    groupFirstScaleRef.current[1] = groupState.sy
-                    groupFirstScaleRef.current[2] = groupState.sz
-                },
-            },
-        })
-
-        gsap.to(groupState, {
-            px: 0,
-            pz: 0,
-            ease: 'power2.inOut',
+        gsap.timeline({
             scrollTrigger: {
                 trigger: '.tt-heading-wrapper',
                 start: 'top 70%',
                 end: '400% 30%',
-                scrub: 2,
+                scrub: 1.5,
+                invalidateOnRefresh: true,
+                fastScrollEnd: true,
             },
             onUpdate: () => {
-                groupFirstPosRef.current[0] = groupState.px
-                groupFirstPosRef.current[1] = groupState.py
-                groupFirstPosRef.current[2] = groupState.pz
+                groupFirstScaleRef.current = [state.sx, state.sy, state.sz]
+                groupFirstPosRef.current = [state.px, state.py, state.pz]
             },
         })
+            .to(
+                state,
+                {
+                    sx: 1,
+                    sy: 1,
+                    sz: 1,
+                    ease: 'none',
+                },
+                0,
+            )
+            .to(
+                state,
+                {
+                    px: 0,
+                    pz: 0,
+                    ease: 'none',
+                },
+                0,
+            )
     }, [isAccess])
-
     // Animate group scroll on z/x (second group)
     useGSAP(() => {
         if (!isAccess) return
