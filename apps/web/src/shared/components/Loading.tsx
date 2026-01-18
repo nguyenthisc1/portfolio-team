@@ -128,14 +128,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
                 </div>
             )}
 
-            <div
-                style={{
-                    opacity: isAccess ? 1 : 0,
-                    pointerEvents: isAccess ? 'auto' : 'none',
-                }}
-            >
-                {children}
-            </div>
+            {isAccess && children}
         </>
     )
 }
