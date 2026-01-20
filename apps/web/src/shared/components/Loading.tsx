@@ -4,9 +4,16 @@ import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useEffect, useRef, useState } from 'react'
+import { HomePageData } from 'types'
 import StarField from '../../features/home/canvas/scene/StarField'
 
-export default function Loading({ children }: { children: React.ReactNode }) {
+export default function Loading({
+    data,
+    children,
+}: {
+    data: HomePageData | null
+    children: React.ReactNode
+}) {
     const texts = [
         'Xin chào',
         'Hello',
@@ -128,7 +135,118 @@ export default function Loading({ children }: { children: React.ReactNode }) {
                 </div>
             )}
 
-            {isAccess && children}
+            {isAccess ? (
+                children
+            ) : (
+                <>
+                    <main
+                        style={{
+                            position: 'absolute',
+                            opacity: 0,
+                            pointerEvents: 'none',
+                        }}
+                    >
+                        <section id="hero">
+                            <header>
+                                <h1>{data?.hero?.title ?? ''}</h1>
+                                <p>{data?.hero?.description ?? ''}</p>
+                            </header>
+                        </section>
+
+                        <section id="philosophy">
+                            <article>
+                                <p>{data?.philosophy?.text ?? ''}</p>
+                            </article>
+                        </section>
+
+                        <section id="projects">
+                            <header>
+                                <h2>{data?.projects?.title ?? ''}</h2>
+                                <p>{data?.projects?.description ?? ''}</p>
+                            </header>
+
+                            {data?.projects?.projectList?.map((project, i) => (
+                                <article key={i}>
+                                    <h3>{project.category}</h3>
+
+                                    <ul>
+                                        {project.items.map((item, j) => (
+                                            <li key={j}>
+                                                <figure>
+                                                    <figcaption>
+                                                        <a href={item.link}>{item.name}</a>
+                                                    </figcaption>
+                                                </figure>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </article>
+                            ))}
+                        </section>
+
+                        <section id="skills">
+                            <header>
+                                <h2>Skills</h2>
+                            </header>
+
+                            {data?.skills?.map((skill, i) => (
+                                <article key={i}>
+                                    <h3>{skill.title}</h3>
+                                    <h4>{skill.name}</h4>
+
+                                    <ul>
+                                        {skill.skills.map((s, j) => (
+                                            <li key={j}>{s}</li>
+                                        ))}
+                                    </ul>
+                                </article>
+                            ))}
+                        </section>
+
+                        <section id="about">
+                            <header>
+                                <h2>{data?.about?.title ?? ''}</h2>
+                                <p>{data?.about?.description ?? ''}</p>
+                            </header>
+
+                            <ul>
+                                {data?.about?.teamMembers?.map((member, i) => (
+                                    <li key={i}>
+                                        <article>
+                                            <figure>
+                                                <img
+                                                    src={member.image}
+                                                    alt={`${member.name} portrait`}
+                                                    loading="lazy"
+                                                />
+                                                <figcaption>
+                                                    <h3>{member.name}</h3>
+                                                    <p>{member.position}</p>
+                                                </figcaption>
+                                            </figure>
+
+                                            <ul>
+                                                <li>
+                                                    <strong>{member.experience}+</strong>
+                                                    <span>Years Experience</span>
+                                                </li>
+                                                <li>
+                                                    <strong>{member.projects}+</strong>
+                                                    <span>Projects</span>
+                                                </li>
+                                                <li>
+                                                    <strong>{member.customers}+</strong>
+                                                    <span>Customers</span>
+                                                </li>
+                                            </ul>
+                                        </article>
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
+                    </main>
+                </>
+            )}
         </>
     )
 }

@@ -46,7 +46,7 @@ export type AboutSection = {
         position: string
         experience: number
         projects: number
-        customer: number
+        customers: number
     }[]
 }
 

@@ -18,7 +18,7 @@ interface Person {
     position: string
     experience: number
     projects: number
-    customer: number
+    customers: number
     color?: string
     [key: string]: any
 }
