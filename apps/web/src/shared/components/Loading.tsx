@@ -33,10 +33,13 @@ export default function Loading({
     const isAccess = useGlobal((state) => state.isAccess)
     const setIsAccess = useGlobal((state) => state.setIsAccess)
     const setIsLoading = useGlobal((state) => state.setIsLoading)
-    // Ref for audio element
 
+    // To avoid hydration errors and reference errors,
+    // perform any client-side only code in window check branch
     useGSAP(() => {
         if (isAccess) return
+        if (typeof window === 'undefined') return
+
         const obj = { i: 0 }
         const tl = gsap.to(obj, {
             i: texts.length,
@@ -55,7 +58,7 @@ export default function Loading({
             },
         })
 
-        setTimeout(
+        const timeoutId = setTimeout(
             () => {
                 setIsLoading(false)
             },
@@ -63,7 +66,7 @@ export default function Loading({
         )
 
         const handleLoaded = () => {
-            if (document.readyState === 'complete') {
+            if (typeof document !== 'undefined' && document.readyState === 'complete') {
                 // Optionally additional logic on load
             }
         }
@@ -73,21 +76,20 @@ export default function Loading({
         return () => {
             window.removeEventListener('load', handleLoaded)
             tl.kill()
+            clearTimeout(timeoutId)
         }
     }, [isAccess])
 
     useEffect(() => {
-        // When isAccess becomes true, immediately hide loading and show children
         if (isAccess) {
             setIsVisible(true)
         }
     }, [isAccess])
 
-    // Animate volume from small to large when clicking "explore"
     function handleExploreClick() {
         setIsAccess(true)
 
-        if (textIntroRef.current) {
+        if (typeof window !== 'undefined' && textIntroRef.current) {
             gsap.to(textIntroRef.current, {
                 opacity: 0,
                 duration: 1,
@@ -163,14 +165,15 @@ export default function Loading({
                                 <p>{data?.projects?.description ?? ''}</p>
                             </header>
 
+                            {/* Ensure <ul> are not inside <header> or invalidly placed */}
                             {data?.projects?.projectList?.map((project, i) => (
                                 <article key={i}>
                                     <h3>{project.category}</h3>
-
                                     <ul>
                                         {project.items.map((item, j) => (
                                             <li key={j}>
                                                 <figure>
+                                                    {/* Only <figcaption> and media elements allowed as children of <figure> */}
                                                     <figcaption>
                                                         <a href={item.link}>{item.name}</a>
                                                     </figcaption>
@@ -186,12 +189,11 @@ export default function Loading({
                             <header>
                                 <h2>Skills</h2>
                             </header>
-
+                            {/* <ul> must not be direct child of <header> or <h*> */}
                             {data?.skills?.map((skill, i) => (
                                 <article key={i}>
                                     <h3>{skill.title}</h3>
                                     <h4>{skill.name}</h4>
-
                                     <ul>
                                         {skill.skills.map((s, j) => (
                                             <li key={j}>{s}</li>
@@ -212,6 +214,7 @@ export default function Loading({
                                     <li key={i}>
                                         <article>
                                             <figure>
+                                                {/* <img> + <figcaption> is valid content for <figure> */}
                                                 <img
                                                     src={member.image}
                                                     alt={`${member.name} portrait`}
@@ -223,6 +226,7 @@ export default function Loading({
                                                 </figcaption>
                                             </figure>
 
+                                            {/* Do not put <ul> directly in <figure> or <figcaption> */}
                                             <ul>
                                                 <li>
                                                     <strong>{member.experience}+</strong>
