@@ -606,6 +606,9 @@
         pointer-events: none;
         transform: translateY(-100%);
         transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        @media (max-width: 1023px) {
+            transform: translateY(0);
+        }
     }
 
     .gradient:hover::before,

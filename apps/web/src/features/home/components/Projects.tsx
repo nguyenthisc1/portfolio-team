@@ -54,7 +54,7 @@ export default function Projects({ data }: { data: ProjectsSection }) {
                                                 </div>
 
                                                 <div className="text-center">
-                                                    <p className="h4">{item.name}</p>
+                                                    <p className="text-lg">{item.name}</p>
                                                 </div>
                                             </a>
                                         </div>

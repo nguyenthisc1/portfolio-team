@@ -4,7 +4,7 @@ import Typography from './Typography'
 export default function Philosophy({ data }: { data: PhilosophySection }) {
     return (
         <section id="philosophy" aria-labelledby="philosophy-heading">
-            <div className="container mx-auto mb-20 max-w-4xl space-y-10 md:mb-[50%]">
+            <div className="container mx-auto mb-72 max-w-4xl space-y-10 md:mb-[50%]">
                 <h2 id="philosophy-heading" className="sr-only">
                     Philosophy
                 </h2>

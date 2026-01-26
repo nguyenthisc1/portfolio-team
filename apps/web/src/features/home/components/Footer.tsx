@@ -87,9 +87,7 @@ export default function Footer() {
                         </div>
                         <div className="font-style-normal grid grid-cols-1 gap-x-40 gap-y-10 max-lg:p-10 lg:grid-cols-2 lg:px-24 lg:pb-10 xl:pb-28">
                             <address className="space-y-7">
-                                <h3 className="font-style-normal text-4xl uppercase">
-                                    Information
-                                </h3>
+                                <h3 className="font-style-normal text-lg uppercase">Information</h3>
                                 <ul className="font-style-normal w-fit">
                                     <li className="grid grid-cols-3">
                                         <span>Location:</span>
@@ -115,9 +113,9 @@ export default function Footer() {
                                 </ul>
                             </address>
                             <div className="space-y-8">
-                                <h3 className="text-4xl uppercase">Want to see more showcase?</h3>
+                                <h3 className="text-lg uppercase">Want to see more showcase?</h3>
 
-                                <ul className="flex flex-wrap gap-5">
+                                <ul className="flex gap-5">
                                     <li className="gradient">
                                         <a
                                             target="_blank"
@@ -278,9 +276,7 @@ export default function Footer() {
                         </div>
                         <div className="grid grid-cols-1 gap-x-40 gap-y-10 max-lg:p-10 lg:grid-cols-2 lg:px-24 lg:pb-10 xl:pb-28">
                             <address className="space-y-7">
-                                <h3 className="font-style-normal text-4xl uppercase">
-                                    Information
-                                </h3>
+                                <h3 className="font-style-normal text-lg uppercase">Information</h3>
                                 <ul className="font-style-normal w-fit">
                                     <li className="grid grid-cols-3 gap-5">
                                         <span>Location:</span>
@@ -306,9 +302,9 @@ export default function Footer() {
                                 </ul>
                             </address>
                             <div className="space-y-8">
-                                <h3 className="text-4xl uppercase">Want to see more showcase?</h3>
+                                <h3 className="text-lg uppercase">Want to see more showcase?</h3>
 
-                                <ul className="flex flex-wrap gap-5">
+                                <ul className="flex gap-5">
                                     <li className="gradient">
                                         <a
                                             target="_blank"

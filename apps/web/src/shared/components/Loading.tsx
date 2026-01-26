@@ -141,9 +141,7 @@ export default function Loading({
                 <>
                     <main
                         style={{
-                            position: 'absolute',
-                            opacity: 0,
-                            pointerEvents: 'none',
+                            display: 'none',
                         }}
                     >
                         <section id="hero">

@@ -55,7 +55,7 @@ export default function Logo() {
                 onComplete: () => setisAddBox(true),
             })
         }
-    }, [isLoading])
+    }, [isLoading, isMobile])
 
     useGSAP(() => {
         if (isAccess && groupFirstRef.current) {
@@ -75,6 +75,17 @@ export default function Logo() {
             })
         }
     }, [isAccess])
+
+    // Mobile-specific GSAP y position animation for groupRef when isAccess becomes true
+    useGSAP(() => {
+        if (isAccess && isMobile && groupRef.current) {
+            gsap.to(groupRef.current.position, {
+                y: -20,
+                duration: 1.2,
+                ease: 'power1.inOut',
+            })
+        }
+    }, [isAccess, isMobile])
 
     useGSAP(() => {
         if (isAccess && groupRef.current) {
