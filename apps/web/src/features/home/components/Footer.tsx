@@ -278,7 +278,7 @@ export default function Footer() {
                             <address className="space-y-7">
                                 <h3 className="font-style-normal text-lg uppercase">Information</h3>
                                 <ul className="font-style-normal w-fit">
-                                    <li className="grid grid-cols-3 gap-5">
+                                    <li className="grid grid-cols-3">
                                         <span>Location:</span>
                                         <span className="col-span-2 uppercase">
                                             Ho Chi Minh City, Viet Nam
