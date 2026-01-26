@@ -26,14 +26,10 @@ export default function StarGalaxy() {
                     clear: true,
                     fullScreen: { enable: true, zIndex: -11 },
                     detectRetina: true,
-
-                    // ✅ giảm fps trên mobile
                     fpsLimit: isMobile ? 30 : 60,
-
                     interactivity: {
                         detectsOn: 'window',
                         events: {
-                            // ❌ mobile không hover
                             onHover: isMobile
                                 ? { enable: false }
                                 : {
@@ -57,7 +53,6 @@ export default function StarGalaxy() {
 
                     particles: {
                         number: {
-                            // ✅ giảm mạnh số lượng
                             value: isMobile ? 120 : 350,
                             density: {
                                 enable: true,
@@ -78,7 +73,7 @@ export default function StarGalaxy() {
                         opacity: {
                             value: { min: 0.15, max: 0.8 },
                             animation: {
-                                enable: !isMobile, // ❌ mobile tắt animation
+                                enable: !isMobile,
                                 speed: 1,
                                 sync: false,
                             },
@@ -102,7 +97,6 @@ export default function StarGalaxy() {
 
                     smooth: false,
 
-                    // ✅ giảm layer trên mobile
                     zLayers: isMobile ? 20 : 100,
 
                     name: 'Stars',
