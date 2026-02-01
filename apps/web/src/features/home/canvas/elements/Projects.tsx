@@ -369,18 +369,19 @@ export default function Projects({ data }: { data: Project[] }) {
         }
     }
 
-    // Initialize all cards once
+    const projectItems = data.flatMap((cat) =>
+        cat.items.map((item) => ({
+            image: item.image,
+            category: cat.category,
+            name: item.name,
+            link: item.link,
+        })),
+    )
+
+    // Now, build the card array from those, keep the original indices for correct animation
     const [cards] = useState(() =>
-        data.flatMap((category, cIdx) =>
-            category.items.map((item, idx) =>
-                createCard(
-                    idx + cIdx * category.items.length,
-                    item.image,
-                    category.category,
-                    item.name,
-                    item.link,
-                ),
-            ),
+        projectItems.map((item, idx) =>
+            createCard(idx, item.image, item.category, item.name, item.link),
         ),
     )
 
@@ -620,7 +621,7 @@ export default function Projects({ data }: { data: Project[] }) {
                     onLeave: () => {
                         const el = getCategoryElement(category)
                         if (el) {
-                            el.classList.remove('active-enter')
+                            el.classList.remove('active-enter', 'active')
                         }
                     },
                     onLeaveBack: () => {
@@ -700,40 +701,37 @@ export default function Projects({ data }: { data: Project[] }) {
         }
 
         let cardIdx = 0
-        data.forEach((project) => {
-            const category = project.category
-            project.items.forEach(() => {
-                const idx = cardIdx
-                const card = cards[idx]!
-                const cardRef = cardRefs[idx]!
-                const cardNameRef = cardNameRefs[idx]!
-                const state = {
-                    px: card.position[0],
-                    py: card.position[1],
-                    pz: card.position[2],
-                    rx: card.rotation[0],
-                    ry: card.rotation[1],
-                    rz: card.rotation[2],
-                    sc: card.scale,
-                    op: card.opacity,
-                }
+        // Use only the 10 items for animation handling
+        projectItems.forEach((projectItem, idx) => {
+            const category = projectItem.category
+            const card = cards[idx]!
+            const cardRef = cardRefs[idx]!
+            const cardNameRef = cardNameRefs[idx]!
+            const state = {
+                px: card.position[0],
+                py: card.position[1],
+                pz: card.position[2],
+                rx: card.rotation[0],
+                ry: card.rotation[1],
+                rz: card.rotation[2],
+                sc: card.scale,
+                op: card.opacity,
+            }
 
-                const startMesh = Math.max(idx * perMeshHeight - overlap, 0)
-                const endMesh = Math.max((idx + 1) * perMeshHeight - overlap, 0)
+            const startMesh = Math.max(idx * perMeshHeight - overlap, 0)
+            const endMesh = Math.max((idx + 1) * perMeshHeight - overlap, 0)
 
-                createCardTimeline({
-                    idx,
-                    category,
-                    state,
-                    infoEl: cardsInfo[idx]!,
-                    cardRef,
-                    cardNameRef,
-                    startMesh,
-                    endMesh,
-                })
-
-                cardIdx++
+            createCardTimeline({
+                idx,
+                category,
+                state,
+                infoEl: cardsInfo[idx]!,
+                cardRef,
+                cardNameRef,
+                startMesh,
+                endMesh,
             })
+            cardIdx++
         })
     }, [isAccess])
 

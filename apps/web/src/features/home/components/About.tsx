@@ -47,10 +47,11 @@ const MemberFigure = memo(function MemberFigure({
                 opacity: isActive ? 1 : 0,
                 zIndex: isActive ? 10 : 0,
                 transition: 'opacity 0.5s ease',
+                height: '100%',
             }}
         >
             <figure
-                className={`tt-image relative mb-6 rounded-4xl bg-neutral-800 pt-10 pb-[100%] transition-opacity duration-500 md:pb-[55%] lg:pb-[80%] xl:pb-[100%]`}
+                className={`tt-image relative mb-6 h-full rounded-4xl bg-neutral-800 pt-10 pb-[100%] transition-opacity duration-500 md:pb-[55%] lg:pb-[80%] xl:pb-[100%]`}
                 style={{}}
             >
                 <img

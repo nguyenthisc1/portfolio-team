@@ -7,7 +7,6 @@ import Typography from './Typography'
 
 export default function Projects({ data }: { data: ProjectsSection }) {
     const isMobile = useIsMobile()
-
     return (
         <section aria-labelledby="projects-heading" className="relative mb-44 space-y-10">
             <div className="container">
@@ -68,13 +67,13 @@ export default function Projects({ data }: { data: ProjectsSection }) {
                 {!isMobile && (
                     <div
                         style={{
-                            height: `calc(${data.projectList.reduce((acc, curr) => acc + curr.items.length, 0) * 100}vh)`,
+                            height: `${data.projectList.reduce((acc, curr) => acc + curr.items.length, 0) * 100}vh`,
                         }}
                         id="gsap-projects-trigger"
                         className="relative md:pointer-events-none"
                     >
                         <div className="projects-menu fixed top-1/2 left-5 hidden -translate-y-1/2 opacity-0 transition-opacity duration-500 md:block">
-                            <ul className="projects-menu-dots relative whitespace-nowrap before:absolute before:left-0 before:h-full before:w-px before:bg-white/10 after:absolute after:top-0 after:left-0 after:z-10 after:h-[var(--progress-percent)] after:w-px after:origin-top after:bg-white">
+                            <ul className="projects-menu-dots relative whitespace-nowrap before:absolute before:left-0 before:hidden before:h-full before:w-px before:bg-white/10 after:absolute after:top-0 after:left-0 after:z-10 after:hidden after:h-[var(--progress-percent)] after:w-px after:origin-top after:bg-white">
                                 {data.projectList.map((p, idx) => (
                                     <li
                                         data-category={p.category}
