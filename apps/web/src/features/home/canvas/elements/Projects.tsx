@@ -4,10 +4,10 @@ import { useGSAP } from '@gsap/react'
 import { Text } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Project } from 'types'
 
 // Helper: set image UV to cover (center crop) on mesh
@@ -445,8 +445,8 @@ export default function Projects({ data }: { data: Project[] }) {
                 start: 'top 70%',
                 end: '400% 30%',
                 scrub: 1.5,
-                invalidateOnRefresh: true,
-                fastScrollEnd: true,
+                // invalidateOnRefresh: true,
+                // fastScrollEnd: true,
             },
             onUpdate: () => {
                 groupFirstScaleRef.current = [state.sx, state.sy, state.sz]
@@ -579,6 +579,41 @@ export default function Projects({ data }: { data: Project[] }) {
         const getCategoryElement = (category: string) =>
             document.querySelector(`[data-category="${category}"]`) as HTMLElement | null
 
+        const scrollToCategory = (category: string) => {
+            // Scroll the trigger (#gsap-projects-trigger) to the section corresponding to the category
+            // Use index calculation based on first index of that category
+            const idx = projectItems.findIndex((item) => item.category === category)
+            if (idx !== -1) {
+                const top = vh(Math.max(idx * perMeshHeight - overlap, 0))
+                const el = document.getElementById('gsap-projects-trigger')
+                if (el) {
+                    // Scroll so the trigger is at that vertical offset (animated for smoothness)
+                    window.scrollTo({
+                        top: el.getBoundingClientRect().top + window.scrollY + top + 500,
+                        behavior: 'smooth',
+                    })
+                } else {
+                    // Fallback, just scroll the body to the vertical offset
+                    window.scrollTo({ top: top, behavior: 'smooth' })
+                }
+            }
+        }
+
+        // Attach click event handler on all elements with a data-category attribute
+        const categoryEls = document.querySelectorAll('[data-category]')
+        categoryEls.forEach((el) => {
+            const category = el.getAttribute('data-category')
+            if (!category) return
+
+            const clickHandler = (e: Event) => {
+                e.preventDefault()
+                scrollToCategory(category)
+            }
+            // Avoid duplicate listeners
+            el.removeEventListener('click', clickHandler as EventListener)
+            el.addEventListener('click', clickHandler as EventListener)
+        })
+
         const createCardTimeline = ({
             idx,
             category,
@@ -632,27 +667,6 @@ export default function Projects({ data }: { data: Project[] }) {
                     },
                 },
             })
-
-            // // Info fade in
-            // tl.to(
-            //     infoEl,
-            //     {
-            //         autoAlpha: 1,
-            //         duration: 2,
-            //         pointerEvents: 'auto',
-            //     },
-            //     0,
-            // )
-            // // Info fade out
-            // tl.to(
-            //     infoEl,
-            //     {
-            //         autoAlpha: 0,
-            //         duration: 2,
-            //         pointerEvents: 'none',
-            //     },
-            //     4,
-            // )
 
             // Card fade in
             tl.to(
@@ -758,7 +772,19 @@ export default function Projects({ data }: { data: Project[] }) {
         })
     })
 
-    // ---- REWRITE BELOW FOR CONDITIONAL CURSOR ----
+    // ---- REWRITE BELOW FOR CONDITIONAL CURSOR AND CATEGORY CLICK SCROLL ----
+    // Helper: Map of all unique categories and their start indices
+    const categoryStartIndices: Record<string, number> = {}
+    projectItems.forEach((item, idx) => {
+        if (!(item.category in categoryStartIndices)) {
+            categoryStartIndices[item.category] = idx
+        }
+    })
+    // Helper: For each category, count how many items
+    const categoryCounts: Record<string, number> = {}
+    projectItems.forEach((item) => {
+        categoryCounts[item.category] = (categoryCounts[item.category] ?? 0) + 1
+    })
     return (
         <group
             ref={groupRefFirst}
