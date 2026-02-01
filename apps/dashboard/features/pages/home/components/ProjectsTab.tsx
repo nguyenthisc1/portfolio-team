@@ -52,6 +52,16 @@ export default function ProjectsTab({ form }: ProjectsTabProps) {
         )
     }
 
+    // Calculate total number of projects across all categories
+    const totalProjects =
+        categories && Array.isArray(categories)
+            ? categories.reduce(
+                  (acc, cat) =>
+                      acc + (Array.isArray((cat as any).items) ? (cat as any).items.length : 0),
+                  0,
+              )
+            : 0
+
     return (
         <Card>
             <CardHeader>
@@ -90,7 +100,10 @@ export default function ProjectsTab({ form }: ProjectsTabProps) {
 
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-semibold">Project Categories</h3>
+                            <div className="flex flex-col gap-1">
+                                <h3 className="text-lg font-semibold">Project Categories</h3>
+                                <span className="text-muted-foreground text-xs">{`Project Total: ${totalProjects}`}</span>
+                            </div>
                             <Button
                                 type="button"
                                 variant="outline"
@@ -120,11 +133,15 @@ export default function ProjectsTab({ form }: ProjectsTabProps) {
 
                         {categories.map((category, categoryIndex) => {
                             const expanded = expandedCategories.includes(categoryIndex)
-                            // Show category name in the header in addition to number
+                            // Show category name and project count in the header
                             const categoryNameDisplay =
                                 category.category && category.category.trim() !== ''
                                     ? `${category.category}`
                                     : ''
+                            const projectCount = Array.isArray(category.items)
+                                ? category.items.length
+                                : 0
+
                             return (
                                 <Card key={category.id} className="p-4">
                                     <div className="space-y-4">
@@ -150,8 +167,13 @@ export default function ProjectsTab({ form }: ProjectsTabProps) {
                                                     )}
                                                 </button>
                                                 <h3 className="font-semibold">
-                                                    Category {categoryIndex + 1 + ' '}(
-                                                    {categoryNameDisplay})
+                                                    Category {categoryIndex + 1}
+                                                    {categoryNameDisplay && (
+                                                        <> ({categoryNameDisplay})</>
+                                                    )}{' '}
+                                                    <span className="text-muted-foreground text-sm">
+                                                        [Projects: {projectCount}]
+                                                    </span>
                                                 </h3>
                                             </div>
                                             <Button
