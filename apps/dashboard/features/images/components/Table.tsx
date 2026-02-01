@@ -54,8 +54,8 @@ export function ImagesTable({
     const router = useRouter()
     const searchParams = useSearchParams()
 
-    // Calculates the page from current offset (assuming offset starts at imagesPerPage for the first page)
-    const currentPage = Math.floor((offset - 1) / imagesPerPage) + 1
+    // Calculate the current page from offset (offset 0 = page 1, offset 10 = page 2, etc.)
+    const currentPage = Math.floor(offset / imagesPerPage) + 1
 
     const handlePageChange = (newPage: number) => {
         const params = new URLSearchParams(searchParams as any)
@@ -64,8 +64,9 @@ export function ImagesTable({
         router.push(`?${params.toString()}`)
     }
 
-    const startIndex = Math.max(1, offset - imagesPerPage + 1)
-    const endIndex = offset - imagesPerPage + images.length
+    // Calculate display range (1-based indexing for display)
+    const startIndex = offset + 1
+    const endIndex = offset + images.length
 
     return (
         <Card>

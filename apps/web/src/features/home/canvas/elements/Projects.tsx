@@ -760,6 +760,7 @@ export default function Projects({ data }: { data: Project[] }) {
         })
     })
 
+    // ---- REWRITE BELOW FOR CONDITIONAL CURSOR ----
     return (
         <group
             ref={groupRefFirst}
@@ -768,50 +769,68 @@ export default function Projects({ data }: { data: Project[] }) {
             layers={10}
         >
             <group ref={groupRefSecond} position={groupSecondPosRef.current} rotation={[0, 0, 0]}>
-                {cards.map((item, idx) => (
-                    <group
-                        onPointerDown={() => {
-                            window.open(item.url, '_blank')
-                            console.log(123)
-                        }}
-                        onPointerOver={() => {
-                            document.body.style.cursor = 'pointer'
-                        }}
-                        onPointerOut={() => {
-                            document.body.style.cursor = 'default'
-                        }}
-                        key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}
-                    >
-                        <ImageCard
-                            position={item.position}
-                            rotation={item.rotation}
-                            scale={item.scale}
-                            opacity={item.opacity}
-                            textureUrl={item.imageUrl}
-                            animated={true}
-                            cardIdx={idx}
-                            gsapDataRefs={cardRefs[idx]}
-                        />
-                        <Text
-                            ref={(ref) => {
-                                // Extract material ref from Text
-                                textMaterialRefs.current[idx] =
-                                    ref && ref.material ? ref.material : null
-                            }}
-                            position={[item.position[0], 2.5, item.position[2]]}
-                            rotation={cardNameRefs[idx]!.rotationRef.current}
-                            fontSize={1}
-                            color="white"
-                            anchorX="center"
-                            anchorY="top"
-                            font="/fonts/Oswald-Bold.ttf"
-                            material-transparent
-                            material-opacity={cardNameRefs[idx]!.opacityRef.current}
+                {cards.map((item, idx) => {
+                    // Determine if the link is non-empty (not null and not just empty string/whitespace)
+                    const hasLink =
+                        typeof item.url === 'string' && item.url.trim() !== '' && item.url !== '#'
+
+                    const handlePointerDown = hasLink
+                        ? () => {
+                              window.open(item.url, '_blank')
+                              console.log(123)
+                          }
+                        : undefined
+
+                    const handlePointerOver = hasLink
+                        ? () => {
+                              document.body.style.cursor = 'pointer'
+                          }
+                        : () => {
+                              document.body.style.cursor = 'default'
+                          }
+
+                    const handlePointerOut = () => {
+                        document.body.style.cursor = 'default'
+                    }
+
+                    return (
+                        <group
+                            key={`${item.imageUrl}_${idx}_${item.position.join('_')}`}
+                            onPointerDown={handlePointerDown}
+                            onPointerOver={handlePointerOver}
+                            onPointerOut={handlePointerOut}
                         >
-                            {item.name}
-                        </Text>
-                    </group>
-                ))}
+                            <ImageCard
+                                position={item.position}
+                                rotation={item.rotation}
+                                scale={item.scale}
+                                opacity={item.opacity}
+                                textureUrl={item.imageUrl}
+                                animated={true}
+                                cardIdx={idx}
+                                gsapDataRefs={cardRefs[idx]}
+                            />
+                            <Text
+                                ref={(ref) => {
+                                    // Extract material ref from Text
+                                    textMaterialRefs.current[idx] =
+                                        ref && ref.material ? ref.material : null
+                                }}
+                                position={[item.position[0], 2.5, item.position[2]]}
+                                rotation={cardNameRefs[idx]!.rotationRef.current}
+                                fontSize={1}
+                                color="white"
+                                anchorX="center"
+                                anchorY="top"
+                                font="/fonts/Oswald-Bold.ttf"
+                                material-transparent
+                                material-opacity={cardNameRefs[idx]!.opacityRef.current}
+                            >
+                                {item.name}
+                            </Text>
+                        </group>
+                    )
+                })}
             </group>
         </group>
     )
