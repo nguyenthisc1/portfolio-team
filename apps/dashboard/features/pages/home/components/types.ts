@@ -25,7 +25,7 @@ export const homeContentSchema = z.object({
                     z.object({
                         image: z.string().min(1, 'Image is required'),
                         name: z.string().min(1, 'Name is required'),
-                        link: z.string(),
+                        link: z.string().optional(),
                     }),
                 ),
             }),

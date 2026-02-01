@@ -38,7 +38,7 @@ function isValidImageUrl(url: string): boolean {
     try {
         // Allow absolute URLs (http://, https://) and root-relative URLs (/...)
         return url.startsWith('/') || Boolean(new URL(url))
-    } catch (e) {
+    } catch {
         return false
     }
 }
@@ -374,21 +374,30 @@ export default function ProjectsTab({ form }: ProjectsTabProps) {
                                                                                                       )}
                                                                                                   />
                                                                                               </div>
-                                                                                              {/* <FormField
-                                                                                          control={form.control}
-                                                                                          name={`projects.projectList.${categoryIndex}.items.${itemIndex}.link`}
-                                                                                          render={({
-                                                                                              field: linkField,
-                                                                                          }) => (
-                                                                                              <FormItem>
-                                                                                                  <FormLabel>Link</FormLabel>
-                                                                                                  <FormControl>
-                                                                                                      <Input {...linkField} />
-                                                                                                  </FormControl>
-                                                                                                  <FormMessage />
-                                                                                              </FormItem>
-                                                                                          )}
-                                                                                      /> */}
+
+                                                                                              <FormField
+                                                                                                  control={
+                                                                                                      form.control
+                                                                                                  }
+                                                                                                  name={`projects.projectList.${categoryIndex}.items.${itemIndex}.link`}
+                                                                                                  render={({
+                                                                                                      field: linkField,
+                                                                                                  }) => (
+                                                                                                      <FormItem>
+                                                                                                          <FormLabel>
+                                                                                                              Website
+                                                                                                              Link
+                                                                                                          </FormLabel>
+                                                                                                          <FormControl>
+                                                                                                              <Input
+                                                                                                                  {...linkField}
+                                                                                                                  placeholder="https://example.com"
+                                                                                                              />
+                                                                                                          </FormControl>
+                                                                                                          <FormMessage />
+                                                                                                      </FormItem>
+                                                                                                  )}
+                                                                                              />
                                                                                           </div>
                                                                                       </Card>
                                                                                   ),
