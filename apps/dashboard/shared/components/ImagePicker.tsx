@@ -8,7 +8,7 @@ import {
     DialogOverlay,
     DialogTitle,
 } from '@workspace/ui/components/Dialog'
-import { Check, Image as ImageIcon, PlusCircle, X } from 'lucide-react'
+import { Check, ChevronLeft, ChevronRight, Image as ImageIcon, PlusCircle, X } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { ImageUploadDialog } from './ImageUploadDialog'
@@ -34,8 +34,8 @@ export function ImagePicker({
     onSelectionChange,
     maxSelection,
     multiple = true,
-    title = 'Choose Images',
-    description = 'Select images from your uploaded files',
+    title: _title = 'Choose Images',
+    description: _description = 'Select images from your uploaded files',
 }: ImagePickerProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isUploadOpen, setIsUploadOpen] = useState(false)
@@ -44,12 +44,19 @@ export function ImagePicker({
     const [selectedKeys, setSelectedKeys] = useState<Set<string>>(
         new Set(selectedImages.map((img) => img.key)),
     )
+    const [currentPage, setCurrentPage] = useState(1)
+    const [hasMore, setHasMore] = useState(false)
+    const [totalImages, setTotalImages] = useState(0)
+    const imagesPerPage = 24
 
-    // Fetch available images
-    const fetchImages = async () => {
+    // Fetch available images with pagination
+    const fetchImages = async (page: number = 1) => {
         setIsLoading(true)
         try {
-            const response = await fetch('/api/uploadthing/list')
+            const offset = (page - 1) * imagesPerPage
+            const response = await fetch(
+                `/api/uploadthing/list?limit=${imagesPerPage}&offset=${offset}`,
+            )
             if (response.ok) {
                 const data = await response.json()
                 const files = Array.isArray(data) ? data : data.files || []
@@ -73,6 +80,16 @@ export function ImagePicker({
                         }
                     })
                 setAvailableImages(formattedImages)
+                setHasMore(data.hasMore || false)
+
+                // Estimate total images
+                if (data.hasMore) {
+                    // At least one more page exists
+                    setTotalImages(offset + formattedImages.length + 1)
+                } else {
+                    // This is the last page
+                    setTotalImages(offset + formattedImages.length)
+                }
             }
         } catch (error) {
             console.error('Error fetching images:', error)
@@ -83,9 +100,9 @@ export function ImagePicker({
 
     useEffect(() => {
         if (isDialogOpen) {
-            fetchImages()
+            fetchImages(currentPage)
         }
-    }, [isDialogOpen])
+    }, [isDialogOpen, currentPage])
 
     // Sync selectedKeys when selectedImages prop changes
     // Match by both key and URL to handle cases where URL is stored instead of key
@@ -140,7 +157,20 @@ export function ImagePicker({
     }
 
     const handleUploadComplete = async (_files: UploadedImage[]) => {
-        await fetchImages()
+        setCurrentPage(1)
+        await fetchImages(1)
+    }
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prev) => prev - 1)
+        }
+    }
+
+    const handleNextPage = () => {
+        if (hasMore) {
+            setCurrentPage((prev) => prev + 1)
+        }
     }
 
     const selectedImagesList = [
@@ -261,49 +291,94 @@ export function ImagePicker({
                             </Button>
                         </div>
                     ) : (
-                        <div className="max-h-[60vh] overflow-y-auto">
-                            <div className="grid grid-cols-2 gap-4 py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                                {availableImages.map((image) => {
-                                    const isSelected =
-                                        selectedKeys.has(image.key) || selectedKeys.has(image.url)
-                                    return (
-                                        <div
-                                            key={image.key}
-                                            className={`group relative cursor-pointer rounded-lg border transition-shadow ${isSelected ? 'border-primary ring-primary/60 ring-2' : 'border-muted border-dashed'} hover:ring-primary/30 hover:ring-2`}
-                                            onClick={() => handleImageToggle(image)}
-                                        >
-                                            <div className="relative aspect-square overflow-hidden rounded-md">
-                                                <Image
-                                                    src={image.url}
-                                                    alt={image.name}
-                                                    fill
-                                                    className="object-cover"
-                                                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
-                                                />
-                                                {isSelected && (
-                                                    <div className="bg-primary/30 absolute inset-0 flex items-center justify-center">
-                                                        <Check className="text-primary-foreground h-6 w-6 drop-shadow" />
+                        <>
+                            <div className="max-h-[60vh] overflow-y-auto">
+                                <div className="grid grid-cols-2 gap-4 py-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                                    {availableImages.map((image) => {
+                                        const isSelected =
+                                            selectedKeys.has(image.key) ||
+                                            selectedKeys.has(image.url)
+                                        return (
+                                            <div
+                                                key={image.key}
+                                                className={`group relative cursor-pointer rounded-lg border transition-shadow ${isSelected ? 'border-primary ring-primary/60 ring-2' : 'border-muted border-dashed'} hover:ring-primary/30 hover:ring-2`}
+                                                onClick={() => handleImageToggle(image)}
+                                            >
+                                                <div className="relative aspect-square overflow-hidden rounded-md">
+                                                    <Image
+                                                        src={image.url}
+                                                        alt={image.name}
+                                                        fill
+                                                        className="object-cover"
+                                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+                                                    />
+                                                    {isSelected && (
+                                                        <div className="bg-primary/30 absolute inset-0 flex items-center justify-center">
+                                                            <Check className="text-primary-foreground h-6 w-6 drop-shadow" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="px-2 py-1 text-xs">
+                                                    <div className="truncate font-medium">
+                                                        {image.name}
                                                     </div>
-                                                )}
-                                            </div>
-                                            <div className="px-2 py-1 text-xs">
-                                                <div className="truncate font-medium">
-                                                    {image.name}
-                                                </div>
-                                                <div className="text-muted-foreground hidden md:block">
-                                                    {formatFileSize(image.size)}
-                                                </div>
-                                                <div className="text-muted-foreground hidden truncate md:block">
-                                                    <code className="text-[10px]">
-                                                        {truncateUrl(image.url, 30)}
-                                                    </code>
+                                                    <div className="text-muted-foreground hidden md:block">
+                                                        {formatFileSize(image.size)}
+                                                    </div>
+                                                    <div className="text-muted-foreground hidden truncate md:block">
+                                                        <code className="text-[10px]">
+                                                            {truncateUrl(image.url, 30)}
+                                                        </code>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )
-                                })}
+                                        )
+                                    })}
+                                </div>
                             </div>
-                        </div>
+                            {/* Pagination Controls */}
+                            <div className="mt-4 flex items-center justify-between border-t pt-4">
+                                <div className="text-muted-foreground text-sm">
+                                    {totalImages > 0 ? (
+                                        <>
+                                            Showing{' '}
+                                            <strong>
+                                                {(currentPage - 1) * imagesPerPage + 1}-
+                                                {(currentPage - 1) * imagesPerPage +
+                                                    availableImages.length}
+                                            </strong>{' '}
+                                            of{' '}
+                                            <strong>
+                                                {hasMore ? `${totalImages}+` : totalImages}
+                                            </strong>{' '}
+                                            images
+                                        </>
+                                    ) : (
+                                        'No images'
+                                    )}
+                                </div>
+                                <div className="flex gap-2">
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={handlePreviousPage}
+                                        isDisabled={currentPage === 1}
+                                    >
+                                        <ChevronLeft className="mr-1 h-4 w-4" />
+                                        Previous
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={handleNextPage}
+                                        isDisabled={!hasMore}
+                                    >
+                                        Next
+                                        <ChevronRight className="ml-1 h-4 w-4" />
+                                    </Button>
+                                </div>
+                            </div>
+                        </>
                     )}
                 </DialogContent>
             </DialogOverlay>
