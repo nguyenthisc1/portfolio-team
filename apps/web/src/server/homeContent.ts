@@ -1,6 +1,5 @@
-import { unstable_cache } from 'next/cache'
-
 import { getCollection } from '@/shared/lib/mongodb'
+import { unstable_cache } from 'next/cache'
 import { HomePageData } from 'types'
 
 export const getHomeContent = unstable_cache(
@@ -9,7 +8,5 @@ export const getHomeContent = unstable_cache(
         return col.findOne()
     },
     ['home-content'],
-    {
-        tags: ['home-content'],
-    },
+    { revalidate: 20 },
 )

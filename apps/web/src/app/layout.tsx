@@ -1,5 +1,3 @@
-export const revalidate = 60
-
 import Scene from '@/features/home/canvas/scene/Scene'
 import SceneCursor from '@/features/home/canvas/scene/SceneCursor'
 import StarGalaxy from '@/features/home/canvas/scene/StarGalaxy'
