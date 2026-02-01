@@ -15,7 +15,6 @@ export async function getImages({ limit, offset }: { limit: number; offset: numb
         if (!response.ok) {
             throw new Error(`Failed to fetch images: ${response.statusText}`)
         }
-
         const data: ImagesResponse = await response.json()
         const rawFiles = Array.isArray(data.files) ? data.files : []
         const images = normalizeFiles(rawFiles)

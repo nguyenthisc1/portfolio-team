@@ -25,7 +25,7 @@ export const homeContentSchema = z.object({
                     z.object({
                         image: z.string().min(1, 'Image is required'),
                         name: z.string().min(1, 'Name is required'),
-                        link: z.string(),
+                        link: z.string().optional(),
                     }),
                 ),
             }),
@@ -38,6 +38,20 @@ export const homeContentSchema = z.object({
             skills: z.array(z.string()).min(1, 'At least one skill is required'),
         }),
     ),
+    about: z.object({
+        title: z.string().min(1, 'Title is required'),
+        description: z.string().min(1, 'Description is required'),
+        teamMembers: z.array(
+            z.object({
+                image: z.string().min(1, 'Image is required'),
+                name: z.string().min(1, 'Name is required'),
+                position: z.string().min(1, 'Position is required'),
+                experience: z.number().min(0, 'Experience must be 0 or greater'),
+                projects: z.number().min(0, 'Projects must be 0 or greater'),
+                customers: z.number().min(0, 'Customers must be 0 or greater'),
+            }),
+        ),
+    }),
 })
 
 export type HomeContentForm = z.infer<typeof homeContentSchema>

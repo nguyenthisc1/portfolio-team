@@ -4,9 +4,16 @@ import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useEffect, useRef, useState } from 'react'
+import { HomePageData } from 'types'
 import StarField from '../../features/home/canvas/scene/StarField'
 
-export default function Loading({ children }: { children: React.ReactNode }) {
+export default function Loading({
+    data,
+    children,
+}: {
+    data: HomePageData | null
+    children: React.ReactNode
+}) {
     const texts = [
         'Xin chào',
         'Hello',
@@ -27,8 +34,12 @@ export default function Loading({ children }: { children: React.ReactNode }) {
     const setIsAccess = useGlobal((state) => state.setIsAccess)
     const setIsLoading = useGlobal((state) => state.setIsLoading)
 
+    // To avoid hydration errors and reference errors,
+    // perform any client-side only code in window check branch
     useGSAP(() => {
         if (isAccess) return
+        if (typeof window === 'undefined') return
+
         const obj = { i: 0 }
         const tl = gsap.to(obj, {
             i: texts.length,
@@ -47,7 +58,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
             },
         })
 
-        setTimeout(
+        const timeoutId = setTimeout(
             () => {
                 setIsLoading(false)
             },
@@ -55,7 +66,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
         )
 
         const handleLoaded = () => {
-            if (document.readyState === 'complete') {
+            if (typeof document !== 'undefined' && document.readyState === 'complete') {
                 // Optionally additional logic on load
             }
         }
@@ -65,11 +76,11 @@ export default function Loading({ children }: { children: React.ReactNode }) {
         return () => {
             window.removeEventListener('load', handleLoaded)
             tl.kill()
+            clearTimeout(timeoutId)
         }
     }, [isAccess])
 
     useEffect(() => {
-        // When isAccess becomes true, immediately hide loading and show children
         if (isAccess) {
             setIsVisible(true)
         }
@@ -78,7 +89,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
     function handleExploreClick() {
         setIsAccess(true)
 
-        if (textIntroRef.current) {
+        if (typeof window !== 'undefined' && textIntroRef.current) {
             gsap.to(textIntroRef.current, {
                 opacity: 0,
                 duration: 1,
@@ -105,7 +116,7 @@ export default function Loading({ children }: { children: React.ReactNode }) {
                         alignItems: 'flex-end',
                         justifyContent: 'center',
                         paddingTop: 0,
-                        paddingBottom: '10rem',
+                        paddingBottom: '10vh',
                         color: 'black',
                         textTransform: 'uppercase',
                         fontWeight: 700,
@@ -126,7 +137,118 @@ export default function Loading({ children }: { children: React.ReactNode }) {
                 </div>
             )}
 
-            {(isAccess || isVisible) && children}
+            {isAccess ? (
+                children
+            ) : (
+                <>
+                    <main
+                        style={{
+                            display: 'none',
+                        }}
+                    >
+                        <section id="hero">
+                            <header>
+                                <h1>{data?.hero?.title ?? ''}</h1>
+                                <p>{data?.hero?.description ?? ''}</p>
+                            </header>
+                        </section>
+
+                        <section id="philosophy">
+                            <article>
+                                <p>{data?.philosophy?.text ?? ''}</p>
+                            </article>
+                        </section>
+
+                        <section id="projects">
+                            <header>
+                                <h2>{data?.projects?.title ?? ''}</h2>
+                                <p>{data?.projects?.description ?? ''}</p>
+                            </header>
+
+                            {/* Ensure <ul> are not inside <header> or invalidly placed */}
+                            {data?.projects?.projectList?.map((project, i) => (
+                                <article key={i}>
+                                    <h3>{project.category}</h3>
+                                    <ul>
+                                        {project.items.map((item, j) => (
+                                            <li key={j}>
+                                                <figure>
+                                                    {/* Only <figcaption> and media elements allowed as children of <figure> */}
+                                                    <figcaption>
+                                                        <a href={item.link}>{item.name}</a>
+                                                    </figcaption>
+                                                </figure>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </article>
+                            ))}
+                        </section>
+
+                        <section id="skills">
+                            <header>
+                                <h2>Skills</h2>
+                            </header>
+                            {/* <ul> must not be direct child of <header> or <h*> */}
+                            {data?.skills?.map((skill, i) => (
+                                <article key={i}>
+                                    <h3>{skill.title}</h3>
+                                    <h4>{skill.name}</h4>
+                                    <ul>
+                                        {skill.skills.map((s, j) => (
+                                            <li key={j}>{s}</li>
+                                        ))}
+                                    </ul>
+                                </article>
+                            ))}
+                        </section>
+
+                        <section id="about">
+                            <header>
+                                <h2>{data?.about?.title ?? ''}</h2>
+                                <p>{data?.about?.description ?? ''}</p>
+                            </header>
+
+                            <ul>
+                                {data?.about?.teamMembers?.map((member, i) => (
+                                    <li key={i}>
+                                        <article>
+                                            <figure>
+                                                {/* <img> + <figcaption> is valid content for <figure> */}
+                                                <img
+                                                    src={member.image}
+                                                    alt={`${member.name} portrait`}
+                                                    loading="lazy"
+                                                />
+                                                <figcaption>
+                                                    <h3>{member.name}</h3>
+                                                    <p>{member.position}</p>
+                                                </figcaption>
+                                            </figure>
+
+                                            {/* Do not put <ul> directly in <figure> or <figcaption> */}
+                                            <ul>
+                                                <li>
+                                                    <strong>{member.experience}+</strong>
+                                                    <span>Years Experience</span>
+                                                </li>
+                                                <li>
+                                                    <strong>{member.projects}+</strong>
+                                                    <span>Projects</span>
+                                                </li>
+                                                <li>
+                                                    <strong>{member.customers}+</strong>
+                                                    <span>Customers</span>
+                                                </li>
+                                            </ul>
+                                        </article>
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
+                    </main>
+                </>
+            )}
         </>
     )
 }

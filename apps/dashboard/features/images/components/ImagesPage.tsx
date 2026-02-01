@@ -10,95 +10,118 @@ import {
 import { toast } from '@workspace/ui/components/Sonner'
 import { PlusCircle } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ImageUploadDialog } from 'shared/components/ImageUploadDialog'
 import type { UploadedImage } from 'shared/utils/types'
 import { copyToClipboard, estimateTotal, normalizeFiles } from 'shared/utils/utils'
+import useSWR from 'swr'
 import { ImagesTable } from './Table'
 
-interface ImagesPageProps {
-    initialImages: UploadedImage[]
-    initialHasMore: boolean
+interface ImagesPageProps {}
+
+interface ImagesSWRData {
+    images: UploadedImage[]
+    hasMore: boolean
+    totalImages: number
 }
 
-export default function ImagesPage({ initialImages, initialHasMore }: ImagesPageProps) {
+const imagesFetcher =
+    (imagesPerPage: number) =>
+    async ([_key, offset]: [string, number]): Promise<ImagesSWRData> => {
+        const response = await fetch(
+            `/api/uploadthing/list?limit=${imagesPerPage}&offset=${offset}`,
+            { cache: 'no-store' },
+        )
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch images')
+        }
+
+        const data = await response.json()
+        const formatted = normalizeFiles(data.files || [])
+        const hasMore = Boolean(data.hasMore)
+
+        return {
+            images: formatted,
+            hasMore,
+            totalImages: estimateTotal(formatted.length, offset, hasMore, imagesPerPage),
+        }
+    }
+
+export default function ImagesPage() {
     const imagesPerPage = 10
     const searchParams = useSearchParams()
 
-    /** PAGE FROM URL */
+    // PAGE FROM URL
     const pageParam = searchParams.get('page')
     const page = pageParam ? parseInt(pageParam) : 1
     const offset = (page - 1) * imagesPerPage
 
-    /** LOCAL STATES */
-    const [images, setImages] = useState(initialImages)
-    const [hasMore, setHasMore] = useState(initialHasMore)
-    const [isLoading, setIsLoading] = useState(false)
+    // LOCAL UI STATE (non-data)
     const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isUploadOpen, setIsUploadOpen] = useState(false)
 
-    const [totalImages, setTotalImages] = useState(
-        estimateTotal(initialImages.length, offset, initialHasMore, imagesPerPage),
-    )
+    // Fallback data state, set after client fetch
+    const [fallbackData, setFallbackData] = useState<ImagesSWRData | undefined>(undefined)
 
-    /** 📌 Fetch images when page changes (but skip when page === 1 because server already gave initialImages) */
-    const fetchImages = useCallback(
-        async (requestedOffset: number) => {
-            setIsLoading(true)
+    useEffect(() => {
+        let cancelled = false
+
+        const loadFallbackData = async () => {
             try {
                 const response = await fetch(
-                    `/api/uploadthing/list?limit=${imagesPerPage}&offset=${requestedOffset}`,
+                    `/api/uploadthing/list?limit=${imagesPerPage}&offset=${offset}`,
                     { cache: 'no-store' },
                 )
-
-                if (!response.ok) throw new Error()
-
+                if (!response.ok) throw new Error('Failed to fetch images')
                 const data = await response.json()
                 const formatted = normalizeFiles(data.files || [])
-
-                setImages(formatted)
-                setHasMore(Boolean(data.hasMore))
-                setTotalImages(
-                    estimateTotal(
-                        formatted.length,
-                        requestedOffset,
-                        Boolean(data.hasMore),
-                        imagesPerPage,
-                    ),
-                )
-            } catch (e) {
-                toast.error({
-                    title: 'Failed to load images',
-                    description: 'Could not fetch images from server',
-                })
-            } finally {
-                setIsLoading(false)
+                const hasMore = Boolean(data.hasMore)
+                const totalImages = estimateTotal(formatted.length, offset, hasMore, imagesPerPage)
+                if (!cancelled) {
+                    setFallbackData({
+                        images: formatted,
+                        hasMore,
+                        totalImages,
+                    })
+                }
+            } catch {
+                // ignore errors, fallbackData stays undefined
             }
+        }
+
+        loadFallbackData()
+        return () => {
+            cancelled = true
+        }
+    }, [imagesPerPage, offset])
+
+    const { data, isLoading, mutate } = useSWR<ImagesSWRData>(
+        ['images', offset],
+        imagesFetcher(imagesPerPage),
+        {
+            fallbackData: fallbackData,
         },
-        [imagesPerPage],
     )
 
-    /** 🔥 Main effect: only fetch if page != 1 */
-    useEffect(() => {
-        if (page !== 1) {
-            fetchImages(offset)
-        } else {
-            // Page 1 = use initialImages
-            setImages(initialImages)
-            setHasMore(initialHasMore)
-            setTotalImages(
-                estimateTotal(initialImages.length, offset, initialHasMore, imagesPerPage),
-            )
-        }
-    }, [page, offset, fetchImages, initialImages, initialHasMore])
+    const images = data?.images ?? []
+    const hasMore = data?.hasMore ?? false
+    const totalImages = data?.totalImages ?? 0
 
-    /** Upload → refresh page */
+    // Upload → revalidate current page
     const handleUploadComplete = async () => {
-        await fetchImages(offset)
+        try {
+            await mutate()
+        } catch {
+            toast.error({
+                title: 'Failed to refresh images',
+                description: 'Could not reload images after upload',
+            })
+        }
     }
 
-    /** Delete → refresh page */
+    // Delete → call API then revalidate
     const deleteImage = async (key: string) => {
         try {
             const res = await fetch('/api/uploadthing/delete', {
@@ -110,7 +133,7 @@ export default function ImagesPage({ initialImages, initialHasMore }: ImagesPage
             const data = await res.json()
             if (data.success) {
                 toast.success({ title: 'Image deleted' })
-                await fetchImages(offset)
+                await mutate()
             } else {
                 toast.error({ title: 'Delete failed' })
             }

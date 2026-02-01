@@ -7,6 +7,7 @@ import { toast } from '@workspace/ui/components/Sonner'
 import { Tab, TabList, TabPanel, Tabs } from '@workspace/ui/components/Tabs'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import AboutTab from './AboutTab'
 import HeroTab from './HeroTab'
 import PhilosophyTab from './PhilosophyTab'
 import ProjectsTab from './ProjectsTab'
@@ -39,6 +40,11 @@ export default function HomePage() {
                 projectList: [],
             },
             skills: [],
+            about: {
+                title: '',
+                description: '',
+                teamMembers: [],
+            },
         },
     })
 
@@ -157,6 +163,7 @@ export default function HomePage() {
                                 <TabList>
                                     <Tab id="hero">Hero</Tab>
                                     <Tab id="philosophy">Philosophy</Tab>
+                                    <Tab id="about">About</Tab>
                                     <Tab id="projects">Projects</Tab>
                                     <Tab id="skills">Skills</Tab>
                                 </TabList>
@@ -167,6 +174,10 @@ export default function HomePage() {
 
                                 <TabPanel id="philosophy">
                                     <PhilosophyTab form={form} />
+                                </TabPanel>
+
+                                <TabPanel id="about">
+                                    <AboutTab form={form} />
                                 </TabPanel>
 
                                 <TabPanel id="projects">

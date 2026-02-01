@@ -1,35 +1,21 @@
 /* eslint-disable react/no-unknown-property */
 'use client'
 
+import { useIsMobile } from '@/shared/hooks/useMobile'
 import { useGlobal } from '@/shared/stores/global'
 import { useGSAP } from '@gsap/react'
-import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Leva, useControls } from 'leva'
-import { lazy, Suspense, useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import { Project } from 'types'
 import CameraGroup from '../elements/CameraGroup'
 import Logo from '../elements/Logo'
-
-const Ocean = lazy(() => import('../elements/Ocean'))
-const Projects = lazy(() => import('../elements/Projects'))
-
-function Sky() {
-    const { scene } = useThree()
-    const texture = useLoader(THREE.TextureLoader, 'images/nightsky.webp')
-
-    useMemo(() => {
-        if (texture) {
-            texture.mapping = THREE.UVMapping
-            texture.flipY = false
-            scene.background = texture
-            scene.environment = texture
-        }
-    }, [texture, scene])
-
-    return null
-}
+import Ocean from '../elements/Ocean'
+import Projects from '../elements/Projects'
 
 // Camera controller to set camera from leva panel
 function CameraController({ leva }: { leva: any }) {
@@ -43,7 +29,7 @@ function CameraController({ leva }: { leva: any }) {
     useEffect(() => {
         camera.layers.enable(0)
         camera.layers.enable(10)
-    }, [])
+    }, [camera.layers])
 
     return (
         <>
@@ -60,9 +46,10 @@ function CameraController({ leva }: { leva: any }) {
     )
 }
 
-export default function Scene() {
+export default function Scene({ data }: { data?: Project[] }) {
     const canvasRef = useRef<any | null>(null)
     const isAccess = useGlobal((state) => state.isAccess)
+    const isMobile = useIsMobile({ breakpoint: 1023 })
 
     // Leva camera state (target values)
     const leva = useControls('Camera', {
@@ -96,6 +83,16 @@ export default function Scene() {
             })
         }
     }, [isAccess])
+
+    useEffect(() => {
+        if (data) {
+            setTimeout(() => {
+                if (ScrollTrigger) {
+                    ScrollTrigger.refresh()
+                }
+            }, 50)
+        }
+    }, [data])
 
     return (
         <>
@@ -134,12 +131,16 @@ export default function Scene() {
                     <Suspense fallback={null}>
                         <Logo />
 
-                        <group name="projects">
-                            <Ocean />
-                            <CameraGroup>
-                                <Projects />
-                            </CameraGroup>
-                        </group>
+                        {!isMobile && (
+                            <group name="projects">
+                                <Ocean />
+                                {data && (
+                                    <CameraGroup>
+                                        <Projects data={data} />
+                                    </CameraGroup>
+                                )}
+                            </group>
+                        )}
                     </Suspense>
                 </Canvas>
                 <Leva hidden={true} />
