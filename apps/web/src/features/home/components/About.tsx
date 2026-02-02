@@ -51,7 +51,7 @@ const MemberFigure = memo(function MemberFigure({
             }}
         >
             <figure
-                className={`tt-image relative mb-6 h-full rounded-4xl bg-neutral-800 pt-10 pb-[100%] transition-opacity duration-500 md:pb-[55%] lg:pb-[80%] xl:pb-[100%]`}
+                className={`tt-image relative mb-6 h-full rounded-4xl bg-neutral-800 pt-10 pb-[100%] transition-opacity duration-500 md:pb-[55%] lg:pb-[65%]`}
                 style={{}}
             >
                 <img
@@ -268,7 +268,7 @@ export default function About({ data }: { data: AboutSection }) {
             </div>
 
             <div className="container">
-                <div className="about-wrapper relative flex h-screen lg:items-center xl:min-h-[850px]">
+                <div className="about-wrapper relative flex h-screen lg:items-center">
                     <div className="w-full space-y-16 max-lg:pt-4">
                         <article className="grid grid-cols-1 max-xl:h-[60vh] lg:grid-cols-2 lg:gap-36">
                             <div className="relative">
