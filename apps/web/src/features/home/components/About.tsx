@@ -170,8 +170,8 @@ const SwatchList = memo(function SwatchList({
 })
 
 export default function About({ data }: { data: AboutSection }) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const aboutList: Person[] = Array.isArray(data?.teamMembers) ? data.teamMembers : []
-
     const ref = useRef<HTMLDivElement>(null)
     const listRef = useRef<HTMLUListElement | null>(null)
     const flipState = useRef<Flip.FlipState | null>(null)
@@ -270,7 +270,7 @@ export default function About({ data }: { data: AboutSection }) {
             <div className="container">
                 <div className="about-wrapper relative flex h-screen lg:items-center xl:min-h-[850px]">
                     <div className="w-full space-y-16 max-lg:pt-4">
-                        <article className="grid grid-cols-1 max-xl:h-[70vh] lg:grid-cols-2 lg:gap-36">
+                        <article className="grid grid-cols-1 max-xl:h-[60vh] lg:grid-cols-2 lg:gap-36">
                             <div className="relative">
                                 {aboutList.map((item, idx) => (
                                     <MemberFigure
@@ -282,7 +282,7 @@ export default function About({ data }: { data: AboutSection }) {
                                 ))}
                             </div>
 
-                            <ul className="relative lg:flex lg:items-center">
+                            <ul className="relative max-lg:mt-6 lg:flex lg:items-center">
                                 {aboutList.map((item, idx) => (
                                     <MemberStats
                                         key={item.name}
