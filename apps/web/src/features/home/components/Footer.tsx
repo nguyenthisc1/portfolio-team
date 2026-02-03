@@ -91,7 +91,7 @@ export default function Footer() {
                                 <ul className="font-style-normal w-fit">
                                     <li className="grid grid-cols-3">
                                         <span>Location:</span>
-                                        <span className="col-span-2 uppercase hover:underline">
+                                        <span className="col-span-2 uppercase">
                                             Ho Chi Minh City, Viet Nam
                                         </span>
                                     </li>
@@ -283,7 +283,7 @@ export default function Footer() {
                                 <ul className="font-style-normal w-fit">
                                     <li className="grid grid-cols-3">
                                         <span>Location:</span>
-                                        <span className="col-span-2 uppercase hover:underline">
+                                        <span className="col-span-2 uppercase">
                                             Ho Chi Minh City, Viet Nam
                                         </span>
                                     </li>
