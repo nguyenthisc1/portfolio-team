@@ -80,7 +80,7 @@ export default function Footer() {
                                     />
                                 </svg>
                             </div>
-                            <p className="max-w-xs text-xl max-lg:pl-10 lg:ml-40">
+                            <p className="max-w-xs text-xl max-lg:pl-10 lg:ml-48 lg:text-lg xl:ml-40">
                                 Whether you need creativity or simply reliable standards, I’ve got
                                 you covered. Let’s work together to create real value.
                             </p>
@@ -91,14 +91,14 @@ export default function Footer() {
                                 <ul className="font-style-normal w-fit">
                                     <li className="grid grid-cols-3">
                                         <span>Location:</span>
-                                        <span className="col-span-2 uppercase">
+                                        <span className="col-span-2 uppercase hover:underline">
                                             Ho Chi Minh City, Viet Nam
                                         </span>
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Email:</span>
                                         <a
-                                            className="col-span-2 uppercase"
+                                            className="col-span-2 uppercase hover:underline"
                                             href="mailto:HOANGVU2486222@GMAIL.COM"
                                         >
                                             HOANGVU2486222@GMAIL.COM
@@ -106,13 +106,16 @@ export default function Footer() {
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Phone:</span>
-                                        <a className="col-span-2 uppercase" href="tel:0704582758">
+                                        <a
+                                            className="col-span-2 uppercase hover:underline"
+                                            href="tel:0704582758"
+                                        >
                                             0704 58 27 58
                                         </a>
                                     </li>
                                 </ul>
                             </address>
-                            <div className="space-y-8">
+                            <div className="space-y-8 xl:ml-20">
                                 <h3 className="text-lg uppercase">Want to see more showcase?</h3>
 
                                 <ul className="flex gap-5">
@@ -269,7 +272,7 @@ export default function Footer() {
                                     />
                                 </svg>
                             </div>
-                            <p className="max-w-xs text-xl max-lg:pl-10 lg:ml-40">
+                            <p className="max-w-xs text-xl max-lg:pl-10 lg:ml-48 lg:text-lg xl:ml-40">
                                 Whether you need creativity or simply reliable standards, I’ve got
                                 you covered. Let’s work together to create real value.
                             </p>
@@ -280,14 +283,14 @@ export default function Footer() {
                                 <ul className="font-style-normal w-fit">
                                     <li className="grid grid-cols-3">
                                         <span>Location:</span>
-                                        <span className="col-span-2 uppercase">
+                                        <span className="col-span-2 uppercase hover:underline">
                                             Ho Chi Minh City, Viet Nam
                                         </span>
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Email:</span>
                                         <a
-                                            className="col-span-2 uppercase"
+                                            className="col-span-2 uppercase hover:underline"
                                             href="mailto:HOANGVU2486222@GMAIL.COM"
                                         >
                                             HOANGVU2486222@GMAIL.COM
@@ -295,13 +298,16 @@ export default function Footer() {
                                     </li>
                                     <li className="grid grid-cols-3">
                                         <span>Phone:</span>
-                                        <a className="col-span-2 uppercase" href="tel:0704582758">
+                                        <a
+                                            className="col-span-2 uppercase hover:underline"
+                                            href="tel:0704582758"
+                                        >
                                             0704 58 27 58
                                         </a>
                                     </li>
                                 </ul>
                             </address>
-                            <div className="space-y-8">
+                            <div className="space-y-8 xl:ml-20">
                                 <h3 className="text-lg uppercase">Want to see more showcase?</h3>
 
                                 <ul className="flex gap-5">

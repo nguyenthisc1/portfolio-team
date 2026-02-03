@@ -51,7 +51,7 @@ const MemberFigure = memo(function MemberFigure({
             }}
         >
             <figure
-                className={`tt-image relative mb-6 h-full rounded-4xl bg-neutral-800 pt-10 pb-[100%] transition-opacity duration-500 md:pb-[55%] lg:pb-[65%]`}
+                className={`tt-image relative mb-6 h-full rounded-4xl bg-neutral-800 pt-10 pb-[100%] transition-opacity duration-500 md:pb-[65%]`}
                 style={{}}
             >
                 <img
@@ -98,26 +98,28 @@ const MemberStats = memo(function MemberStats({
     ]
 
     return (
-        <ul
-            className={`grid h-full grid-cols-3 gap-y-24 opacity-0 transition-opacity duration-500 lg:flex lg:flex-wrap lg:justify-center ${!isFirst && 'absolute inset-0'} ${isActive && '!opacity-100'} `}
+        <div
+            className={`grid h-full w-full grid-cols-3 gap-x-6 gap-y-24 opacity-0 transition-opacity duration-500 lg:grid-cols-2 lg:gap-x-10 ${!isFirst && 'absolute inset-0'} ${isActive && '!opacity-100'} `}
         >
             {stats.map((stat, statIdx) => (
-                <li
+                <div
                     key={stat.label}
-                    className={`h-fit justify-self-center ${
+                    className={`justify-self-left h-fit ${
                         statIdx === 0
-                            ? 'flex w-full flex-col space-y-5'
-                            : 'flex w-1/2 flex-col space-y-5'
+                            ? 'flex flex-col space-y-5 lg:col-span-2'
+                            : 'flex flex-col space-y-5'
                     }`}
                 >
                     <strong className="text-primary whitespace-nowrap">
-                        <span className="h2 max-md:!text-4xl">{stat.value}</span>{' '}
-                        <span className="h3 max-md:!text-4xl">{stat.unit}</span>
+                        <span className="max-lg:!text-5xl lg:text-[160px] lg:leading-none">
+                            {stat.value}
+                        </span>{' '}
+                        <span className="h3 max-md:!text-5xl">{stat.unit}</span>
                     </strong>
                     <p className="uppercase">{stat.label}</p>
-                </li>
+                </div>
             ))}
-        </ul>
+        </div>
     )
 })
 
@@ -270,7 +272,7 @@ export default function About({ data }: { data: AboutSection }) {
             <div className="container">
                 <div className="about-wrapper relative flex h-screen lg:items-center">
                     <div className="w-full space-y-16 max-lg:pt-4">
-                        <article className="grid grid-cols-1 max-xl:h-[60vh] lg:grid-cols-2 lg:gap-36">
+                        <article className="grid grid-cols-1 max-xl:h-[60vh] lg:grid-cols-2 lg:gap-10 xl:gap-36">
                             <div className="relative">
                                 {aboutList.map((item, idx) => (
                                     <MemberFigure
